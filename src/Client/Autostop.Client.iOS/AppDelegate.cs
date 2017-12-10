@@ -24,8 +24,9 @@ namespace Autostop.Client.iOS
 			// create a new window instance based on the screen size
 			Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
-			// If you have defined a root view controller, set it here:
-			// Window.RootViewController = myViewController;
+            var mainMapViewStoryBoard = UIStoryboard.FromName("MainMapView", NSBundle.MainBundle);
+            var viewController = mainMapViewStoryBoard.InstantiateInitialViewController();
+            Window.RootViewController = viewController;
 
 			// make the window visible
 			Window.MakeKeyAndVisible();

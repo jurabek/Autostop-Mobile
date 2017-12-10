@@ -1,7 +1,96 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
-	<dependencies>
-		<plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204" />
-	</dependencies>
-	<scenes />
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <scene sceneID="224">
+            <objects>
+                <navigationController id="225" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="227">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="722" destination="234" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="228" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="112" y="18"/>
+        </scene>
+        <scene sceneID="233">
+            <objects>
+                <viewController id="234" sceneMemberID="viewController" customClass="MainMapViewController" storyboardIdentifier="MainMapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="231"/>
+                        <viewControllerLayoutGuide type="bottom" id="232"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="235">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="443" translatesAutoresizingMaskIntoConstraints="NO" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="942" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="35" y="518" width="250" height="30"/>
+                                        <color key="backgroundColor" colorSpace="calibratedRGB" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1"/>
+                                        <state key="normal" title="Set pickup location">
+                                            <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <constraints>
+                                            <constraint id="962" firstItem="942" firstAttribute="height" constant="30"/>
+                                        </constraints>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="943" translatesAutoresizingMaskIntoConstraints="NO" image="map-pin.png">
+                                        <rect key="frame" x="20" y="247.5" width="279" height="41"/>
+                                        <constraints>
+                                            <constraint id="952" firstItem="943" firstAttribute="height" constant="41"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint id="950" firstItem="943" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20"/>
+                                    <constraint id="951" firstItem="443" firstAttribute="trailing" secondItem="943" secondAttribute="trailing" constant="21"/>
+                                    <constraint id="953" firstItem="443" firstAttribute="centerY" secondItem="943" secondAttribute="centerY" constant="16"/>
+                                    <constraint id="960" firstItem="443" firstAttribute="trailing" secondItem="942" secondAttribute="trailing" constant="35"/>
+                                    <constraint id="961" firstItem="942" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="35"/>
+                                    <constraint id="963" firstItem="443" firstAttribute="bottom" secondItem="942" secondAttribute="bottom" constant="20"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint id="938" firstItem="235" firstAttribute="leadingMargin" secondItem="443" secondAttribute="leading" constant="16"/>
+                            <constraint id="939" firstItem="231" firstAttribute="bottom" secondItem="443" secondAttribute="top" constant="64"/>
+                            <constraint id="940" firstItem="443" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="16"/>
+                            <constraint id="941" firstItem="443" firstAttribute="bottom" secondItem="232" secondAttribute="top"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
+                        <outlet property="CenterMarker" destination="943" id="name-outlet-943"/>
+                        <outlet property="SetPickupLocationButton" destination="942" id="name-outlet-942"/>
+                    </connections>
+                    <navigationItem id="721" key="navigationItem" title="Autostop"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="684" y="22"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="map-pin.png" width="128" height="128"/>
+    </resources>
 </document>

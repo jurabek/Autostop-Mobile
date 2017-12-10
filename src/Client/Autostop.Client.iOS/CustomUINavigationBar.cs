@@ -6,8 +6,9 @@ namespace Autostop.Client.iOS
 {
     public partial class CustomUINavigationBar : UINavigationItem
     {
-        public CustomUINavigationBar (IntPtr handle) : base (handle)
+        public CustomUINavigationBar(IntPtr handle) : base(handle)
         {
+            
         }
     }
 }
