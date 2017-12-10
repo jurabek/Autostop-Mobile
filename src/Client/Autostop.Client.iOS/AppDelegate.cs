@@ -23,13 +23,19 @@ namespace Autostop.Client.iOS
 
 			// create a new window instance based on the screen size
 			Window = new UIWindow(UIScreen.MainScreen.Bounds);
-
-            var mainMapViewStoryBoard = UIStoryboard.FromName("MainMapView", NSBundle.MainBundle);
+			
+			var mainMapViewStoryBoard = UIStoryboard.FromName("MainMapView", NSBundle.MainBundle);
             var viewController = mainMapViewStoryBoard.InstantiateInitialViewController();
             Window.RootViewController = viewController;
 
 			// make the window visible
 			Window.MakeKeyAndVisible();
+
+
+			UINavigationBar.Appearance.BackgroundColor = UIColor.Clear;
+			UINavigationBar.Appearance.Translucent = true;
+			UINavigationBar.Appearance.ShadowImage = new UIImage();
+			UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
 
 			return true;
 		}

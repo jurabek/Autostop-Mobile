@@ -100,10 +100,6 @@
     <Compile Include="MainMapViewController.designer.cs">
       <DependentUpon>MainMapViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomUINavigationBar.cs" />
-    <Compile Include="CustomUINavigationBar.designer.cs">
-      <DependentUpon>CustomUINavigationBar.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Google.Maps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -116,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Driver\" />
-    <Folder Include="Views\Passenger\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\map-pin.png" />
