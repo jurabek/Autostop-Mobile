@@ -21,11 +21,13 @@ namespace Autostop.Client.iOS
 		{
 			base.ViewDidLoad();
 
-			localtionManager = new CLLocationManager();
-			CameraPosition camera = CameraPosition.FromCamera(37.797865, -122.402526, 6);
-			MainMapView.Camera = camera;
+			//localtionManager = new CLLocationManager();
+			//CameraPosition camera = CameraPosition.FromCamera(37.797865, -122.402526, 6);
+			//MainMapView.Camera = camera;
 			MainMapView.BringSubviewToFront(CenterMarker);
 			MainMapView.BringSubviewToFront(SetPickupLocationButton);
-		}
+            MainMapView.BringSubviewToFront(PickupLocationTextView);
+            MainMapView.BringSubviewToFront(DestinationLocationTextView);
+        }
 	}
 }

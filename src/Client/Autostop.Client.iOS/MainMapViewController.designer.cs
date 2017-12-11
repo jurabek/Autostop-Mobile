@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -24,7 +24,7 @@ namespace Autostop.Client.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        Google.Maps.MapView MainMapView { get; set; }
+        UIKit.UIView MainMapView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
