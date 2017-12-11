@@ -16,13 +16,40 @@ namespace Autostop.Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView centerPinImage { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField destinationTextField { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         Google.Maps.MapView MainMapView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField pickupLocationTextField { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
+            if (centerPinImage != null) {
+                centerPinImage.Dispose ();
+                centerPinImage = null;
+            }
+
+            if (destinationTextField != null) {
+                destinationTextField.Dispose ();
+                destinationTextField = null;
+            }
+
             if (MainMapView != null) {
                 MainMapView.Dispose ();
                 MainMapView = null;
+            }
+
+            if (pickupLocationTextField != null) {
+                pickupLocationTextField.Dispose ();
+                pickupLocationTextField = null;
             }
         }
     }

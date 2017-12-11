@@ -89,6 +89,10 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <BundleResource Include="Resources\pickup_destination_dot.png" />
+    <BundleResource Include="Resources\pickup_location_dot.png" />
+    <BundleResource Include="Resources\pin_destination.png" />
+    <BundleResource Include="Resources\pin_pickup.png" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />

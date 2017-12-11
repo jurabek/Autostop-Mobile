@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,7 +15,7 @@
             <objects>
                 <navigationController id="225" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="227">
-                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -35,58 +35,53 @@
                         <viewControllerLayoutGuide type="bottom" id="232"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="235">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
-                                <rect key="frame" x="4" y="0.0" width="406" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1509">
-                                <rect key="frame" x="39" y="666" width="336" height="50"/>
+                                <rect key="frame" x="35" y="607" width="305" height="40"/>
                                 <color key="backgroundColor" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Set pickup location">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="SET PICKUP LOCATION">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <real key="value" value="10"/>
+                                        <real key="value" value="6"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <constraints>
                                     <constraint id="1818" firstItem="1509" firstAttribute="width" constant="250" relation="greaterThanOrEqual"/>
-                                    <constraint id="1819" firstItem="1509" firstAttribute="height" constant="50" relation="greaterThanOrEqual"/>
+                                    <constraint id="1819" firstItem="1509" firstAttribute="height" constant="40" relation="greaterThanOrEqual"/>
                                 </constraints>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map-pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="1847">
-                                <rect key="frame" x="67.5" y="348" width="279" height="40"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin_destination.png" translatesAutoresizingMaskIntoConstraints="NO" id="1847">
+                                <rect key="frame" x="48" y="298.5" width="279" height="70"/>
                                 <constraints>
-                                    <constraint id="1854" firstItem="1847" firstAttribute="height" constant="40"/>
+                                    <constraint id="1854" firstItem="1847" firstAttribute="height" constant="70"/>
                                     <constraint id="1855" firstItem="1847" firstAttribute="width" constant="279"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1876">
-                                <rect key="frame" x="26" y="72" width="363" height="30"/>
-                                <nil key="textColor"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1876" adjustsFontForContentSizeCategory="YES" fixedFrame="YES">
+                                <rect key="frame" x="0.0" y="71" width="375" height="35"/>
+                                <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1877">
-                                <rect key="frame" x="25" y="103" width="364" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1877" adjustsFontForContentSizeCategory="YES" fixedFrame="YES">
+                                <rect key="frame" x="0.0" y="106" width="375" height="35"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,19 +95,14 @@
                             <constraint id="1817" firstItem="235" firstAttribute="trailingMargin" secondItem="1509" secondAttribute="trailing" constant="19"/>
                             <constraint id="1853" firstItem="1847" firstAttribute="centerX" secondItem="443" secondAttribute="centerX"/>
                             <constraint id="1858" firstItem="1847" firstAttribute="centerY" secondItem="443" secondAttribute="centerY"/>
-                            <constraint id="1878" firstItem="1876" firstAttribute="top" secondItem="443" secondAttribute="top" constant="72"/>
-                            <constraint id="1879" firstItem="1876" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="22"/>
-                            <constraint id="1880" firstItem="1876" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="6"/>
-                            <constraint id="1881" firstItem="1876" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="6"/>
-                            <constraint id="1882" firstItem="235" firstAttribute="trailingMargin" secondItem="1876" secondAttribute="trailing" constant="5"/>
-                            <constraint id="1883" firstItem="1877" firstAttribute="top" secondItem="1876" secondAttribute="bottom" constant="1"/>
-                            <constraint id="1884" firstItem="1877" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="5"/>
-                            <constraint id="1885" firstItem="235" firstAttribute="trailingMargin" secondItem="1877" secondAttribute="trailing" constant="5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Autostop" id="721"/>
                     <connections>
                         <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
+                        <outlet property="pickupLocationTextField" destination="1876" id="name-outlet-1876"/>
+                        <outlet property="destinationTextField" destination="1877" id="name-outlet-1877"/>
+                        <outlet property="centerPinImage" destination="1847" id="name-outlet-1847"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -122,5 +112,9 @@
     </scenes>
     <resources>
         <image name="map-pin.png" width="128" height="128"/>
+        <image name="pickup_destination_dot.png" width="20" height="20"/>
+        <image name="pickup_location_dot.png" width="20" height="20"/>
+        <image name="pin_destination.png" width="128" height="128"/>
+        <image name="pin_pickup.png" width="128" height="128"/>
     </resources>
 </document>
