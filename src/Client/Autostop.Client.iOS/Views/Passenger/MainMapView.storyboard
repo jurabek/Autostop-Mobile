@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
@@ -62,17 +62,15 @@
                                             <constraint firstAttribute="height" constant="41" id="952"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7wx-uS-6zF">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7wx-uS-6zF">
                                         <rect key="frame" x="20" y="84" width="279" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.91165398316062174" green="0.91165398316062174" blue="0.91165398316062174" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lkc-ed-gbg">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lkc-ed-gbg">
                                         <rect key="frame" x="21" y="122" width="279" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.91165398320000002" green="0.91165398320000002" blue="0.91165398320000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -87,6 +85,12 @@
                                     <constraint firstAttribute="trailing" secondItem="942" secondAttribute="trailing" constant="35" id="960"/>
                                     <constraint firstItem="942" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="35" id="961"/>
                                     <constraint firstAttribute="bottom" secondItem="942" secondAttribute="bottom" constant="20" id="963"/>
+                                    <constraint id="1249" firstItem="443" firstAttribute="trailing" secondItem="7wx-uS-6zF" secondAttribute="trailing" constant="21"/>
+                                    <constraint id="1250" firstItem="7wx-uS-6zF" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20"/>
+                                    <constraint id="1251" firstItem="7wx-uS-6zF" firstAttribute="top" secondItem="443" secondAttribute="top" constant="84"/>
+                                    <constraint id="1252" firstItem="443" firstAttribute="trailing" secondItem="lkc-ed-gbg" secondAttribute="trailing" constant="20"/>
+                                    <constraint id="1253" firstItem="lkc-ed-gbg" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="21"/>
+                                    <constraint id="1254" firstItem="lkc-ed-gbg" firstAttribute="top" secondItem="7wx-uS-6zF" secondAttribute="bottom" constant="8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -103,11 +107,13 @@
                         <outlet property="CenterMarker" destination="943" id="name-outlet-943"/>
                         <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
                         <outlet property="SetPickupLocationButton" destination="942" id="name-outlet-942"/>
+                        <outlet property="PickupLocationTextView" destination="7wx-uS-6zF" id="name-outlet-7wx-uS-6zF"/>
+                        <outlet property="DestinationLocationTextView" destination="lkc-ed-gbg" id="name-outlet-lkc-ed-gbg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="911.25" y="16.901408450704224"/>
+            <point key="canvasLocation" x="623.25" y="9.901409"/>
         </scene>
     </scenes>
     <resources>

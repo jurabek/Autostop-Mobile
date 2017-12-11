@@ -20,7 +20,15 @@ namespace Autostop.Client.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField DestinationLocationTextView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         Google.Maps.MapView MainMapView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField PickupLocationTextView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -33,9 +41,19 @@ namespace Autostop.Client.iOS
                 CenterMarker = null;
             }
 
+            if (DestinationLocationTextView != null) {
+                DestinationLocationTextView.Dispose ();
+                DestinationLocationTextView = null;
+            }
+
             if (MainMapView != null) {
                 MainMapView.Dispose ();
                 MainMapView = null;
+            }
+
+            if (PickupLocationTextView != null) {
+                PickupLocationTextView.Dispose ();
+                PickupLocationTextView = null;
             }
 
             if (SetPickupLocationButton != null) {
