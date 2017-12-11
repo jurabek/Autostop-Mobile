@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
-    <device id="retina4_0" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,7 +15,7 @@
             <objects>
                 <navigationController id="225" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="227">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -35,88 +35,84 @@
                         <viewControllerLayoutGuide type="bottom" id="232"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="235">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="942">
-                                        <rect key="frame" x="35" y="518" width="250" height="30"/>
-                                        <color key="backgroundColor" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="962"/>
-                                        </constraints>
-                                        <state key="normal" title="Set pickup location">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <real key="value" value="10"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map-pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="943">
-                                        <rect key="frame" x="20" y="247.5" width="279" height="41"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="41" id="952"/>
-                                        </constraints>
-                                    </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7wx-uS-6zF">
-                                        <rect key="frame" x="20" y="84" width="279" height="30"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lkc-ed-gbg">
-                                        <rect key="frame" x="21" y="122" width="279" height="30"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                </subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
+                                <rect key="frame" x="4" y="0.0" width="406" height="736"/>
+                                <subviews/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="943" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20" id="950"/>
-                                    <constraint firstAttribute="trailing" secondItem="943" secondAttribute="trailing" constant="21" id="951"/>
-                                    <constraint firstAttribute="centerY" secondItem="943" secondAttribute="centerY" constant="16" id="953"/>
-                                    <constraint firstAttribute="trailing" secondItem="942" secondAttribute="trailing" constant="35" id="960"/>
-                                    <constraint firstItem="942" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="35" id="961"/>
-                                    <constraint firstAttribute="bottom" secondItem="942" secondAttribute="bottom" constant="20" id="963"/>
-                                    <constraint id="1249" firstItem="443" firstAttribute="trailing" secondItem="7wx-uS-6zF" secondAttribute="trailing" constant="21"/>
-                                    <constraint id="1250" firstItem="7wx-uS-6zF" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20"/>
-                                    <constraint id="1251" firstItem="7wx-uS-6zF" firstAttribute="top" secondItem="443" secondAttribute="top" constant="84"/>
-                                    <constraint id="1252" firstItem="443" firstAttribute="trailing" secondItem="lkc-ed-gbg" secondAttribute="trailing" constant="20"/>
-                                    <constraint id="1253" firstItem="lkc-ed-gbg" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="21"/>
-                                    <constraint id="1254" firstItem="lkc-ed-gbg" firstAttribute="top" secondItem="7wx-uS-6zF" secondAttribute="bottom" constant="8"/>
-                                </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1509">
+                                <rect key="frame" x="39" y="686" width="336" height="30"/>
+                                <color key="backgroundColor" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Set pickup location">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <constraints>
+                                    <constraint id="1818" firstItem="1509" firstAttribute="width" constant="250" relation="greaterThanOrEqual"/>
+                                    <constraint id="1819" firstItem="1509" firstAttribute="height" constant="30" relation="greaterThanOrEqual"/>
+                                </constraints>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map-pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="1847">
+                                <rect key="frame" x="67.5" y="353.5" width="279" height="29"/>
+                                <constraints>
+                                    <constraint id="1854" firstItem="1847" firstAttribute="height" constant="29"/>
+                                    <constraint id="1855" firstItem="1847" firstAttribute="width" constant="279"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1876">
+                                <rect key="frame" x="26" y="72" width="363" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1877">
+                                <rect key="frame" x="25" y="103" width="364" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="leadingMargin" secondItem="443" secondAttribute="leading" constant="16" id="938"/>
-                            <constraint firstItem="231" firstAttribute="bottom" secondItem="443" secondAttribute="top" constant="64" id="939"/>
-                            <constraint firstItem="443" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="16" id="940"/>
-                            <constraint firstItem="443" firstAttribute="bottom" secondItem="232" secondAttribute="top" id="941"/>
+                            <constraint id="1545" firstItem="443" firstAttribute="bottom" secondItem="235" secondAttribute="bottom"/>
+                            <constraint id="1546" firstItem="443" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="16"/>
+                            <constraint id="1547" firstItem="235" firstAttribute="leadingMargin" secondItem="443" secondAttribute="leading" constant="16"/>
+                            <constraint id="1548" firstItem="443" firstAttribute="top" secondItem="235" secondAttribute="top"/>
+                            <constraint id="1815" firstItem="443" firstAttribute="bottom" secondItem="1509" secondAttribute="bottom" constant="20"/>
+                            <constraint id="1816" firstItem="1509" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="19"/>
+                            <constraint id="1817" firstItem="235" firstAttribute="trailingMargin" secondItem="1509" secondAttribute="trailing" constant="19"/>
+                            <constraint id="1853" firstItem="1847" firstAttribute="centerX" secondItem="443" secondAttribute="centerX"/>
+                            <constraint id="1858" firstItem="1847" firstAttribute="centerY" secondItem="443" secondAttribute="centerY"/>
+                            <constraint id="1878" firstItem="1876" firstAttribute="top" secondItem="443" secondAttribute="top" constant="72"/>
+                            <constraint id="1879" firstItem="1876" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="22"/>
+                            <constraint id="1880" firstItem="1876" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="6"/>
+                            <constraint id="1881" firstItem="1876" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="6"/>
+                            <constraint id="1882" firstItem="235" firstAttribute="trailingMargin" secondItem="1876" secondAttribute="trailing" constant="5"/>
+                            <constraint id="1883" firstItem="1877" firstAttribute="top" secondItem="1876" secondAttribute="bottom" constant="1"/>
+                            <constraint id="1884" firstItem="1877" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="5"/>
+                            <constraint id="1885" firstItem="235" firstAttribute="trailingMargin" secondItem="1877" secondAttribute="trailing" constant="5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Autostop" id="721"/>
                     <connections>
-                        <outlet property="CenterMarker" destination="943" id="name-outlet-943"/>
                         <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
-                        <outlet property="SetPickupLocationButton" destination="942" id="name-outlet-942"/>
-                        <outlet property="PickupLocationTextView" destination="7wx-uS-6zF" id="name-outlet-7wx-uS-6zF"/>
-                        <outlet property="DestinationLocationTextView" destination="lkc-ed-gbg" id="name-outlet-lkc-ed-gbg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
