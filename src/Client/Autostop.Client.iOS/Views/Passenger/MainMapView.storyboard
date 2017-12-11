@@ -1,13 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
         <scene sceneID="224">
             <objects>
                 <navigationController id="225" sceneMemberID="viewController">
@@ -16,16 +19,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue id="722" destination="234" kind="relationship" relationship="rootViewController"/>
+                        <segue destination="234" kind="relationship" relationship="rootViewController" id="722"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="228" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="112" y="18"/>
         </scene>
+        <!--Autostop-->
         <scene sceneID="233">
             <objects>
-                <viewController id="234" sceneMemberID="viewController" customClass="MainMapViewController" storyboardIdentifier="MainMapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES">
+                <viewController storyboardIdentifier="MainMapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="234" customClass="MainMapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="231"/>
                         <viewControllerLayoutGuide type="bottom" id="232"/>
@@ -33,61 +37,77 @@
                     <view key="view" contentMode="scaleToFill" id="235">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="443" translatesAutoresizingMaskIntoConstraints="NO" customClass="GMSMapView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="942" translatesAutoresizingMaskIntoConstraints="NO">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="942">
                                         <rect key="frame" x="35" y="518" width="250" height="30"/>
-                                        <color key="backgroundColor" colorSpace="calibratedRGB" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1"/>
+                                        <color key="backgroundColor" red="0.16470588235294117" green="0.88627450980392153" blue="0.3411764705882353" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="962"/>
+                                        </constraints>
                                         <state key="normal" title="Set pickup location">
-                                            <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <real key="value" value="10"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
-                                        <constraints>
-                                            <constraint id="962" firstItem="942" firstAttribute="height" constant="30"/>
-                                        </constraints>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="943" translatesAutoresizingMaskIntoConstraints="NO" image="map-pin.png">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map-pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="943">
                                         <rect key="frame" x="20" y="247.5" width="279" height="41"/>
                                         <constraints>
-                                            <constraint id="952" firstItem="943" firstAttribute="height" constant="41"/>
+                                            <constraint firstAttribute="height" constant="41" id="952"/>
                                         </constraints>
                                     </imageView>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7wx-uS-6zF">
+                                        <rect key="frame" x="20" y="84" width="279" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.91165398316062174" green="0.91165398316062174" blue="0.91165398316062174" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pickup location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lkc-ed-gbg">
+                                        <rect key="frame" x="21" y="122" width="279" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.91165398320000002" green="0.91165398320000002" blue="0.91165398320000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint id="950" firstItem="943" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20"/>
-                                    <constraint id="951" firstItem="443" firstAttribute="trailing" secondItem="943" secondAttribute="trailing" constant="21"/>
-                                    <constraint id="953" firstItem="443" firstAttribute="centerY" secondItem="943" secondAttribute="centerY" constant="16"/>
-                                    <constraint id="960" firstItem="443" firstAttribute="trailing" secondItem="942" secondAttribute="trailing" constant="35"/>
-                                    <constraint id="961" firstItem="942" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="35"/>
-                                    <constraint id="963" firstItem="443" firstAttribute="bottom" secondItem="942" secondAttribute="bottom" constant="20"/>
+                                    <constraint firstItem="943" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="20" id="950"/>
+                                    <constraint firstAttribute="trailing" secondItem="943" secondAttribute="trailing" constant="21" id="951"/>
+                                    <constraint firstAttribute="centerY" secondItem="943" secondAttribute="centerY" constant="16" id="953"/>
+                                    <constraint firstAttribute="trailing" secondItem="942" secondAttribute="trailing" constant="35" id="960"/>
+                                    <constraint firstItem="942" firstAttribute="leading" secondItem="443" secondAttribute="leading" constant="35" id="961"/>
+                                    <constraint firstAttribute="bottom" secondItem="942" secondAttribute="bottom" constant="20" id="963"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint id="938" firstItem="235" firstAttribute="leadingMargin" secondItem="443" secondAttribute="leading" constant="16"/>
-                            <constraint id="939" firstItem="231" firstAttribute="bottom" secondItem="443" secondAttribute="top" constant="64"/>
-                            <constraint id="940" firstItem="443" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="16"/>
-                            <constraint id="941" firstItem="443" firstAttribute="bottom" secondItem="232" secondAttribute="top"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="443" secondAttribute="leading" constant="16" id="938"/>
+                            <constraint firstItem="231" firstAttribute="bottom" secondItem="443" secondAttribute="top" constant="64" id="939"/>
+                            <constraint firstItem="443" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="16" id="940"/>
+                            <constraint firstItem="443" firstAttribute="bottom" secondItem="232" secondAttribute="top" id="941"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Autostop" id="721"/>
                     <connections>
-                        <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
                         <outlet property="CenterMarker" destination="943" id="name-outlet-943"/>
+                        <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
                         <outlet property="SetPickupLocationButton" destination="942" id="name-outlet-942"/>
                     </connections>
-                    <navigationItem id="721" key="navigationItem" title="Autostop"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="684" y="22"/>
+            <point key="canvasLocation" x="911.25" y="16.901408450704224"/>
         </scene>
     </scenes>
     <resources>
