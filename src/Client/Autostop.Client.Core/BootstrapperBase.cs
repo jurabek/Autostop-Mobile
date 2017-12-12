@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using Autostop.Client.Core.ViewModels.Passenger;
 
 namespace Autostop.Client.Core
 {
@@ -13,7 +14,11 @@ namespace Autostop.Client.Core
 	    {
 			var builder = new ContainerBuilder();
 
+		    builder.RegisterType<MainViewModel>().AsSelf();
+
 			ContainerRegistery(builder);
+
+		    Container = builder.Build();
 	    }
 
 

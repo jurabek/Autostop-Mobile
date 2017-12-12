@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Autofac;
 using Autostop.Client.Core;
+using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Managers;
 using Foundation;
 using UIKit;
