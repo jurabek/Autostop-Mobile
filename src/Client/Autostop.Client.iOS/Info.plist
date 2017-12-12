@@ -38,5 +38,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+  <key>UIBackgroundModes</key>
+  <array>
+    <string>location</string>
+  </array>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>Autostop requires GPS to track your location and cars</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Autostop requires GPS to track your location and cars</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Autostop requires GPS to track your location and cars</string>
+  
 </dict>
 </plist>

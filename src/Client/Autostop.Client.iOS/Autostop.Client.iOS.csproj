@@ -87,13 +87,19 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Extensions\UIViewExtenstions.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="Resources\pickup_destination_dot.png" />
     <BundleResource Include="Resources\pickup_location_dot.png" />
     <BundleResource Include="Resources\pin_destination.png" />
     <BundleResource Include="Resources\pin_pickup.png" />
-    <None Include="Info.plist" />
+    <BundleResource Include="Resources\pin.png" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
+    <Compile Include="Managers\LocationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
@@ -105,10 +111,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.2\lib\netstandard1.1\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.2\lib\netstandard1.3\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Maps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Google.iOS.Maps.2.5.0\lib\Xamarin.iOS10\Google.Maps.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.Core.3.1.1\lib\netstandard1.3\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.Interfaces.3.1.1\lib\netstandard1.0\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.Linq.3.1.1\lib\netstandard1.3\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.PlatformServices.3.1.1\lib\netstandard1.3\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
@@ -117,7 +144,22 @@
     <Folder Include="Views\Driver\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\map-pin.png" />
+    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj">
+      <Project>{998d76c3-259e-4780-825b-c8d8b81cf663}</Project>
+      <Name>Autostop.Common.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Autostop.Client.Abstraction\Autostop.Client.Abstraction.csproj">
+      <Project>{2da52ad9-cb09-4357-be62-4ec2173a82c3}</Project>
+      <Name>Autostop.Client.Abstraction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Autostop.Client.Core\Autostop.Client.Core.csproj">
+      <Project>{42cedb74-2972-4130-b9a9-c3ff8940079d}</Project>
+      <Name>Autostop.Client.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Autostop.Client.Mobile.UI\Autostop.Client.Mobile.UI.csproj">
+      <Project>{fd098a67-2387-4efb-a9f6-0f0934ed4f06}</Project>
+      <Name>Autostop.Client.Mobile.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

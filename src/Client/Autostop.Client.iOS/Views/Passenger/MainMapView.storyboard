@@ -40,7 +40,12 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="1847" fixedFrame="YES">
+                                        <rect key="frame" x="167" y="302" width="42" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1509">
@@ -60,28 +65,21 @@
                                     <constraint id="1819" firstItem="1509" firstAttribute="height" constant="40" relation="greaterThanOrEqual"/>
                                 </constraints>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin_destination.png" translatesAutoresizingMaskIntoConstraints="NO" id="1847">
-                                <rect key="frame" x="48" y="298.5" width="279" height="70"/>
-                                <constraints>
-                                    <constraint id="1854" firstItem="1847" firstAttribute="height" constant="70"/>
-                                    <constraint id="1855" firstItem="1847" firstAttribute="width" constant="279"/>
-                                </constraints>
-                            </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1876" adjustsFontForContentSizeCategory="YES" fixedFrame="YES">
-                                <rect key="frame" x="0.0" y="71" width="375" height="35"/>
+                                <rect key="frame" x="15" y="71" width="340" height="35"/>
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1877" adjustsFontForContentSizeCategory="YES" fixedFrame="YES">
-                                <rect key="frame" x="0.0" y="106" width="375" height="35"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1877" adjustsFontForContentSizeCategory="YES" fixedFrame="YES">
+                                <rect key="frame" x="15" y="107" width="340" height="35"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -93,8 +91,6 @@
                             <constraint id="1815" firstItem="443" firstAttribute="bottom" secondItem="1509" secondAttribute="bottom" constant="20"/>
                             <constraint id="1816" firstItem="1509" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="19"/>
                             <constraint id="1817" firstItem="235" firstAttribute="trailingMargin" secondItem="1509" secondAttribute="trailing" constant="19"/>
-                            <constraint id="1853" firstItem="1847" firstAttribute="centerX" secondItem="443" secondAttribute="centerX"/>
-                            <constraint id="1858" firstItem="1847" firstAttribute="centerY" secondItem="443" secondAttribute="centerY"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Autostop" id="721"/>
@@ -111,10 +107,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="map-pin.png" width="128" height="128"/>
         <image name="pickup_destination_dot.png" width="20" height="20"/>
         <image name="pickup_location_dot.png" width="20" height="20"/>
         <image name="pin_destination.png" width="128" height="128"/>
         <image name="pin_pickup.png" width="128" height="128"/>
+        <image name="pin.png" width="256" height="256"/>
     </resources>
 </document>

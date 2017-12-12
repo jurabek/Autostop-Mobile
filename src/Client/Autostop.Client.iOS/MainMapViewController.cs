@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Autostop.Client.iOS.Extensions;
 using CoreAnimation;
 using CoreGraphics;
 using CoreLocation;
@@ -31,20 +32,14 @@ namespace Autostop.Client.iOS
 			destinationTextField.LeftViewMode = UITextFieldViewMode.Always;
 			destinationTextField.LeftView = new UIImageView(UIImage.FromFile("pickup_destination_dot.png"));
 
-			RoundCorners(pickupLocationTextField, UIRectCorner.TopLeft | UIRectCorner.TopRight, 8);
-			RoundCorners(destinationTextField, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 8);
+			pickupLocationTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 8);
+			destinationTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 8);
+
+			MainMapView.WillMove += MainMapView_WillMove;
 		}
 
-		void RoundCorners(UIView view, UIRectCorner corners, nfloat radius)
+		private void MainMapView_WillMove(object sender, GMSWillMoveEventArgs e)
 		{
-			var path = UIBezierPath.FromRoundedRect(view.Bounds, corners, new CGSize(radius, radius));
-
-			var mask = new CAShapeLayer
-			{
-				Path = path.CGPath
-			};
-
-			view.Layer.Mask = mask;
 		}
 	}
 }

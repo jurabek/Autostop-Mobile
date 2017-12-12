@@ -8,4 +8,14 @@
     <Folder Include="ViewModels\Driver\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.2" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
+    <ProjectReference Include="..\Autostop.Client.Abstraction\Autostop.Client.Abstraction.csproj" />
+  </ItemGroup>
+
 </Project>

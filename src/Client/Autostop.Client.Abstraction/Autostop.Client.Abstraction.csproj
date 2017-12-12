@@ -8,4 +8,8 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
