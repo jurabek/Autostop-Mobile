@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -16,10 +16,6 @@ namespace Autostop.Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIImageView centerPinImage { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField destinationTextField { get; set; }
 
         [Outlet]
@@ -30,13 +26,12 @@ namespace Autostop.Client.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField pickupLocationTextField { get; set; }
 
+        [Action ("UIButton1509_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton1509_TouchUpInside (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
-            if (centerPinImage != null) {
-                centerPinImage.Dispose ();
-                centerPinImage = null;
-            }
-
             if (destinationTextField != null) {
                 destinationTextField.Dispose ();
                 destinationTextField = null;
