@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -35,23 +35,22 @@
                         <viewControllerLayoutGuide type="bottom" id="232"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="235">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <subviews/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1509">
-                                <rect key="frame" x="35" y="607" width="305" height="40"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <rect key="frame" x="35" y="752" width="305" height="40"/>
+                                <color key="backgroundColor" colorSpace="calibratedRGB" red="0.25882352941176473" green="0.83529411764705885" blue="0.31764705882352939" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="SET PICKUP LOCATION">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <constraints>
-                                    <constraint id="1818" firstItem="1509" firstAttribute="width" constant="250" relation="greaterThanOrEqual"/>
                                     <constraint id="1819" firstItem="1509" firstAttribute="height" constant="40" relation="greaterThanOrEqual"/>
                                 </constraints>
                                 <connections/>
@@ -61,33 +60,30 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1876" adjustsFontForContentSizeCategory="YES">
-                                <rect key="frame" x="15" y="71" width="340" height="35"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1876" textAlignment="center">
+                                <rect key="frame" x="15" y="71" width="340" height="40"/>
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16" weight="semibold"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                                 <constraints>
-                                    <constraint id="2570" firstItem="1876" firstAttribute="width" constant="340" relation="greaterThanOrEqual"/>
-                                    <constraint id="2571" firstItem="1876" firstAttribute="height" constant="35"/>
+                                    <constraint id="2571" firstItem="1876" firstAttribute="height" constant="40"/>
                                 </constraints>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1877" adjustsFontForContentSizeCategory="YES">
-                                <rect key="frame" x="15" y="107" width="340" height="35"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1877" textAlignment="center">
+                                <rect key="frame" x="15" y="112" width="340" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16" weight="semibold"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                                 <constraints>
-                                    <constraint id="2575" firstItem="1877" firstAttribute="width" constant="340"/>
-                                    <constraint id="2576" firstItem="1877" firstAttribute="height" constant="35"/>
+                                    <constraint id="2576" firstItem="1877" firstAttribute="height" constant="40"/>
                                 </constraints>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="2320">
-                                <rect key="frame" x="166.5" y="302" width="42" height="63"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin_pickup.png" translatesAutoresizingMaskIntoConstraints="NO" id="2320">
+                                <rect key="frame" x="166.5" y="381" width="40" height="50"/>
                                 <constraints>
-                                    <constraint id="2332" firstItem="2320" firstAttribute="width" constant="42"/>
-                                    <constraint id="2333" firstItem="2320" firstAttribute="height" constant="63"/>
+                                    <constraint id="2841" firstItem="2320" firstAttribute="width" constant="40"/>
+                                    <constraint id="2842" firstItem="2320" firstAttribute="height" constant="50"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -100,15 +96,14 @@
                             <constraint id="1815" firstItem="443" firstAttribute="bottom" secondItem="1509" secondAttribute="bottom" constant="20"/>
                             <constraint id="1816" firstItem="1509" firstAttribute="leading" secondItem="235" secondAttribute="leadingMargin" constant="19"/>
                             <constraint id="1817" firstItem="235" firstAttribute="trailingMargin" secondItem="1509" secondAttribute="trailing" constant="19"/>
-                            <constraint id="2329" firstItem="2320" firstAttribute="centerY" secondItem="443" secondAttribute="centerY"/>
-                            <constraint id="2330" firstItem="2320" firstAttribute="centerX" secondItem="443" secondAttribute="centerX"/>
-                            <constraint id="2331" firstItem="2320" firstAttribute="centerX" secondItem="443" secondAttribute="centerX"/>
                             <constraint id="2567" firstItem="1876" firstAttribute="top" secondItem="443" secondAttribute="top" constant="71"/>
                             <constraint id="2568" firstItem="235" firstAttribute="leadingMargin" secondItem="1876" secondAttribute="leading" constant="1"/>
                             <constraint id="2569" firstItem="235" firstAttribute="trailingMargin" secondItem="1876" secondAttribute="trailing" constant="4"/>
                             <constraint id="2572" firstItem="1877" firstAttribute="top" secondItem="1876" secondAttribute="bottom" constant="1"/>
                             <constraint id="2573" firstItem="235" firstAttribute="leadingMargin" secondItem="1877" secondAttribute="leading" constant="1"/>
                             <constraint id="2574" firstItem="235" firstAttribute="trailingMargin" secondItem="1877" secondAttribute="trailing" constant="4"/>
+                            <constraint id="2839" firstItem="443" firstAttribute="centerX" secondItem="2320" secondAttribute="centerX" constant="1"/>
+                            <constraint id="2840" firstItem="2320" firstAttribute="centerY" secondItem="443" secondAttribute="centerY"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Autostop" id="721"/>
@@ -127,8 +122,8 @@
     <resources>
         <image name="pickup_destination_dot.png" width="20" height="20"/>
         <image name="pickup_location_dot.png" width="20" height="20"/>
-        <image name="pin_destination.png" width="128" height="128"/>
-        <image name="pin_pickup.png" width="128" height="128"/>
+        <image name="pin_destination.png" width="512" height="512"/>
+        <image name="pin_pickup.png" width="512" height="512"/>
         <image name="pin.png" width="256" height="256"/>
     </resources>
 </document>
