@@ -26,6 +26,10 @@ namespace Autostop.Client.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField pickupLocationTextField { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton SetPickupLocationButton { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (destinationTextField != null) {
@@ -41,6 +45,11 @@ namespace Autostop.Client.iOS
             if (pickupLocationTextField != null) {
                 pickupLocationTextField.Dispose ();
                 pickupLocationTextField = null;
+            }
+
+            if (SetPickupLocationButton != null) {
+                SetPickupLocationButton.Dispose ();
+                SetPickupLocationButton = null;
             }
         }
     }

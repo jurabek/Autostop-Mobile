@@ -8,6 +8,7 @@ using Autostop.Client.iOS.Extensions;
 using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
+using JetBrains.Annotations;
 using UIKit;
 
 namespace Autostop.Client.iOS
@@ -18,7 +19,8 @@ namespace Autostop.Client.iOS
 		private readonly List<Binding> _bindings = new List<Binding>();
 		private UIActivityIndicatorView _activatyIndacator;
 
-		public MainViewModel ViewModel { get; set; }
+	    [UsedImplicitly]
+        public MainViewModel ViewModel { get; set; }
 
 		public MainMapViewController(IntPtr handle) : base(handle)
 		{
@@ -29,8 +31,9 @@ namespace Autostop.Client.iOS
 			base.ViewDidLoad();
 
 			ViewModel = _container.Resolve<MainViewModel>();
+		    SetPickupLocationButton.SetCommand(nameof(SetPickupLocationButton.TouchUpInside), ViewModel.SetPickupLocation);
 
-			ViewModel.Changed.Where(p => p.PropertyName == nameof(MainViewModel.HasPickupLocation))
+            ViewModel.Changed.Where(p => p.PropertyName == nameof(MainViewModel.HasPickupLocation))
 				.Select(_ => ViewModel.HasPickupLocation)
 				.Subscribe(hasPickupLocation =>
 				{
@@ -39,13 +42,14 @@ namespace Autostop.Client.iOS
 					else
 						InitPickupLocationView();
 				});
-				
-			var camera = CameraPosition.FromCamera(37.797865, -122.402526, 14);
-			MainMapView.Camera = camera;
 
-			MainMapView.WillMove += MainMapView_WillMove;
-			MainMapView.CameraPositionChanged += MainMapView_CameraPositionChanged;
-			MainMapView.CameraPositionIdle += MainMapView_CameraPositionIdle;
+		    ViewModel.CurrentLocation.Subscribe(l =>
+		        {
+		            var camera = CameraPosition.FromCamera(l.Coordinate.Latitude, l.Coordinate.Longitude, 14);
+		            MainMapView.Camera = camera;
+                });
+			
+		    MainMapView.MyLocationEnabled = true;
 			InitViews();
 		}
 
@@ -97,22 +101,6 @@ namespace Autostop.Client.iOS
 			var size = activityIndicator.Frame.Size;
 			activityIndicator.Frame = new CGRect(0, 0, size.Width + 15, size.Height);
 			return activityIndicator;
-		}
-
-		private void MainMapView_CameraPositionIdle(object sender, GMSCameraEventArgs e)
-		{
-			Console.WriteLine($"Idle: {e.Position.Target}");
-		}
-
-		private void MainMapView_CameraPositionChanged(object sender, GMSCameraEventArgs e)
-		{
-			Console.WriteLine($"Changed: {e.Position.Target}");
-		}
-
-		private void MainMapView_WillMove(object sender, GMSWillMoveEventArgs e)
-		{
-			Console.WriteLine(e.Gesture);
-			pickupLocationTextField.LeftView = _activatyIndacator;
 		}
 	}
 }

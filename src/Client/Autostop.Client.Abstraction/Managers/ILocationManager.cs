@@ -3,7 +3,7 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Abstraction.Managers
 {
-    public interface ILocationManager
+    public interface ILocationManager : IDisposable
     {
 	    void StartUpdatingLocation();
 

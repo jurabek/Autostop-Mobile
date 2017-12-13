@@ -7,7 +7,7 @@ using UIKit;
 
 namespace Autostop.Client.iOS.Extensions
 {
-	public static class UIViewExtenstions
+	public static class UiViewExtenstions
 	{
 		public static void RoundCorners(this UIView view, UIRectCorner corners, nfloat radius)
 		{

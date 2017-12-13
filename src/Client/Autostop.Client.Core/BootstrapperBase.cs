@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using Autostop.Client.Abstraction.Adapters;
+using Autostop.Client.Core.Adapters;
 using Autostop.Client.Core.ViewModels.Passenger;
 
 namespace Autostop.Client.Core
@@ -15,6 +17,7 @@ namespace Autostop.Client.Core
 			var builder = new ContainerBuilder();
 
 		    builder.RegisterType<MainViewModel>().AsSelf();
+	        builder.RegisterType<LocationAdapter>().As<ILocationAdapter>();
 
 			ContainerRegistery(builder);
 

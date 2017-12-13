@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autostop.Client.Android", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostop.Client.Abstraction", "Client\Autostop.Client.Abstraction\Autostop.Client.Abstraction.csproj", "{2DA52AD9-CB09-4357-BE62-4EC2173A82C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autostop.Common.Shared", "Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj", "{998D76C3-259E-4780-825B-C8D8B81CF663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostop.Common.Shared", "Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj", "{998D76C3-259E-4780-825B-C8D8B81CF663}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

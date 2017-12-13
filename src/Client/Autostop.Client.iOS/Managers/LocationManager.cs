@@ -17,26 +17,25 @@ namespace Autostop.Client.iOS.Managers
 		{
 			_localtionManager = new CLLocationManager { PausesLocationUpdatesAutomatically = false };
 
-			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-			{
-				_localtionManager.RequestAlwaysAuthorization();
-			}
-			if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            {
+                _localtionManager.RequestAlwaysAuthorization();
+            }
+            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
 			{
 				_localtionManager.AllowsBackgroundLocationUpdates = true;
 			}
 
-			LocationChanged = Observable
-				.FromEventPattern<EventHandler<CLLocationsUpdatedEventArgs>, CLLocationsUpdatedEventArgs>
-				(e => _localtionManager.LocationsUpdated += e,
-				 e => _localtionManager.LocationsUpdated -= e)
+			LocationChanged = Observable.FromEventPattern<EventHandler<CLLocationsUpdatedEventArgs>, CLLocationsUpdatedEventArgs>
+				(e => _localtionManager.LocationsUpdated += e, e => _localtionManager.LocationsUpdated -= e)
 				.Select(x => x.EventArgs.Locations.LastOrDefault())
 				.Where(location => location != null && location.Coordinate.IsValid())
 				.Select(location => location.Coordinate)
 				.Select(c => locationAdapter.GetLocationFromCoordinate(c.Latitude, c.Longitude));
+            
 		}
 
-		public void StartUpdatingLocation()
+        public void StartUpdatingLocation()
 		{
 			_localtionManager.StartUpdatingLocation();
 		}
@@ -47,5 +46,10 @@ namespace Autostop.Client.iOS.Managers
 		}
 
 		public IObservable<Location> LocationChanged { get; }
+
+	    public void Dispose()
+	    {
+	        _localtionManager?.Dispose();
+	    }
 	}
 }

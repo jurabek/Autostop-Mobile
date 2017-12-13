@@ -116,6 +116,7 @@
                         <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
                         <outlet property="pickupLocationTextField" destination="1876" id="name-outlet-1876"/>
                         <outlet property="destinationTextField" destination="1877" id="name-outlet-1877"/>
+                        <outlet property="SetPickupLocationButton" destination="1509" id="name-outlet-1509"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>
