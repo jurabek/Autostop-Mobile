@@ -1,61 +1,100 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
+using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Abstraction.ViewModels.Passenger;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
+using Conditions;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    public class MainViewModel : BaseViewModel
-    {
-        private readonly ILocationManager _locationManager;
-        private bool _hasPickupLocation;
+	public class MainViewModel : BaseViewModel, IMainViewModel
+	{
+		private readonly ILocationManager _locationManager;
+		private readonly IGeocodingProvider _geocodingProvider;
+		private bool _hasPickupLocation;
+		private bool _isPickupLocationLoading;
 
-        public MainViewModel(ILocationManager locationManager)
-        {
-            _locationManager = locationManager;
-            _locationManager.StartUpdatingLocation();
+		public MainViewModel(
+			ILocationManager locationManager,
+			IGeocodingProvider geocodingProvider)
+		{
+			locationManager.Requires(nameof(locationManager)).IsNotNull();
+			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
 
-            SetPickupLocation = new RelayCommand(() =>
-            {
-                HasPickupLocation = true;
-            });
+			_locationManager = locationManager;
+			_geocodingProvider = geocodingProvider;
 
-            SetDestination = new RelayCommand(() =>
-            {
-            });
+			CurrentLocation = locationManager.LocationChanged;
+			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
+			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
+			RequestToRide = new RelayCommand(RequesToRideAction);
+			
+			CurrentLocation.Subscribe(
+				async location => await CurrentLocationChanged(location));
 
-            RequestToRide = new RelayCommand(() =>
-            {
-            });
+			_locationManager.StartUpdatingLocation();
+		}
 
-            CurrentLocation = _locationManager.LocationChanged;
-        }
+		private void RequesToRideAction()
+		{
+		}
 
-        public bool HasPickupLocation
-        {
-            get => _hasPickupLocation;
-            set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
-        }
+		private void SetDestinationLocationAction()
+		{
+		}
 
-        public IObservable<Location> CurrentLocation { get; }
+		private void SetPickupLocationAction()
+		{
+			HasPickupLocation = true;
+		}
 
-        #region Commands
-        public ICommand SetPickupLocation { get; }
+		private async Task CurrentLocationChanged(Location location)
+		{
+			IsPickupLocationLoading = true;
+			var coordinate = location.Coordinate;
+			var result = await _geocodingProvider.ReverseGeocoding(coordinate.Latitude, coordinate.Latitude);
+			var address = result.Results.FirstOrDefault();
+			PickupLocation.FormattedAddress = address.FormattedAddress;
+			PickupLocation.PlaceId = address.PlaceId;
+			IsPickupLocationLoading = false;
+		}
 
-        public ICommand SetDestination { get; }
+		public bool IsPickupLocationLoading
+		{
+			get => _isPickupLocationLoading;
+			set => RaiseAndSetIfChanged(ref _isPickupLocationLoading, value);
+		}
 
-        public ICommand RequestToRide { get; }
+		public bool HasPickupLocation
+		{
+			get => _hasPickupLocation;
+			set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
+		}
 
-        #endregion
 
-        public override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _locationManager.StopUpdatingLocation();
-            }
-            base.Dispose(disposing);
-        }
-    }
+		public AddressViewModel PickupLocation { get; } = new AddressViewModel();
+
+		public AddressViewModel DestinationLocation { get; } = new AddressViewModel();
+
+		public IObservable<Location> CurrentLocation { get; }
+		
+		public ICommand SetPickupLocation { get; }
+
+		public ICommand SetDestinationLocation { get; }
+
+		public ICommand RequestToRide { get; }
+		
+		public override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			if (disposing)
+			{
+				_locationManager.StopUpdatingLocation();
+			}
+		}
+	}
 }

@@ -18,8 +18,10 @@ namespace Autostop.Client.iOS
 		private readonly IContainer _container = BootstrapperBase.Container;
 		private readonly List<Binding> _bindings = new List<Binding>();
 		private UIActivityIndicatorView _activatyIndacator;
+		private UIImageView _destinationLocationLeftImageView;
+		private UIImageView _pickupLocationLeftImageView;
 
-	    [UsedImplicitly]
+		[UsedImplicitly]
         public MainViewModel ViewModel { get; set; }
 
 		public MainMapViewController(IntPtr handle) : base(handle)
@@ -31,7 +33,12 @@ namespace Autostop.Client.iOS
 			base.ViewDidLoad();
 
 			ViewModel = _container.Resolve<MainViewModel>();
-		    SetPickupLocationButton.SetCommand(nameof(SetPickupLocationButton.TouchUpInside), ViewModel.SetPickupLocation);
+
+			_bindings.Add(this.SetBinding(
+					() => pickupLocationTextField.Text, 
+					() => ViewModel.PickupLocation.FormattedAddress, BindingMode.TwoWay));
+
+			SetPickupLocationButton.SetCommand(nameof(SetPickupLocationButton.TouchUpInside), ViewModel.SetPickupLocation);
 
             ViewModel.Changed.Where(p => p.PropertyName == nameof(MainViewModel.HasPickupLocation))
 				.Select(_ => ViewModel.HasPickupLocation)
@@ -40,12 +47,28 @@ namespace Autostop.Client.iOS
 					if (hasPickupLocation)
 						SetPickupLocation();
 					else
-						InitPickupLocationView();
+						InitLocationTextFields();
+				});
+
+			ViewModel.Changed.Where(p => p.PropertyName == nameof(MainViewModel.IsPickupLocationLoading))
+				.Select(_ => ViewModel.IsPickupLocationLoading)
+				.Subscribe(loading =>
+				{
+					if (loading)
+					{
+						_activatyIndacator.StartAnimating();
+						pickupLocationTextField.LeftView = _activatyIndacator;
+					}
+					else
+					{
+						_activatyIndacator.StopAnimating();
+						pickupLocationTextField.LeftView = _pickupLocationLeftImageView;
+					}
 				});
 
 		    ViewModel.CurrentLocation.Subscribe(l =>
 		        {
-		            var camera = CameraPosition.FromCamera(l.Coordinate.Latitude, l.Coordinate.Longitude, 14);
+		            var camera = CameraPosition.FromCamera(l.Coordinate.Latitude, l.Coordinate.Longitude, 17);
 		            MainMapView.Camera = camera;
                 });
 			
@@ -56,18 +79,24 @@ namespace Autostop.Client.iOS
 		private void InitViews()
 		{
 			_activatyIndacator = GetActivityIndacator();
-			pickupLocationTextField.LeftViewMode = UITextFieldViewMode.Always;
-			destinationTextField.LeftViewMode = UITextFieldViewMode.Always;
+			_pickupLocationLeftImageView = GetPickupLocationLeftImageView();
+			_destinationLocationLeftImageView = GetDestinationLocationLeftImageView();
+			
 
 			SetLeftIconToPickupLocationTextField();
 			SetLeftIconToDestinationTextField();
-			InitPickupLocationView();
+			InitLocationTextFields();
 		}
 
-		private void InitPickupLocationView()
+		private void InitLocationTextFields()
 		{
-			destinationTextField.Hidden = true;
+			pickupLocationTextField.LeftViewMode = UITextFieldViewMode.Always;
 			pickupLocationTextField.RoundCorners(UIRectCorner.AllCorners, 8);
+			pickupLocationTextField.ShouldBeginEditing = f => false;
+
+			destinationTextField.LeftViewMode = UITextFieldViewMode.Always;
+			destinationTextField.Hidden = true;
+			destinationTextField.ShouldBeginEditing = field => false; 
 		}
 
 		private void SetPickupLocation()
@@ -79,20 +108,12 @@ namespace Autostop.Client.iOS
 
 		private void SetLeftIconToPickupLocationTextField()
 		{
-			var icon = new UIImageView(UIImage.FromFile("pickup_location_dot.png"));
-			var size = icon.Image.Size;
-			icon.ContentMode = UIViewContentMode.Center;
-			icon.Frame = new CGRect(0, 0, size.Width + 10, size.Height);
-			pickupLocationTextField.LeftView = icon;
+			pickupLocationTextField.LeftView = _pickupLocationLeftImageView;
 		}
 
 		private void SetLeftIconToDestinationTextField()
 		{
-			var icon = new UIImageView(UIImage.FromFile("pickup_destination_dot.png"));
-			var size = icon.Image.Size;
-			icon.ContentMode = UIViewContentMode.Center;
-			icon.Frame = new CGRect(0, 0, size.Width + 10, size.Height);
-			destinationTextField.LeftView = icon;
+			destinationTextField.LeftView = _destinationLocationLeftImageView;
 		}
 
 		private UIActivityIndicatorView GetActivityIndacator()
@@ -101,6 +122,26 @@ namespace Autostop.Client.iOS
 			var size = activityIndicator.Frame.Size;
 			activityIndicator.Frame = new CGRect(0, 0, size.Width + 15, size.Height);
 			return activityIndicator;
+		}
+
+		private UIImageView GetDestinationLocationLeftImageView()
+		{
+			var icon = new UIImageView(UIImage.FromFile("pickup_destination_dot.png"));
+			var size = icon.Image.Size;
+			icon.ContentMode = UIViewContentMode.Center;
+			icon.Frame = new CGRect(0, 0, size.Width + 10, size.Height);
+
+			return icon;
+		}
+
+		private UIImageView GetPickupLocationLeftImageView()
+		{
+			var icon = new UIImageView(UIImage.FromFile("pickup_location_dot.png"));
+			var size = icon.Image.Size;
+			icon.ContentMode = UIViewContentMode.Center;
+			icon.Frame = new CGRect(0, 0, size.Width + 10, size.Height);
+
+			return icon;
 		}
 	}
 }

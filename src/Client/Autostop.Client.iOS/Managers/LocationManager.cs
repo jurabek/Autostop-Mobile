@@ -21,6 +21,7 @@ namespace Autostop.Client.iOS.Managers
             {
                 _localtionManager.RequestAlwaysAuthorization();
             }
+
             if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
 			{
 				_localtionManager.AllowsBackgroundLocationUpdates = true;
@@ -31,7 +32,8 @@ namespace Autostop.Client.iOS.Managers
 				.Select(x => x.EventArgs.Locations.LastOrDefault())
 				.Where(location => location != null && location.Coordinate.IsValid())
 				.Select(location => location.Coordinate)
-				.Select(c => locationAdapter.GetLocationFromCoordinate(c.Latitude, c.Longitude));
+				.Select(c => locationAdapter.GetLocationFromCoordinate(c.Latitude, c.Longitude))
+				.Do(l => CurrentLocation = l);
             
 		}
 
@@ -47,7 +49,9 @@ namespace Autostop.Client.iOS.Managers
 
 		public IObservable<Location> LocationChanged { get; }
 
-	    public void Dispose()
+		public Location CurrentLocation { get; private set; }
+
+		public void Dispose()
 	    {
 	        _localtionManager?.Dispose();
 	    }

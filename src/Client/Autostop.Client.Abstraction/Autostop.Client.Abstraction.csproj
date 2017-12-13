@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
+    <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj" />
   </ItemGroup>
 
 </Project>

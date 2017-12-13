@@ -1,4 +1,6 @@
-﻿using Foundation;
+﻿using Autostop.Client.Core.Constants;
+using Autostop.Client.Core.Providers;
+using Foundation;
 using Google.Maps;
 using UIKit;
 
@@ -19,7 +21,7 @@ namespace Autostop.Client.iOS
 
 		public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 		{
-			MapServices.ProvideAPIKey("AIzaSyB3A4FLvyZka3sSpT81JXvdOrDFL-z0H5E");
+			MapServices.ProvideAPIKey(GoogleMapsApi.iOSSdkKey);
 			new Bootstrapper().Build();
 
 			// create a new window instance based on the screen size
