@@ -55,11 +55,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private async Task CurrentLocationChanged(Location location)
 		{
 			IsPickupLocationLoading = true;
-			var coordinate = location.Coordinate;
-			var result = await _geocodingProvider.ReverseGeocoding(coordinate.Latitude, coordinate.Latitude);
-			var address = result.Results.FirstOrDefault();
-			PickupLocation.FormattedAddress = address.FormattedAddress;
-			PickupLocation.PlaceId = address.PlaceId;
+		    PickupLocation.FormattedAddress = await _geocodingProvider.ReverseGeocoding(location.Coordinate);
 			IsPickupLocationLoading = false;
 		}
 
@@ -75,12 +71,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
 		}
 
+	    public IAddressViewModel PickupLocation { get; } = new AddressViewModel();
 
-		public AddressViewModel PickupLocation { get; } = new AddressViewModel();
+	    public IAddressViewModel DestinationLocation { get; } = new AddressViewModel();
 
-		public AddressViewModel DestinationLocation { get; } = new AddressViewModel();
-
-		public IObservable<Location> CurrentLocation { get; }
+	    public IObservable<Location> CurrentLocation { get; }
 		
 		public ICommand SetPickupLocation { get; }
 
@@ -88,7 +83,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		public ICommand RequestToRide { get; }
 		
-		public override void Dispose(bool disposing)
+		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 			if (disposing)

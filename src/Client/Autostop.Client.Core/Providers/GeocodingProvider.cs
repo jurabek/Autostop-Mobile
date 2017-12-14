@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Abstraction.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Common.Shared.Models;
 using Conditions;
 using Google.Maps;
 using Google.Maps.Geocoding;
@@ -16,10 +20,14 @@ namespace Autostop.Client.Core.Providers
 			_geocodingService = geocodingService;
 		}
 
-		public Task<GeocodeResponse> ReverseGeocoding(double lat, double lng)
+		public async Task<string> ReverseGeocoding(Coordinate coordinate)
 		{
-			var request = new GeocodingRequest {Address = new LatLng(lat, lng)};
-			return _geocodingService.GetResponseAsync(request);
+			var request = new GeocodingRequest {Address = new LatLng(coordinate.Latitude, coordinate.Longitude)};
+			var response = await _geocodingService.GetResponseAsync(request);
+
+		    var address = response.Results.FirstOrDefault();
+
+		    return address.FormattedAddress;
 		}
-	}
+    }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Google.Maps.Geocoding;
+using Autostop.Client.Abstraction.ViewModels.Passenger;
+using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Abstraction.Providers
 {
 	public interface IGeocodingProvider
 	{
-		Task<GeocodeResponse> ReverseGeocoding(double lat, double lng);
+		Task<string> ReverseGeocoding(Coordinate coordinate);
 	}
 }

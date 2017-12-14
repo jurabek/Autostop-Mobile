@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Autostop.Client.Abstraction.ViewModels.Passenger;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-	public class AddressViewModel : BaseViewModel
-	{
+	public class AddressViewModel : BaseViewModel, IAddressViewModel
+    {
 		private string _formattedAddress;
 
 		public string FormattedAddress
@@ -13,7 +14,5 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			get => _formattedAddress;
 			set => this.RaiseAndSetIfChanged(ref _formattedAddress, value);
 		}
-
-		public string PlaceId { get; set; }
 	}
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    class PickupLocationViewModel
+    public class PickupLocationViewModel : BaseSelectLocationViewModel
     {
     }
 }

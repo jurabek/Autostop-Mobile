@@ -33,7 +33,7 @@ namespace Autostop.Client.Core.ViewModels
 	        GC.SuppressFinalize(this);
         }
 
-	    public virtual void Dispose(bool disposing)
+	    protected virtual void Dispose(bool disposing)
 	    {
 	    }
 	}
