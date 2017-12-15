@@ -24,5 +24,10 @@
 
 			return true;
 		}
+
+		public override string ToString()
+		{
+			return $"Lat: {Latitude} \r\nLong: {Longitude}";
+		}
 	}
 }

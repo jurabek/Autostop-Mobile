@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -7,12 +7,11 @@
 using Foundation;
 using System;
 using System.CodeDom.Compiler;
-using UIKit;
 
-namespace Autostop.Client.iOS
+namespace Autostop.Client.iOS.Controls
 {
-    [Register ("UIDestinationAddressTextField")]
-    partial class UIDestinationAddressTextField
+    [Register ("UIPickupAddressTextField")]
+    partial class UIPickupAddressTextField
     {
         void ReleaseDesignerOutlets ()
         {

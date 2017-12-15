@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
@@ -19,7 +21,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private bool _hasPickupLocation;
 		private bool _isPickupAddressLoading;
 		private bool _isDestinationAddressLoading;
-		private AddressMode _addressMode = AddressMode.Pickup;
+		private AddressMode _addressMode;
 
 		public MainViewModel(
 			ILocationManager locationManager,
@@ -36,8 +38,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
 			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
 			RequestToRide = new RelayCommand(RequesToRideAction);
-
-			CameraLocationObservable.Subscribe(async location => await CameraLocationChanged(location));
 		}
 
 		private void RequesToRideAction()
@@ -53,7 +53,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			HasPickupLocation = true;
 		}
 
-		private async Task CameraLocationChanged(Location location)
+		public async Task CameraLocationChanged(Location location)
 		{
 			if (AddressMode == AddressMode.Pickup)
 			{

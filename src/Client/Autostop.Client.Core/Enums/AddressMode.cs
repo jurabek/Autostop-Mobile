@@ -2,7 +2,8 @@
 {
     public enum AddressMode
     {
-		Pickup,
-		Destination
+		Default = 0,
+		Pickup = 1,
+		Destination = 2
     }
 }

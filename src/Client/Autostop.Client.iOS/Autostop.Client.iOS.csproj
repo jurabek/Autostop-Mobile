@@ -88,6 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controls\BaseAddressTextField.cs" />
     <Compile Include="Extensions\BindingExtenstions.cs" />
     <Compile Include="Extensions\MainMapView\MainMapViewExtensions.cs" />
     <Compile Include="Extensions\UIViewExtenstions.cs" />
@@ -98,6 +99,7 @@
     <BundleResource Include="Resources\pin_destination.png" />
     <BundleResource Include="Resources\pin_pickup.png" />
     <BundleResource Include="Resources\pin.png" />
+    <BundleResource Include="Resources\location.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -107,16 +109,16 @@
     <Content Include="Entitlements.plist" />
     <None Include="packages.config" />
     <InterfaceDefinition Include="Views\Passenger\MainView.storyboard" />
-    <Compile Include="UIPickupAddressTextField.cs" />
-    <Compile Include="UIPickupAddressTextField.designer.cs">
+    <Compile Include="Controls\UIPickupAddressTextField.cs" />
+    <Compile Include="Controls\UIPickupAddressTextField.designer.cs">
       <DependentUpon>UIPickupAddressTextField.cs</DependentUpon>
     </Compile>
-    <Compile Include="UIDestinationAddressTextField.cs" />
-    <Compile Include="UIDestinationAddressTextField.designer.cs">
+    <Compile Include="Controls\UIDestinationAddressTextField.cs" />
+    <Compile Include="Controls\UIDestinationAddressTextField.designer.cs">
       <DependentUpon>UIDestinationAddressTextField.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainViewController.cs" />
-    <Compile Include="MainViewController.designer.cs">
+    <Compile Include="Controllers\MainViewController.cs" />
+    <Compile Include="Controllers\MainViewController.designer.cs">
       <DependentUpon>MainViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>

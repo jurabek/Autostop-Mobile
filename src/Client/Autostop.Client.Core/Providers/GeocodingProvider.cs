@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Providers;
-using Autostop.Client.Abstraction.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Common.Shared.Models;
 using Conditions;
 using Google.Maps;
