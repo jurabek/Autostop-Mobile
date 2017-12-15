@@ -24,11 +24,10 @@ namespace Autostop.Client.iOS
 			MapServices.ProvideAPIKey(GoogleMapsApi.iOSSdkKey);
 			new Bootstrapper().Build();
 
-			// create a new window instance based on the screen size
 			Window = new UIWindow(UIScreen.MainScreen.Bounds);
 			
-			var mainMapViewStoryBoard = UIStoryboard.FromName("MainMapView", NSBundle.MainBundle);
-            var viewController = mainMapViewStoryBoard.InstantiateInitialViewController();
+            var mainViewStoryBoard = UIStoryboard.FromName("MainView", NSBundle.MainBundle);
+            var viewController = mainViewStoryBoard.InstantiateInitialViewController();
             Window.RootViewController = viewController;
 
 			// make the window visible

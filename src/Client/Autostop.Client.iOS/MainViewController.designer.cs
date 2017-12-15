@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -11,8 +11,8 @@ using UIKit;
 
 namespace Autostop.Client.iOS
 {
-    [Register ("MainMapViewController")]
-    partial class MainMapViewController
+    [Register ("MainViewController")]
+    partial class MainViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -20,7 +20,7 @@ namespace Autostop.Client.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITextField destinationAddressTextField { get; set; }
+        Autostop.Client.iOS.UIDestinationAddressTextField destinationAddressTextField { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -28,7 +28,7 @@ namespace Autostop.Client.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITextField pickupAddressTextField { get; set; }
+        Autostop.Client.iOS.UIPickupAddressTextField pickupAddressTextField { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

@@ -17,8 +17,9 @@ using UIKit;
 
 namespace Autostop.Client.iOS
 {
-    public partial class MainMapViewController : UIViewController, IScreenFor<MainViewModel>
+    public partial class MainViewController : UIViewController
     {
+
         private readonly IContainer _container = BootstrapperBase.Container;
         [UsedImplicitly] private List<Binding> _bindings;
         [UsedImplicitly] private List<IDisposable> _subscribers;
@@ -29,7 +30,7 @@ namespace Autostop.Client.iOS
         [UsedImplicitly]
         public MainViewModel ViewModel { get; set; }
 
-        public MainMapViewController(IntPtr handle) : base(handle)
+        public MainViewController (IntPtr handle) : base (handle)
         {
         }
 
@@ -44,14 +45,14 @@ namespace Autostop.Client.iOS
                     () => pickupAddressTextField.Text,
                     () => ViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
 
-				this.SetBinding(
-					() => destinationAddressTextField.Text,
-					() => ViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
+                this.SetBinding(
+                    () => destinationAddressTextField.Text,
+                    () => ViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
 
-				this.SetBinding(
-					() => destinationAddressTextField.Hidden,
-					() => ViewModel.AddressMode)
-					.ConvertTargetToSource(mode => mode == AddressMode.Destination)
+                this.SetBinding(
+                    () => destinationAddressTextField.Hidden,
+                    () => ViewModel.AddressMode)
+                    .ConvertTargetToSource(mode => mode == AddressMode.Destination)
             };
 
             _subscribers = new List<IDisposable>
@@ -87,16 +88,16 @@ namespace Autostop.Client.iOS
                     })
             };
 
-	       ViewModel.CameraLocationObservable = Observable.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
-		        e => gmsMapView.CameraPositionIdle += e,
-		        e => gmsMapView.CameraPositionIdle -= e)
-				.Select(e => e.EventArgs.Position.Target)
-				.Select(c => new Location(c.Latitude, c.Longitude));
+            ViewModel.CameraLocationObservable = Observable.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
+                 e => gmsMapView.CameraPositionIdle += e,
+                 e => gmsMapView.CameraPositionIdle -= e)
+                 .Select(e => e.EventArgs.Position.Target)
+                 .Select(c => new Location(c.Latitude, c.Longitude));
 
 
-			setPickupLocationButton.SetCommand("TouchUpInside", ViewModel.SetPickupLocation);
-	        gmsMapView.MyLocationEnabled = true;
-			InitViews();
+            setPickupLocationButton.SetCommand("TouchUpInside", ViewModel.SetPickupLocation);
+            gmsMapView.MyLocationEnabled = true;
+            InitViews();
         }
 
         private void InitViews()
@@ -113,9 +114,9 @@ namespace Autostop.Client.iOS
 
         private void InitLocationTextFields()
         {
-	        pickupAddressTextField.LeftViewMode = UITextFieldViewMode.Always;
-	        pickupAddressTextField.ShouldBeginEditing = _ => false;
-	        pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 8);
+            pickupAddressTextField.LeftViewMode = UITextFieldViewMode.Always;
+            pickupAddressTextField.ShouldBeginEditing = _ => false;
+            pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 8);
 
             destinationAddressTextField.LeftViewMode = UITextFieldViewMode.Always;
             destinationAddressTextField.ShouldBeginEditing = _ => false;

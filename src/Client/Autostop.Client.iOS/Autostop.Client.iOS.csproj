@@ -106,10 +106,18 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <InterfaceDefinition Include="Views\Passenger\MainMapView.storyboard" />
-    <Compile Include="MainMapViewController.cs" />
-    <Compile Include="MainMapViewController.designer.cs">
-      <DependentUpon>MainMapViewController.cs</DependentUpon>
+    <InterfaceDefinition Include="Views\Passenger\MainView.storyboard" />
+    <Compile Include="UIPickupAddressTextField.cs" />
+    <Compile Include="UIPickupAddressTextField.designer.cs">
+      <DependentUpon>UIPickupAddressTextField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIDestinationAddressTextField.cs" />
+    <Compile Include="UIDestinationAddressTextField.designer.cs">
+      <DependentUpon>UIDestinationAddressTextField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainViewController.cs" />
+    <Compile Include="MainViewController.designer.cs">
+      <DependentUpon>MainViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
