@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
+using Autostop.Client.Core.Enums;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 using Conditions;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
@@ -16,7 +17,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private readonly ILocationManager _locationManager;
 		private readonly IGeocodingProvider _geocodingProvider;
 		private bool _hasPickupLocation;
-		private bool _isPickupLocationLoading;
+		private bool _isPickupAddressLoading;
+		private bool _isDestinationAddressLoading;
+		private AddressMode _addressMode = AddressMode.Pickup;
 
 		public MainViewModel(
 			ILocationManager locationManager,
@@ -27,16 +30,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 			_locationManager = locationManager;
 			_geocodingProvider = geocodingProvider;
+			_locationManager.StartUpdatingLocation();
 
-			CurrentLocation = locationManager.LocationChanged;
+			CurrentLocationObservable = _locationManager.LocationChanged;
 			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
 			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
 			RequestToRide = new RelayCommand(RequesToRideAction);
-			
-			CurrentLocation.Subscribe(
-				async location => await CurrentLocationChanged(location));
 
-			_locationManager.StartUpdatingLocation();
+			CameraLocationObservable.Subscribe(async location => await CameraLocationChanged(location));
 		}
 
 		private void RequesToRideAction()
@@ -52,17 +53,33 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			HasPickupLocation = true;
 		}
 
-		private async Task CurrentLocationChanged(Location location)
+		private async Task CameraLocationChanged(Location location)
 		{
-			IsPickupLocationLoading = true;
-		    PickupLocation.FormattedAddress = await _geocodingProvider.ReverseGeocoding(location.Coordinate);
-			IsPickupLocationLoading = false;
+			if (AddressMode == AddressMode.Pickup)
+			{
+				IsPickupAddressLoading = true;
+				var address = await _geocodingProvider.ReverseGeocoding(location);
+				PickupAddress.FormattedAddress = address.FormattedAddress;
+				PickupAddress.Location = address.Location;
+				IsPickupAddressLoading = false;
+			}
+			else if (AddressMode == AddressMode.Destination)
+			{
+				IsDestinationAddressLoading = true;
+				IsDestinationAddressLoading = false;
+			}
 		}
 
-		public bool IsPickupLocationLoading
+		public bool IsPickupAddressLoading
 		{
-			get => _isPickupLocationLoading;
-			set => RaiseAndSetIfChanged(ref _isPickupLocationLoading, value);
+			get => _isPickupAddressLoading;
+			set => RaiseAndSetIfChanged(ref _isPickupAddressLoading, value);
+		}
+
+		public bool IsDestinationAddressLoading
+		{
+			get => _isDestinationAddressLoading;
+			set => RaiseAndSetIfChanged(ref _isDestinationAddressLoading, value);
 		}
 
 		public bool HasPickupLocation
@@ -71,11 +88,19 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
 		}
 
-	    public IAddressViewModel PickupLocation { get; } = new AddressViewModel();
+		public AddressMode AddressMode
+		{
+			get => _addressMode;
+			set => RaiseAndSetIfChanged(ref _addressMode, value);
+		}
 
-	    public IAddressViewModel DestinationLocation { get; } = new AddressViewModel();
+	    public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
 
-	    public IObservable<Location> CurrentLocation { get; }
+	    public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
+
+	    public IObservable<Location> CurrentLocationObservable { get; }
+
+		public IObservable<Location> CameraLocationObservable { [UsedImplicitly] get; set; }
 		
 		public ICommand SetPickupLocation { get; }
 

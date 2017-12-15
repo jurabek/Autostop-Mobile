@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using Autofac;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Core;
+using Autostop.Client.Core.Enums;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Extensions;
+using Autostop.Common.Shared.Models;
 using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
@@ -33,16 +36,22 @@ namespace Autostop.Client.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            MainMapView.MyLocationEnabled = true;
             ViewModel = _container.Resolve<MainViewModel>();
-            SetPickupLocationButton
-                .SetCommand(nameof(SetPickupLocationButton.TouchUpInside), ViewModel.SetPickupLocation);
 
             _bindings = new List<Binding>
             {
                 this.SetBinding(
-                    () => pickupLocationTextField.Text,
-                    () => ViewModel.PickupLocation.FormattedAddress, BindingMode.TwoWay)
+                    () => pickupAddressTextField.Text,
+                    () => ViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
+
+				this.SetBinding(
+					() => destinationAddressTextField.Text,
+					() => ViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
+
+				this.SetBinding(
+					() => destinationAddressTextField.Hidden,
+					() => ViewModel.AddressMode)
+					.ConvertTargetToSource(mode => mode == AddressMode.Destination)
             };
 
             _subscribers = new List<IDisposable>
@@ -56,13 +65,13 @@ namespace Autostop.Client.iOS
                             InitLocationTextFields();
                     }),
 
-                ViewModel.ObservablePropertyChanged(() => ViewModel.IsPickupLocationLoading)
+                ViewModel.ObservablePropertyChanged(() => ViewModel.IsPickupAddressLoading)
                     .Subscribe(loading =>
                     {
                         if (loading)
                         {
                             _locationLoadActivatyIndacator.StartAnimating();
-                            pickupLocationTextField.LeftView = _locationLoadActivatyIndacator;
+                            pickupAddressTextField.LeftView = _locationLoadActivatyIndacator;
                         }
                         else
                         {
@@ -71,14 +80,23 @@ namespace Autostop.Client.iOS
                         }
                     }),
 
-                ViewModel.CurrentLocation.Subscribe(l =>
+                ViewModel.CurrentLocationObservable.Subscribe(l =>
                     {
-                        var camera = CameraPosition.FromCamera(l.Coordinate.Latitude, l.Coordinate.Longitude, 17);
-                        MainMapView.Camera = camera;
+                        var camera = CameraPosition.FromCamera(l.Latitude, l.Longitude, 17);
+                        gmsMapView.Camera = camera;
                     })
             };
 
-            InitViews();
+	       ViewModel.CameraLocationObservable = Observable.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
+		        e => gmsMapView.CameraPositionIdle += e,
+		        e => gmsMapView.CameraPositionIdle -= e)
+				.Select(e => e.EventArgs.Position.Target)
+				.Select(c => new Location(c.Latitude, c.Longitude));
+
+
+			setPickupLocationButton.SetCommand("TouchUpInside", ViewModel.SetPickupLocation);
+	        gmsMapView.MyLocationEnabled = true;
+			InitViews();
         }
 
         private void InitViews()
@@ -95,30 +113,28 @@ namespace Autostop.Client.iOS
 
         private void InitLocationTextFields()
         {
-            pickupLocationTextField.LeftViewMode = UITextFieldViewMode.Always;
-            pickupLocationTextField.ShouldBeginEditing = _ => false;
-            pickupLocationTextField.RoundCorners(UIRectCorner.AllCorners, 8);
+	        pickupAddressTextField.LeftViewMode = UITextFieldViewMode.Always;
+	        pickupAddressTextField.ShouldBeginEditing = _ => false;
+	        pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 8);
 
-            destinationTextField.LeftViewMode = UITextFieldViewMode.Always;
-            destinationTextField.ShouldBeginEditing = _ => false;
-            destinationTextField.Hidden = true;
+            destinationAddressTextField.LeftViewMode = UITextFieldViewMode.Always;
+            destinationAddressTextField.ShouldBeginEditing = _ => false;
         }
 
         private void SetPickupLocation()
         {
-            destinationTextField.Hidden = false;
-            pickupLocationTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 8);
-            destinationTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 8);
+            pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 8);
+            destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 8);
         }
 
         private void SetLeftIconToPickupLocationTextField()
         {
-            pickupLocationTextField.LeftView = _pickupLocationLeftImageView;
+            pickupAddressTextField.LeftView = _pickupLocationLeftImageView;
         }
 
         private void SetLeftIconToDestinationTextField()
         {
-            destinationTextField.LeftView = _destinationLocationLeftImageView;
+            destinationAddressTextField.LeftView = _destinationLocationLeftImageView;
         }
 
         private UIActivityIndicatorView GetLocationsLoadActivityIndacator()

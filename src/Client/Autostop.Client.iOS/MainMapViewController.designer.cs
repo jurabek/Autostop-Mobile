@@ -16,40 +16,49 @@ namespace Autostop.Client.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITextField destinationTextField { get; set; }
+        UIKit.UIImageView centerPinIcon { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        Google.Maps.MapView MainMapView { get; set; }
+        UIKit.UITextField destinationAddressTextField { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITextField pickupLocationTextField { get; set; }
+        Google.Maps.MapView gmsMapView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton SetPickupLocationButton { get; set; }
+        UIKit.UITextField pickupAddressTextField { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton setPickupLocationButton { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (destinationTextField != null) {
-                destinationTextField.Dispose ();
-                destinationTextField = null;
+            if (centerPinIcon != null) {
+                centerPinIcon.Dispose ();
+                centerPinIcon = null;
             }
 
-            if (MainMapView != null) {
-                MainMapView.Dispose ();
-                MainMapView = null;
+            if (destinationAddressTextField != null) {
+                destinationAddressTextField.Dispose ();
+                destinationAddressTextField = null;
             }
 
-            if (pickupLocationTextField != null) {
-                pickupLocationTextField.Dispose ();
-                pickupLocationTextField = null;
+            if (gmsMapView != null) {
+                gmsMapView.Dispose ();
+                gmsMapView = null;
             }
 
-            if (SetPickupLocationButton != null) {
-                SetPickupLocationButton.Dispose ();
-                SetPickupLocationButton = null;
+            if (pickupAddressTextField != null) {
+                pickupAddressTextField.Dispose ();
+                pickupAddressTextField = null;
+            }
+
+            if (setPickupLocationButton != null) {
+                setPickupLocationButton.Dispose ();
+                setPickupLocationButton = null;
             }
         }
     }

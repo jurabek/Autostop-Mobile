@@ -7,6 +7,7 @@ using Autostop.Common.Shared.Models;
 using Conditions;
 using Google.Maps;
 using Google.Maps.Geocoding;
+using Location = Autostop.Common.Shared.Models.Location;
 
 namespace Autostop.Client.Core.Providers
 {
@@ -20,14 +21,18 @@ namespace Autostop.Client.Core.Providers
 			_geocodingService = geocodingService;
 		}
 
-		public async Task<string> ReverseGeocoding(Coordinate coordinate)
+		public async Task<Address> ReverseGeocoding(Location location)
 		{
-			var request = new GeocodingRequest {Address = new LatLng(coordinate.Latitude, coordinate.Longitude)};
+			var request = new GeocodingRequest {Address = new LatLng(location.Latitude, location.Longitude)};
 			var response = await _geocodingService.GetResponseAsync(request);
 
 		    var address = response.Results.FirstOrDefault();
 
-		    return address.FormattedAddress;
+			return new Address
+			{
+				FormattedAddress = address.FormattedAddress,
+				Location = location
+			};
 		}
     }
 }

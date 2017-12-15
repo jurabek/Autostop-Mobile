@@ -13,7 +13,7 @@ namespace Autostop.Client.iOS.Managers
 	{
 		private readonly CLLocationManager _localtionManager;
 
-		public LocationManager(ILocationAdapter locationAdapter)
+		public LocationManager()
 		{
 			_localtionManager = new CLLocationManager { PausesLocationUpdatesAutomatically = false };
 
@@ -32,7 +32,7 @@ namespace Autostop.Client.iOS.Managers
 				.Select(x => x.EventArgs.Locations.LastOrDefault())
 				.Where(location => location != null && location.Coordinate.IsValid())
 				.Select(location => location.Coordinate)
-				.Select(c => locationAdapter.GetLocationFromCoordinate(c.Latitude, c.Longitude))
+				.Select(c => new Location(c.Latitude, c.Longitude))
 				.Do(l => CurrentLocation = l);
             
 		}

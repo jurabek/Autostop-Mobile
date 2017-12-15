@@ -1,21 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Autostop.Common.Shared.Models
+﻿namespace Autostop.Common.Shared.Models
 {
-    public class Location
-    {
-	    public Location(double latitude, double longitude)
-	    {
-			Coordinate = new Coordinate(latitude, longitude);    
-	    }
+	public struct Location
+	{
+		public readonly double Latitude;
+		public readonly double Longitude;
 
-	    public Location(Coordinate coordinate)
-	    {
-		    Coordinate = coordinate;
-	    }
-		
-	    public virtual Coordinate Coordinate { get; }
+		public Location(double latitude, double longitude)
+		{
+			Latitude = latitude;
+			Longitude = longitude;
+		}
+
+		public bool IsValid()
+		{
+			if (Latitude > 90 || Latitude < -90)
+			{
+				return false;
+			}
+			if (Longitude > 180 || Longitude < -180)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

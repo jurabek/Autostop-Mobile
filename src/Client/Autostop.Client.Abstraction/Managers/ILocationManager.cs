@@ -11,6 +11,6 @@ namespace Autostop.Client.Abstraction.Managers
 
 	    IObservable<Location> LocationChanged { get; }
 
-		Location CurrentLocation { get; }
+	    Location CurrentLocation { get; }
     }
 }

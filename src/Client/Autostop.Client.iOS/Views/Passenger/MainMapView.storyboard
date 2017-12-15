@@ -108,10 +108,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Autostop" id="721"/>
                     <connections>
-                        <outlet property="MainMapView" destination="443" id="name-outlet-443"/>
-                        <outlet property="pickupLocationTextField" destination="1876" id="name-outlet-1876"/>
-                        <outlet property="destinationTextField" destination="1877" id="name-outlet-1877"/>
-                        <outlet property="SetPickupLocationButton" destination="1509" id="name-outlet-1509"/>
+                        <outlet property="gmsMapView" destination="443" id="name-outlet-443"/>
+                        <outlet property="pickupAddressTextField" destination="1876" id="name-outlet-1876"/>
+                        <outlet property="destinationAddressTextField" destination="1877" id="name-outlet-1877"/>
+                        <outlet property="setPickupLocationButton" destination="1509" id="name-outlet-1509"/>
+                        <outlet property="centerPinIcon" destination="2320" id="name-outlet-2320"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>

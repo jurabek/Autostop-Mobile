@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Autostop.Client.Core.Constants
+﻿namespace Autostop.Client.Core.Constants
 {
     public struct GoogleMapsApi
     {

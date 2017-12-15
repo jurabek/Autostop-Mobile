@@ -24,7 +24,7 @@ namespace Autostop.Client.Core.Providers
 
 	    public Task<AutocompleteResponse> GetAutoCompleteResponse(string input, int offset, int radius, string language)
 	    {
-		    var currentLocation = _locationManager.CurrentLocation.Coordinate;
+		    var currentLocation = _locationManager.CurrentLocation;
 
 			var request = new AutocompleteRequest
 		    {
