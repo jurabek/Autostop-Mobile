@@ -49,6 +49,5 @@
   <string>Autostop requires GPS to track your location and cars</string>
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>Autostop requires GPS to track your location and cars</string>
-  
 </dict>
 </plist>

@@ -54,26 +54,14 @@ namespace Google.Maps.Places
 		Electrician,
 		ElectronicsStore,
 		Embassy,
-		[Obsolete("Not supported after February 16, 2017")]
-		Establishment,
-		[Obsolete("Not supported after February 16, 2017")]
-		Finance,
 		FireStation,
 		Florist,
-		[Obsolete("Not supported after February 16, 2017")]
-		Food,
 		FuneralHome,
 		FurnitureStore,
 		GasStation,
-		[Obsolete("Not supported after February 16, 2017")]
-		GeneralContractor,
-		[Obsolete("Not supported after February 16, 2017")]
-		GroceryOrSupermarket,
 		Gym,
 		HairCare,
 		HardwareStore,
-		[Obsolete("Not supported after February 16, 2017")]
-		Health,
 		HinduTemple,
 		HomeGoodsStore,
 		Hospital,
@@ -100,8 +88,6 @@ namespace Google.Maps.Places
 		PetStore,
 		Pharmacy,
 		Physiotherapist,
-		[Obsolete("Not supported after February 16, 2017")]
-		PlaceOfWorship,
 		Plumber,
 		Police,
 		PostOffice,
@@ -237,6 +223,10 @@ namespace Google.Maps.Places
 		/// Indicates a precise street address.
 		/// </summary>
 		StreetAddress,
+
+		Address,
+
+		Establishment,
 
 		/// <summary>
 		/// Indicates the precise street number.

@@ -103,7 +103,12 @@ namespace Google.Maps.Places
 
 		protected string TypesToUri()
 		{
-			return string.Join("|", Types.Select(t => t.ToString().ToLowerInvariant()).ToArray<string>());
+			return string.Join("|", Types.Select(t => ReplaceCamelCaseToUnderscore(t.ToString()).ToLowerInvariant()).ToArray<string>());
+		}
+
+		protected string ReplaceCamelCaseToUnderscore(string input)
+		{
+			return string.Concat(input.Select((x, i) => (i > 0 && char.IsUpper(x)) || char.IsNumber(x) ? "_" + x.ToString() : x.ToString()));
 		}
 	}
 }

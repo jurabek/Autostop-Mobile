@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
+﻿using Autofac;
+using Autostop.Client.Abstraction;
+using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Mobile.UI.Pages.Pessengers;
 
 namespace Autostop.Client.Mobile.UI.IoC
 {
     public static class MobileRegistryExtenstion
     {
-	    public static void MobileRegistry(this ContainerBuilder builder)
-	    {   
+	    public static void ClientTypesRegistry(this ContainerBuilder builder)
+	    {
+		    builder.RegisterType<DestinationSearchPlacePage>().As<IScreenFor<DestinationSearchPlaceViewModel>>();
+		    builder.RegisterType<PickupSearchPlacePage>().As<IScreenFor<PickupSearchPlaceViewModel>>();
 	    }
     }
 }

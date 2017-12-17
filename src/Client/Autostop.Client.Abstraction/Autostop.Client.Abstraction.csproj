@@ -9,4 +9,8 @@
     <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Providers\Driver\" />
+  </ItemGroup>
+
 </Project>

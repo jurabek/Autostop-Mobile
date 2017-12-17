@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Common.Shared.Models;
@@ -21,16 +22,24 @@ namespace Autostop.Client.Core.Providers
 
 		public async Task<Address> ReverseGeocoding(Location location)
 		{
-			var request = new GeocodingRequest {Address = new LatLng(location.Latitude, location.Longitude)};
+			if (!location.IsValid() || Math.Abs(location.Latitude) <= 0 && Math.Abs(location.Longitude) <= 0)
+				return null;
+
+			var request = new GeocodingRequest { Address = new LatLng(location.Latitude, location.Longitude) };
 			var response = await _geocodingService.GetResponseAsync(request);
 
-		    var address = response.Results.FirstOrDefault();
+			if (response.Status != ServiceResponseStatus.Ok)
+				return null;
 
+			var address = response.Results.FirstOrDefault();
+			if (address == null)
+				return null;
+			
 			return new Address
 			{
 				FormattedAddress = address.FormattedAddress,
 				Location = location
 			};
 		}
-    }
+	}
 }

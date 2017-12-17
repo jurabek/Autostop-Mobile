@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
-using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Common.Shared.Models;
 using CoreLocation;
@@ -17,12 +16,12 @@ namespace Autostop.Client.iOS.Managers
 		{
 			_localtionManager = new CLLocationManager { PausesLocationUpdatesAutomatically = false };
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
-                _localtionManager.RequestAlwaysAuthorization();
-            }
+			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+			{
+				_localtionManager.RequestAlwaysAuthorization();
+			}
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+			if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
 			{
 				_localtionManager.AllowsBackgroundLocationUpdates = true;
 			}
@@ -33,11 +32,11 @@ namespace Autostop.Client.iOS.Managers
 				.Where(location => location != null && location.Coordinate.IsValid())
 				.Select(location => location.Coordinate)
 				.Select(c => new Location(c.Latitude, c.Longitude))
-				.Do(l => CurrentLocation = l);
-            
+				.Do(l => Location = l);
+
 		}
 
-        public void StartUpdatingLocation()
+		public void StartUpdatingLocation()
 		{
 			_localtionManager.StartUpdatingLocation();
 		}
@@ -49,11 +48,17 @@ namespace Autostop.Client.iOS.Managers
 
 		public IObservable<Location> LocationChanged { get; }
 
-		public Location CurrentLocation { get; private set; }
+		private Location _location;
+		public Location Location
+		{
+			get => _location;
+			private set => _location = value;
+		}
+
 
 		public void Dispose()
-	    {
-	        _localtionManager?.Dispose();
-	    }
+		{
+			_localtionManager?.Dispose();
+		}
 	}
 }

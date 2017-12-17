@@ -4,7 +4,6 @@ using System.Text;
 using Autofac;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Providers;
-using Autostop.Client.Core.Adapters;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.Providers;
 using Autostop.Client.Core.ViewModels.Passenger;
@@ -24,8 +23,10 @@ namespace Autostop.Client.Core
 		    var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
 
 			builder.RegisterType<MainViewModel>().AsSelf();
-	        builder.RegisterType<LocationAdapter>().As<ILocationAdapter>();
-		    builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
+		    builder.RegisterType<PickupSearchPlaceViewModel>().AsSelf();
+		    builder.RegisterType<DestinationSearchPlaceViewModel>().AsSelf();
+			builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
+		    builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();
 		    builder.RegisterInstance(new PlacesService(googleSigned)).As<IPlacesService>();
 		    builder.RegisterInstance(new GeocodingService(googleSigned)).As<IGeocodingService>();
 

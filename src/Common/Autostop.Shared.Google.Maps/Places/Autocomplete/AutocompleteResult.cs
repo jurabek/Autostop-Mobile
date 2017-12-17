@@ -47,6 +47,9 @@ namespace Google.Maps.Places
 		[JsonProperty("reference")]
 		public string Reference { get; set; }
 
+		[JsonProperty("structured_formatting")]
+		public StructuredFormatting StructuredFormatting { get; set; }
+
 		/// <summary>
 		/// Contains an array of terms identifying each section of the
 		/// returned description (a section of the description is generally
@@ -87,4 +90,25 @@ namespace Google.Maps.Places
 		[JsonProperty("offset")]
 		public int Offset { get; set; }
 	}
+
+	public class StructuredFormatting
+	{
+		[JsonProperty("main_text")]
+		public string MainText { get; set; }
+
+		[JsonProperty("main_text_matched_substrings")]
+		public MainTextSubsMatch[] MainTextMatchedSubstrings { get; set; }
+
+		[JsonProperty("secondary_text")]
+		public string SecondaryText { get; set; }
+	}
+
+	public class MainTextSubsMatch
+	{
+		[JsonProperty("length")]
+		public int Length { get; set; }
+		[JsonProperty("offset")]
+		public int Offset { get; set; }
+	}
+
 }

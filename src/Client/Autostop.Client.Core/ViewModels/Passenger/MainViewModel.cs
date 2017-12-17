@@ -34,7 +34,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			_geocodingProvider = geocodingProvider;
 			_locationManager.StartUpdatingLocation();
 
-			CurrentLocationObservable = _locationManager.LocationChanged;
+			MyLocationObservable = _locationManager.LocationChanged;
 			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
 			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
 			RequestToRide = new RelayCommand(RequesToRideAction);
@@ -51,21 +51,30 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private void SetPickupLocationAction()
 		{
 			HasPickupLocation = true;
+			AddressMode = AddressMode.Destination;
 		}
 
 		public async Task CameraLocationChanged(Location location)
 		{
+
 			if (AddressMode == AddressMode.Pickup)
 			{
-				IsPickupAddressLoading = true;
 				var address = await _geocodingProvider.ReverseGeocoding(location);
-				PickupAddress.FormattedAddress = address.FormattedAddress;
-				PickupAddress.Location = address.Location;
+				if (address != null)
+				{
+					PickupAddress.FormattedAddress = address.FormattedAddress;
+					PickupAddress.Location = address.Location;
+				}
 				IsPickupAddressLoading = false;
 			}
 			else if (AddressMode == AddressMode.Destination)
 			{
-				IsDestinationAddressLoading = true;
+				var address = await _geocodingProvider.ReverseGeocoding(location);
+				if (address != null)
+				{
+					DestinationAddress.FormattedAddress = address.FormattedAddress;
+					DestinationAddress.Location = address.Location;
+				}
 				IsDestinationAddressLoading = false;
 			}
 		}
@@ -98,10 +107,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 	    public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
 
-	    public IObservable<Location> CurrentLocationObservable { get; }
+	    [UsedImplicitly] public IObservable<Location> MyLocationObservable { get; }
 
-		public IObservable<Location> CameraLocationObservable { [UsedImplicitly] get; set; }
-		
+		public IObservable<Location> CameraPosition { [UsedImplicitly] get; set; }
+
+		public IObservable<Location> CameraStartMoving { get; set; }
+
+		public Location MyLocation => _locationManager.Location;
+
 		public ICommand SetPickupLocation { get; }
 
 		public ICommand SetDestinationLocation { get; }
@@ -111,6 +124,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
+
 			if (disposing)
 			{
 				_locationManager.StopUpdatingLocation();

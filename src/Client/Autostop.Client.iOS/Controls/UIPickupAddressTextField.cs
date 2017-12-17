@@ -23,10 +23,10 @@ namespace Autostop.Client.iOS.Controls
 			    switch (value)
 			    {
 				    case AddressMode.Pickup:
-					    this.RoundCorners(UIRectCorner.AllCorners, 8);
+					    this.RoundCorners(UIRectCorner.AllCorners, 5);
 					    break;
 				    case AddressMode.Destination:
-					    this.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 8);
+					    this.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
 					    break;
 			    }
 		    }

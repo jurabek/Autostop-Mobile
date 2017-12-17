@@ -3,6 +3,7 @@ using Autostop.Client.Core.Providers;
 using Foundation;
 using Google.Maps;
 using UIKit;
+using Xamarin.Forms;
 
 namespace Autostop.Client.iOS
 {
@@ -21,6 +22,7 @@ namespace Autostop.Client.iOS
 
 		public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 		{
+			Forms.Init();
 			MapServices.ProvideAPIKey(GoogleMapsApi.iOSSdkKey);
 			new Bootstrapper().Build();
 
@@ -34,7 +36,7 @@ namespace Autostop.Client.iOS
 			Window.MakeKeyAndVisible();
 
 
-			//UINavigationBar.Appearance.BackgroundColor = UIColor.Clear;
+			//UINavigationBar.Appearance.BackgroundColor = UIColor.Blue;
 			//UINavigationBar.Appearance.Translucent = true;
 			//UINavigationBar.Appearance.ShadowImage = new UIImage();
 			//UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);

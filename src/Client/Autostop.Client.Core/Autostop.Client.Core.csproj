@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Adapters\" />
     <Folder Include="Mappers\" />
     <Folder Include="ViewModels\Driver\" />
   </ItemGroup>

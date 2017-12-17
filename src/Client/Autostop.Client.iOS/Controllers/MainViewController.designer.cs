@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -28,6 +28,10 @@ namespace Autostop.Client.iOS.Controllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton myLocationButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         Autostop.Client.iOS.Controls.UIPickupAddressTextField pickupAddressTextField { get; set; }
 
         [Outlet]
@@ -49,6 +53,11 @@ namespace Autostop.Client.iOS.Controllers
             if (gmsMapView != null) {
                 gmsMapView.Dispose ();
                 gmsMapView = null;
+            }
+
+            if (myLocationButton != null) {
+                myLocationButton.Dispose ();
+                myLocationButton = null;
             }
 
             if (pickupAddressTextField != null) {
