@@ -138,6 +138,7 @@
     <Compile Include="Controllers\MainViewController.designer.cs">
       <DependentUpon>MainViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\UIButtonExtenstions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
