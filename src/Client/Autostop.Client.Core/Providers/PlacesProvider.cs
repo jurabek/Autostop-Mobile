@@ -43,17 +43,25 @@ namespace Autostop.Client.Core.Providers
 				};
 
 				var result = await _placesService.GetAutocompleteResponseAsync(request);
-				
+
 				if (result?.Status != ServiceResponseStatus.Ok)
 					return null;
 
-				return new ObservableCollection<IAutoCompleteResultViewModel>(
-					result.Predictions.Select(p => new AutoCompleteResultViewModel()
-					{
-						PrimaryText = p.StructuredFormatting?.MainText,
-						SecondaryText = p.StructuredFormatting?.SecondaryText,
-						PlaceId = p.PlaceId
-					}));
+				var addresses = new ObservableCollection<IAutoCompleteResultViewModel>(result.Predictions.Select(p => new AutoCompleteResultViewModel()
+				{
+					PrimaryText = p.StructuredFormatting?.MainText,
+					SecondaryText = p.StructuredFormatting?.SecondaryText,
+					PlaceId = p.PlaceId,
+					Icon = "marker.png"
+				}));
+				
+				addresses.Add(new AutoCompleteResultViewModel
+				{
+					PrimaryText = "Set location on map",
+					Icon = "set_location.png"
+				});
+
+				return addresses;
 			}
 			catch (Exception e)
 			{

@@ -30,5 +30,8 @@ namespace Autostop.Client.Core.ViewModels
 			get => _placeId;
 			set => _placeId = value;
 		}
+
+		public string Icon { get; set; }
+
 	}
 }

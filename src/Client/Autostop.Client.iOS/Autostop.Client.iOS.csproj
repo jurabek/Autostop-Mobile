@@ -110,6 +110,7 @@
     <BundleResource Include="Resources\back_icon.png" />
     <BundleResource Include="Resources\marker.png" />
     <BundleResource Include="Resources\home.png" />
+    <BundleResource Include="Resources\set_location.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

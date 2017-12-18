@@ -12,8 +12,12 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Source="marker.png" WidthRequest="25" Margin="5" HeightRequest="25" Grid.Column="0"/>
-                        <StackLayout Grid.Column="1" VerticalOptions="Center" Margin="5" Spacing="0">
+                        <Image Source="{Binding Icon}" 
+                               VerticalOptions="Center" 
+                               WidthRequest="20" HeightRequest="20" 
+                               Margin="10, 5"  Grid.Column="0"/>
+                        
+                        <StackLayout Grid.Column="1" VerticalOptions="Center"  Margin="10, 5" Spacing="0">
                             <Label Text="{Binding PrimaryText}" FontSize="12" TextColor="Black"/>
                             <Label Text="{Binding SecondaryText}" FontSize="10" TextColor="DimGray" LineBreakMode="TailTruncation"/>
                         </StackLayout>

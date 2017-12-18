@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Autostop.Client.Core.ViewModels
 {
-	public abstract class BaseViewModel : GalaSoft.MvvmLight.ViewModelBase, IDisposable
+	public abstract class BaseViewModel : GalaSoft.MvvmLight.ObservableObject, IDisposable
 	{
 		protected BaseViewModel()
 		{
