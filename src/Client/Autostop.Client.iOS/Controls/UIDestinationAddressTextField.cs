@@ -25,8 +25,8 @@ namespace Autostop.Client.iOS.Controls
 						Hidden = true;
 						break;
 					case AddressMode.Destination:
-						this.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
 						Hidden = false;
+						this.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
 						break;
 				}
 			}

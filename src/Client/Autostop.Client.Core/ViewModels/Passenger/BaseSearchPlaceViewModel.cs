@@ -38,7 +38,24 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 						}
 						else
 						{
-							SearchResults = null;
+							SearchResults = new ObservableCollection<IAutoCompleteResultViewModel>
+							{
+								new AutoCompleteResultViewModel
+								{
+									PrimaryText = "Home",
+									Icon = "home.png"
+								},
+								new AutoCompleteResultViewModel
+								{
+									PrimaryText = "Work",
+									Icon = "work.png"
+								},
+								new AutoCompleteResultViewModel
+								{
+									PrimaryText = "Set location on map",
+									Icon = "set_location.png"
+								}
+							};
 						}
 					}
 					catch (Exception)

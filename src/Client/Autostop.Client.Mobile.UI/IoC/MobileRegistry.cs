@@ -1,7 +1,11 @@
 ﻿using Autofac;
 using Autostop.Client.Abstraction;
+using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.Mobile.UI.Pages.Pessengers;
+using Autostop.Client.Mobile.UI.Providers;
+using Plugin.Settings;
+using Plugin.Settings.Abstractions;
 
 namespace Autostop.Client.Mobile.UI.IoC
 {
@@ -11,6 +15,8 @@ namespace Autostop.Client.Mobile.UI.IoC
 	    {
 		    builder.RegisterType<DestinationSearchPlacePage>().As<IScreenFor<DestinationSearchPlaceViewModel>>();
 		    builder.RegisterType<PickupSearchPlacePage>().As<IScreenFor<PickupSearchPlaceViewModel>>();
-	    }
-    }
+		    builder.RegisterType<SettingsProvider>().As<ISettingsProvider>();
+			builder.RegisterInstance(CrossSettings.Current).As<ISettings>().SingleInstance();
+		}
+	}
 }

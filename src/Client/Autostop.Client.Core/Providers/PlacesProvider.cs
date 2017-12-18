@@ -54,12 +54,6 @@ namespace Autostop.Client.Core.Providers
 					PlaceId = p.PlaceId,
 					Icon = "marker.png"
 				}));
-				
-				addresses.Add(new AutoCompleteResultViewModel
-				{
-					PrimaryText = "Set location on map",
-					Icon = "set_location.png"
-				});
 
 				return addresses;
 			}

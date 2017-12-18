@@ -78,11 +78,6 @@
                                 </constraints>
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="1" alpha="1"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                        <real key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin_pickup.png" translatesAutoresizingMaskIntoConstraints="NO" id="2320">
                                 <rect key="frame" x="167.5" y="323.5" width="40" height="50"/>
@@ -156,5 +151,8 @@
         <image name="location.png" width="256" height="256"/>
         <image name="back_icon.png" width="100" height="100"/>
         <image name="marker.png" width="60" height="60"/>
+        <image name="home.png" width="60" height="60"/>
+        <image name="set_location.png" width="60" height="60"/>
+        <image name="work.png" width="60" height="60"/>
     </resources>
 </document>

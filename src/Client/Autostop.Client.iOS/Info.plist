@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Autostop.Client.iOS</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.Autostop.Client.iOS</string>
+	<string>com.jurabek.MyCab.iOS</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
