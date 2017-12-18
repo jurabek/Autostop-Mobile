@@ -54,8 +54,7 @@ namespace Autostop.Client.iOS.Managers
 			get => _location;
 			private set => _location = value;
 		}
-
-
+        
 		public void Dispose()
 		{
 			_localtionManager?.Dispose();

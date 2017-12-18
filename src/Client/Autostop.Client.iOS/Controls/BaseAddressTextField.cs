@@ -16,6 +16,7 @@ namespace Autostop.Client.iOS.Controls
 			_loadingActivatyIndacator = GetLocationsLoadActivityIndacator();
 			_leftImageView = GetLocationsTextFieldLeftImageView();
 			LeftViewMode = UITextFieldViewMode.Always;
+		    LeftView = _leftImageView;
 			ShouldBeginEditing = _ => false;
 		}
 

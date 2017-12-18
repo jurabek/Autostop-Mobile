@@ -111,7 +111,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		public IObservable<Location> CameraPosition { [UsedImplicitly] get; set; }
 
-		public IObservable<Location> CameraStartMoving { get; set; }
+		public IObservable<bool> CameraStartMoving { get; set; }
 
 		public Location MyLocation => _locationManager.Location;
 

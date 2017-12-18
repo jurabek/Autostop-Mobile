@@ -109,6 +109,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <BundleResource Include="Resources\back_icon.png" />
     <BundleResource Include="Resources\marker.png" />
+    <BundleResource Include="Resources\home.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

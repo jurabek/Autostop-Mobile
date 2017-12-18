@@ -9,12 +9,13 @@ namespace Autostop.Client.iOS.Controls
 {
 	public sealed class SearchPlaceTextField : UITextField
 	{
-		public BaseSearchPlaceViewModel ViewModel { get; }
 		private readonly Action _backButtonAction;
-		private bool _isLoading;
-		private UIActivityIndicatorView _loadingActivatyIndacator;
+	    private readonly UIActivityIndicatorView _loadingActivatyIndacator;
+        private bool _isLoading;
 
-		public SearchPlaceTextField(CGRect cgRect, BaseSearchPlaceViewModel viewModel, Action backButtonAction) : base(cgRect)
+        public BaseSearchPlaceViewModel ViewModel { get; }
+        
+        public SearchPlaceTextField(CGRect cgRect, BaseSearchPlaceViewModel viewModel, Action backButtonAction) : base(cgRect)
 		{
 			ViewModel = viewModel;
 			_backButtonAction = backButtonAction;

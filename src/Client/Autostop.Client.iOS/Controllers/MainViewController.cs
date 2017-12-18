@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
 using Autofac;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Services;
@@ -8,7 +7,7 @@ using Autostop.Client.Core;
 using Autostop.Client.Core.Enums;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Controls;
-using Autostop.Common.Shared.Models;
+using Autostop.Client.iOS.Extensions.MainView;
 using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
@@ -23,11 +22,12 @@ namespace Autostop.Client.iOS.Controllers
 		[NotNull] private readonly INavigationService _navigationService;
 
 		private List<Binding> _bindings;
-		private IDisposable _cameraPositionSubscriber;
+	    private bool _cameraUpdated;
+        private IDisposable _cameraPositionSubscriber;
 		private IDisposable _myLocationSubscriber;
-		private bool _cameraUpdated;
+	    private IDisposable _camerStartMovingSubscriber;
 
-		public MainViewModel ViewModel { get; set; }
+	    public MainViewModel ViewModel { get; set; }
 
 		public MainViewController(IntPtr handle) : base(handle)
 		{
@@ -40,21 +40,9 @@ namespace Autostop.Client.iOS.Controllers
 			base.ViewDidLoad();
 			gmsMapView.MyLocationEnabled = true;
 			myLocationButton.TouchUpInside += MyLocationButton_TouchUpInside;
-
-			ViewModel.CameraPosition = Observable
-				.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
-					e => gmsMapView.CameraPositionIdle += e,
-					e => gmsMapView.CameraPositionIdle -= e)
-				.Select(e => e.EventArgs.Position.Target)
-				.Select(c => new Location(c.Latitude, c.Longitude));
-
-			gmsMapView.WillMove += (sender, args) =>
-			{
-				if (ViewModel.AddressMode == AddressMode.Pickup)
-					ViewModel.IsPickupAddressLoading = true;
-				else if (ViewModel.AddressMode == AddressMode.Destination)
-					ViewModel.IsDestinationAddressLoading = true;
-			};
+		    pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
+		    destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
+            gmsMapView.GmsMapViewEventsToMainViewModelObservables(ViewModel);
 
 			_bindings = new List<Binding>
 			{
@@ -82,34 +70,54 @@ namespace Autostop.Client.iOS.Controllers
 					() => destinationAddressTextField.Loading,
 					() => ViewModel.IsDestinationAddressLoading, BindingMode.TwoWay)
 			};
+            
+			_myLocationSubscriber = ViewModel
+                .MyLocationObservable
+                .Subscribe(async location =>
+			    {
+				    if (_cameraUpdated)
+					    return;
 
-			// Initializing MyLocation to camera
-			_myLocationSubscriber = ViewModel.MyLocationObservable.Subscribe(async location =>
-			{
-				if (_cameraUpdated)
-					return;
+				    SetCameraToMyLocation();
+				    _cameraUpdated = true;
+				    await ViewModel.CameraLocationChanged(location);
+			    });
 
-				SetCameraToMyLocation();
-				_cameraUpdated = true;
-				await ViewModel.CameraLocationChanged(location);
-			});
+		    _camerStartMovingSubscriber = ViewModel
+                .CameraStartMoving
+                .Subscribe(moving =>
+		        {
+		            if (ViewModel.AddressMode == AddressMode.Pickup)
+		                ViewModel.IsPickupAddressLoading = true;
+		            else if (ViewModel.AddressMode == AddressMode.Destination)
+		                ViewModel.IsDestinationAddressLoading = true;
+                });
 
-			_cameraPositionSubscriber = ViewModel.CameraPosition.Subscribe(async location => await ViewModel.CameraLocationChanged(location));
+			_cameraPositionSubscriber = ViewModel
+                .CameraPosition
+                .Subscribe(async location =>
+			    {
+                    await ViewModel.CameraLocationChanged(location);
+			    });
 
 			ViewModel.AddressMode = AddressMode.Pickup;
 			setPickupLocationButton.SetCommand("TouchUpInside", ViewModel.SetPickupLocation);
-
-			pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
-			destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditin;
 		}
 
-		private bool DestinationAddressShouldBeginEditin(UITextField textField)
+	    private void SetCameraToMyLocation()
+	    {
+	        var location = ViewModel.MyLocation;
+	        var camera = CameraPosition.FromCamera(location.Latitude, location.Longitude, 17);
+	        gmsMapView.Camera = camera;
+	    }
+
+        private bool DestinationAddressShouldBeginEditing(UITextField textField)
 		{
 			_navigationService.NavigateTo<DestinationSearchPlaceViewModel>((v, vm) =>
 			{
 				if (v is UIViewController searchPlaces)
 				{
-					var searchTextField = GetSearchText(vm, searchPlaces);
+					var searchTextField = this.GetSearchText(vm, searchPlaces);
 					searchTextField.Placeholder = "Search destination location";
 				}
 			});
@@ -123,7 +131,7 @@ namespace Autostop.Client.iOS.Controllers
 			{
 				if (v is UIViewController searchPlaces)
 				{
-					var searchTextField = GetSearchText(vm, searchPlaces);
+					var searchTextField = this.GetSearchText(vm, searchPlaces);
 					searchTextField.Placeholder = "Search pickup location";
 					vm.SearchText = ViewModel.PickupAddress.FormattedAddress;
 				}
@@ -131,30 +139,12 @@ namespace Autostop.Client.iOS.Controllers
 
 			return false;
 		}
-
-		private SearchPlaceTextField GetSearchText(BaseSearchPlaceViewModel vm, UIViewController searchPlaces)
-		{
-			searchPlaces.EdgesForExtendedLayout = UIRectEdge.None;
-			searchPlaces.NavigationItem.HidesBackButton = true;
-			var frame = new CGRect(0, 0, NavigationController.NavigationBar.Frame.Size.Width - 20, 30);
-			var searchTextField = new SearchPlaceTextField(frame, vm, () => _navigationService.GoBack());
-			searchPlaces.NavigationItem.TitleView = searchTextField;
-			searchTextField.BecomeFirstResponder();
-			return searchTextField;
-		}
-
+        
 		private void MyLocationButton_TouchUpInside(object sender, EventArgs e)
 		{
 			SetCameraToMyLocation();
 		}
-
-		private void SetCameraToMyLocation()
-		{
-			var location = ViewModel.MyLocation;
-			var camera = CameraPosition.FromCamera(location.Latitude, location.Longitude, 17);
-			gmsMapView.Camera = camera;
-		}
-
+        
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
@@ -164,6 +154,7 @@ namespace Autostop.Client.iOS.Controllers
 				myLocationButton.TouchUpInside -= MyLocationButton_TouchUpInside;
 				_cameraPositionSubscriber.Dispose();
 				_myLocationSubscriber.Dispose();
+                _camerStartMovingSubscriber.Dispose();
 			}
 		}
 	}
