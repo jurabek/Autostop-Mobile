@@ -6,9 +6,8 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core;
 using Autostop.Client.Core.Enums;
 using Autostop.Client.Core.ViewModels.Passenger;
-using Autostop.Client.iOS.Controls;
+using Autostop.Client.iOS.Extensions;
 using Autostop.Client.iOS.Extensions.MainView;
-using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
 using JetBrains.Annotations;
@@ -40,6 +39,7 @@ namespace Autostop.Client.iOS.Controllers
 			base.ViewDidLoad();
 			gmsMapView.MyLocationEnabled = true;
 			myLocationButton.ImageEdgeInsets = new UIEdgeInsets(10, 10, 10, 10);
+			myLocationButton.ToCircleButton();
 			myLocationButton.TouchUpInside += MyLocationButton_TouchUpInside;
 		    pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
 		    destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
