@@ -38,8 +38,19 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3379" translatesAutoresizingMaskIntoConstraints="NO" buttonType="roundedRect" alpha="0.8" fixedFrame="YES">
+                                        <rect key="frame" x="314" y="492" width="45" height="45"/>
+                                        <color key="tintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                        <state key="normal" image="location.png">
+                                            <color key="titleColor" colorSpace="calibratedRGB" red="0" green="0.52549019607843139" blue="1" alpha="1"/>
+                                        </state>
+                                        <connections/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1509">
                                 <rect key="frame" x="35" y="607" width="305" height="35"/>
@@ -86,23 +97,6 @@
                                     <constraint id="2842" firstItem="2320" firstAttribute="height" constant="50"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3379" translatesAutoresizingMaskIntoConstraints="NO" buttonType="roundedRect" alpha="0.8">
-                                <rect key="frame" x="326" y="459" width="25" height="25"/>
-                                <color key="tintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <state key="normal" image="location.png">
-                                    <color key="titleColor" colorSpace="calibratedRGB" red="0" green="0.52549019607843139" blue="1" alpha="1"/>
-                                </state>
-                                <connections/>
-                                <constraints>
-                                    <constraint id="3383" firstItem="3379" firstAttribute="width" constant="25"/>
-                                    <constraint id="3384" firstItem="3379" firstAttribute="height" constant="25"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -121,9 +115,6 @@
                             <constraint id="2574" firstItem="235" firstAttribute="trailingMargin" secondItem="1877" secondAttribute="trailing" constant="-6"/>
                             <constraint id="2839" firstItem="443" firstAttribute="centerX" secondItem="2320" secondAttribute="centerX"/>
                             <constraint id="2840" firstItem="2320" firstAttribute="centerY" secondItem="443" secondAttribute="centerY" constant="15"/>
-                            <constraint id="3380" firstItem="235" firstAttribute="trailingMargin" secondItem="3379" secondAttribute="trailing" constant="8"/>
-                            <constraint id="3381" firstItem="443" firstAttribute="bottom" secondItem="3379" secondAttribute="bottom" constant="183"/>
-                            <constraint id="3382" firstItem="235" firstAttribute="trailingMargin" secondItem="3379" secondAttribute="trailing" constant="8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6865"/>
                     </view>

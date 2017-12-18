@@ -39,6 +39,7 @@ namespace Autostop.Client.iOS.Controllers
 		{
 			base.ViewDidLoad();
 			gmsMapView.MyLocationEnabled = true;
+			myLocationButton.ImageEdgeInsets = new UIEdgeInsets(10, 10, 10, 10);
 			myLocationButton.TouchUpInside += MyLocationButton_TouchUpInside;
 		    pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
 		    destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;

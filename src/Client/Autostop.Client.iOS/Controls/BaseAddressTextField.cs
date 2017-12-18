@@ -8,7 +8,7 @@ namespace Autostop.Client.iOS.Controls
 	public abstract class BaseAddressTextField : UITextField
 	{
 		private readonly UIActivityIndicatorView _loadingActivatyIndacator;
-		private readonly UIImageView _leftImageView;
+		private readonly UIView _leftImageView;
 
 
 		protected BaseAddressTextField(IntPtr handle) : base(handle)
@@ -58,13 +58,18 @@ namespace Autostop.Client.iOS.Controls
 			return activityIndicator;
 		}
 
-		private UIImageView GetLocationsTextFieldLeftImageView()
+		private UIView GetLocationsTextFieldLeftImageView()
 		{
-			var icon = new UIImageView(UIImage.FromFile(LeftImageSource));
-			var size = icon.Image.Size;
-			icon.ContentMode = UIViewContentMode.Center;
-			icon.Frame = new CGRect(0, 0, size.Width + 10, size.Height);
-			return icon;
+			var padding = 10;
+			var size = 15;
+			var icon = UIImage.FromFile(LeftImageSource);
+			var outerView = new UIView(new CGRect(0, 0, size + padding, size));
+			var iconView = new UIImageView(new CGRect(padding, 0, size, size))
+			{
+				Image = icon
+			};
+			outerView.AddSubview(iconView);
+			return outerView;
 		}
 
 		protected abstract string LeftImageSource { get; }
