@@ -10,6 +10,8 @@ using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Extensions;
 using Autostop.Client.iOS.Extensions.MainView;
 using Autostop.Common.Shared.Models;
+using CoreGraphics;
+using CoreLocation;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
 using JetBrains.Annotations;
@@ -92,26 +94,33 @@ namespace Autostop.Client.iOS.Controllers
 			this.BindCommand(setPickupLocationButton, ViewModel.SetPickupLocation);
 			this.BindCommand(myLocationButton, ViewModel.GoToMyLocation);
 
+			var marker = new Marker();
+			marker.Position = new CLLocationCoordinate2D(38.578545, 68.741587);
+			marker.Icon = UIImage.FromFile("car.png");
+			marker.Map = gmsMapView;
+			gmsMapView.Projection.VisibleRegion
 			await ViewModel.Load();
 		}
 
 		private void ShowNavigationBar(EventPattern<GMSCameraEventArgs> eventPattern)
 		{
+			//NavigationController.NavigationBarHidden = false;
+			myLocationButton.Hidden = false;
 			UIView.Animate(0.3, () =>
 			{
-				NavigationController.NavigationBarHidden = false;
-				myLocationButton.Hidden = false;
-				setPickupLocationButton.Hidden = false;
+				setPickupLocationButton.Transform = CGAffineTransform.MakeIdentity();
+				setPickupLocationButton.Alpha = 1;
 			});
 		}
 
 		private void HideNavigationBar(EventPattern<GMSWillMoveEventArgs> eventPattern)
 		{
+			//NavigationController.NavigationBarHidden = true;
+			myLocationButton.Hidden = true;
 			UIView.Animate(0.3, () =>
 			{
-				NavigationController.NavigationBarHidden = true;
-				myLocationButton.Hidden = true;
-				setPickupLocationButton.Hidden = true;
+				setPickupLocationButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
+				setPickupLocationButton.Alpha = 0;
 			});
 		}
 

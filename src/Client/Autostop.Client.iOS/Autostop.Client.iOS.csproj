@@ -117,6 +117,7 @@
     <BundleResource Include="Resources\home.png" />
     <BundleResource Include="Resources\set_location.png" />
     <BundleResource Include="Resources\work.png" />
+    <BundleResource Include="Resources\car.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

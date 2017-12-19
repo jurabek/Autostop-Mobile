@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="225" useSafeAreas="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
@@ -49,31 +49,31 @@
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <constraints>
-                                    <constraint id="2571" firstItem="1876" firstAttribute="height" constant="40"/>
-                                </constraints>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="1" alpha="1"/>
+                                <constraints>
+                                    <constraint id="10639" firstAttribute="width" secondItem="1876" secondAttribute="height" multiplier="71:8"/>
+                                </constraints>
                             </textField>
                             <textField contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1877" textAlignment="center" customClass="UIDestinationAddressTextField" opaque="NO">
                                 <rect key="frame" x="10" y="113" width="355" height="40"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <constraints>
-                                    <constraint id="2576" firstItem="1877" firstAttribute="height" constant="40"/>
-                                </constraints>
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="1" alpha="1"/>
+                                <constraints>
+                                    <constraint id="10638" firstAttribute="width" secondItem="1877" secondAttribute="height" multiplier="71:8"/>
+                                </constraints>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin_pickup.png" translatesAutoresizingMaskIntoConstraints="NO" id="2320">
-                                <rect key="frame" x="167.5" y="323.5" width="40" height="50"/>
+                                <rect key="frame" x="164.5" y="314" width="46" height="60"/>
                                 <constraints>
-                                    <constraint id="2841" firstItem="2320" firstAttribute="width" constant="40"/>
-                                    <constraint id="2842" firstItem="2320" firstAttribute="height" constant="50"/>
+                                    <constraint id="9587" firstItem="2320" firstAttribute="height" constant="60"/>
+                                    <constraint id="9588" firstItem="2320" firstAttribute="width" constant="46"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7124" translatesAutoresizingMaskIntoConstraints="NO" buttonType="roundedRect">
                                 <rect key="frame" x="314" y="492" width="40" height="40"/>
-                                <color key="tintColor" colorSpace="calibratedWhite" white="0" alpha="1"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="backgroundColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                                 <state key="normal" image="location.png">
                                     <color key="titleColor" colorSpace="calibratedRGB" red="0" green="0.52549019607843139" blue="1" alpha="1"/>
@@ -84,10 +84,11 @@
                                     <constraint id="7137" firstItem="7124" firstAttribute="height" constant="40"/>
                                 </constraints>
                             </button>
-                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7694" opaque="NO" hidden="YES">
-                                <rect key="frame" x="35" y="316.5" width="305" height="40"/>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7694" opaque="NO">
+                                <rect key="frame" x="35" y="307" width="305" height="40"/>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="0.25882352941176473" green="0.83529411764705885" blue="0.31764705882352939" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="tintColor" colorSpace="calibratedRGB" red="0" green="0.52549019607843139" blue="1" alpha="1"/>
                                 <state key="normal" title="SET PICKUP LOCATION">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -98,8 +99,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <constraints>
-                                    <constraint id="7723" firstItem="7694" firstAttribute="width" constant="305"/>
-                                    <constraint id="7724" firstItem="7694" firstAttribute="height" constant="40"/>
+                                    <constraint id="11328" firstItem="7694" firstAttribute="height" constant="40"/>
+                                    <constraint id="11329" firstItem="7694" firstAttribute="width" constant="305"/>
                                 </constraints>
                             </button>
                         </subviews>
@@ -114,13 +115,14 @@
                             <constraint id="2572" firstItem="1877" firstAttribute="top" secondItem="1876" secondAttribute="bottom" constant="2"/>
                             <constraint id="2573" firstItem="235" firstAttribute="leadingMargin" secondItem="1877" secondAttribute="leading" constant="6"/>
                             <constraint id="2574" firstItem="235" firstAttribute="trailingMargin" secondItem="1877" secondAttribute="trailing" constant="-6"/>
-                            <constraint id="2839" firstItem="443" firstAttribute="centerX" secondItem="2320" secondAttribute="centerX"/>
-                            <constraint id="2840" firstItem="2320" firstAttribute="centerY" secondItem="443" secondAttribute="centerY" constant="15"/>
                             <constraint id="7134" firstItem="6865" firstAttribute="bottom" secondItem="7124" secondAttribute="centerY" constant="155"/>
                             <constraint id="7135" firstItem="7124" firstAttribute="trailing" secondItem="235" secondAttribute="trailingMargin" constant="-5"/>
                             <constraint id="7427" firstItem="1876" firstAttribute="top" secondItem="6865" secondAttribute="top" constant="7"/>
-                            <constraint id="7721" firstItem="7694" firstAttribute="centerX" secondItem="6865" secondAttribute="centerX"/>
-                            <constraint id="7722" firstItem="6865" firstAttribute="centerY" secondItem="7694" secondAttribute="centerY" constant="29"/>
+                            <constraint id="9584" firstItem="6865" firstAttribute="centerY" secondItem="443" secondAttribute="centerY" constant="32"/>
+                            <constraint id="9585" firstItem="2320" firstAttribute="centerX" secondItem="6865" secondAttribute="centerX"/>
+                            <constraint id="9586" firstItem="6865" firstAttribute="centerY" secondItem="2320" secondAttribute="centerY" constant="32" multiplier="0.97"/>
+                            <constraint id="11325" firstItem="7694" firstAttribute="centerX" secondItem="6865" secondAttribute="centerX"/>
+                            <constraint id="11327" firstItem="6865" firstAttribute="centerY" secondItem="7694" secondAttribute="centerY" constant="32" multiplier="1.02"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6865"/>
                     </view>
@@ -145,11 +147,12 @@
         <image name="pin_destination.png" width="512" height="512"/>
         <image name="pin_pickup.png" width="512" height="512"/>
         <image name="pin.png" width="256" height="256"/>
-        <image name="location.png" width="128" height="128"/>
+        <image name="location.png" width="28" height="28"/>
         <image name="back_icon.png" width="100" height="100"/>
         <image name="marker.png" width="60" height="60"/>
         <image name="home.png" width="60" height="60"/>
         <image name="set_location.png" width="60" height="60"/>
         <image name="work.png" width="60" height="60"/>
+        <image name="car.png" width="58" height="117"/>
     </resources>
 </document>
