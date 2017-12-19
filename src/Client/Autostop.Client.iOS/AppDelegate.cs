@@ -36,10 +36,10 @@ namespace Autostop.Client.iOS
 			Window.MakeKeyAndVisible();
 
 
-			//UINavigationBar.Appearance.BackgroundColor = UIColor.Blue;
-			//UINavigationBar.Appearance.Translucent = true;
-			//UINavigationBar.Appearance.ShadowImage = new UIImage();
-			//UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
+			UINavigationBar.Appearance.BackgroundColor = UIColor.White;
+			UINavigationBar.Appearance.Translucent = false;
+			UINavigationBar.Appearance.ShadowImage = new UIImage();
+			UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
 
 			return true;
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Autostop.Client.Core.ViewModels
 {
@@ -24,7 +25,7 @@ namespace Autostop.Client.Core.ViewModels
 			oldValue = newValue;
 			RaisePropertyChanged(propertyName ?? string.Empty);
 		}
-
+		
 		public IObservable<ObservablePropertyChangedEventArgs<BaseViewModel>> Changed { get; }
 
 	    public void Dispose()
@@ -36,6 +37,11 @@ namespace Autostop.Client.Core.ViewModels
 	    protected virtual void Dispose(bool disposing)
 	    {
 	    }
+
+		public virtual Task Load()
+		{
+			return Task.CompletedTask;
+		}
 	}
 
 	public class ObservablePropertyChangedEventArgs<TSender>

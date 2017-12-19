@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="Adapters\" />
     <Folder Include="Mappers\" />
+    <Folder Include="Repositories\" />
     <Folder Include="ViewModels\Driver\" />
   </ItemGroup>
 

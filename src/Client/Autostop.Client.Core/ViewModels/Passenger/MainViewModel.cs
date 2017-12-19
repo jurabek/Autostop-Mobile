@@ -18,10 +18,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 	{
 		private readonly ILocationManager _locationManager;
 		private readonly IGeocodingProvider _geocodingProvider;
-		private bool _hasPickupLocation;
 		private bool _isPickupAddressLoading;
 		private bool _isDestinationAddressLoading;
 		private AddressMode _addressMode;
+		private Location _myLocation;
+		private bool _cameraUpdated;
+		private IDisposable _cameraPositionSubscriber;
+		private IDisposable _myLocationSubscriber;
+		private IDisposable _camerStartMovingSubscriber;
 
 		public MainViewModel(
 			ILocationManager locationManager,
@@ -38,6 +42,40 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
 			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
 			RequestToRide = new RelayCommand(RequesToRideAction);
+			GoToMyLocation = new RelayCommand(() => MyLocation = _locationManager.Location);
+		}
+
+		public override Task Load()
+		{
+			_myLocationSubscriber = MyLocationObservable
+				.Subscribe(async location =>
+				{
+					if (_cameraUpdated)
+						return;
+
+					GoToMyLocation.Execute(null);
+					_cameraUpdated = true;
+					await CameraLocationChanged(location);
+				});
+
+			_camerStartMovingSubscriber = CameraStartMoving
+				.Subscribe(moving =>
+				{
+					if (AddressMode == AddressMode.Pickup)
+						IsPickupAddressLoading = true;
+					else if (AddressMode == AddressMode.Destination)
+						IsDestinationAddressLoading = true;
+				});
+
+			_cameraPositionSubscriber = CameraPositionObservable
+				.Subscribe(async location =>
+				{
+					await CameraLocationChanged(location);
+				});
+
+			AddressMode = AddressMode.Pickup;
+			
+			return base.Load();
 		}
 
 		private void RequesToRideAction()
@@ -50,11 +88,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		private void SetPickupLocationAction()
 		{
-			HasPickupLocation = true;
 			AddressMode = AddressMode.Destination;
 		}
 
-		public async Task CameraLocationChanged(Location location)
+		private async Task CameraLocationChanged(Location location)
 		{
 
 			if (AddressMode == AddressMode.Pickup)
@@ -91,36 +128,40 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			set => RaiseAndSetIfChanged(ref _isDestinationAddressLoading, value);
 		}
 
-		public bool HasPickupLocation
-		{
-			get => _hasPickupLocation;
-			set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
-		}
-
 		public AddressMode AddressMode
 		{
 			get => _addressMode;
 			set => RaiseAndSetIfChanged(ref _addressMode, value);
 		}
 
-	    public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
+		public Location MyLocation
+		{
+			get => _myLocation;
+			private set
+			{
+				_myLocation = value;
+				RaisePropertyChanged();
+			}
+		}
 
-	    public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
+		public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
 
-	    [UsedImplicitly] public IObservable<Location> MyLocationObservable { get; }
+		public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
 
-		public IObservable<Location> CameraPosition { [UsedImplicitly] get; set; }
+		public IObservable<Location> MyLocationObservable { get; }
+
+		public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
 
 		public IObservable<bool> CameraStartMoving { get; set; }
-
-		public Location MyLocation => _locationManager.Location;
 
 		public ICommand SetPickupLocation { get; }
 
 		public ICommand SetDestinationLocation { get; }
 
 		public ICommand RequestToRide { get; }
-		
+
+		public ICommand GoToMyLocation { get; }
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
@@ -128,6 +169,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			if (disposing)
 			{
 				_locationManager.StopUpdatingLocation();
+				_cameraPositionSubscriber.Dispose();
+				_myLocationSubscriber.Dispose();
+				_camerStartMovingSubscriber.Dispose();
 			}
 		}
 	}

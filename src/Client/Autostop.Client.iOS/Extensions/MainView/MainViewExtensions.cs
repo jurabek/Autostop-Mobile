@@ -14,18 +14,7 @@ namespace Autostop.Client.iOS.Extensions.MainView
 	{
 	    public static void GmsMapViewEventsToMainViewModelObservables(this MapView gmsMapView, MainViewModel viewModel)
 	    {
-	        viewModel.CameraPosition = Observable
-	            .FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
-	                e => gmsMapView.CameraPositionIdle += e,
-	                e => gmsMapView.CameraPositionIdle -= e)
-	            .Select(e => e.EventArgs.Position.Target)
-	            .Select(c => new Location(c.Latitude, c.Longitude));
-
-	        viewModel.CameraStartMoving = Observable
-	            .FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
-	                e => gmsMapView.WillMove += e,
-	                e => gmsMapView.WillMove -= e)
-                .Select(e => e.EventArgs.Gesture);
+	        
         }
 
 	    public static SearchPlaceTextField GetSearchText(this MainViewController controller, BaseSearchPlaceViewModel vm, UIViewController viewController)
