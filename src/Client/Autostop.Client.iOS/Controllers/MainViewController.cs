@@ -98,7 +98,6 @@ namespace Autostop.Client.iOS.Controllers
 			marker.Position = new CLLocationCoordinate2D(38.578545, 68.741587);
 			marker.Icon = UIImage.FromFile("car.png");
 			marker.Map = gmsMapView;
-			gmsMapView.Projection.VisibleRegion
 			await ViewModel.Load();
 		}
 
