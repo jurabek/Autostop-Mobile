@@ -3,11 +3,11 @@ using Autostop.Client.Core.Enums;
 using Autostop.Client.iOS.Extensions;
 using UIKit;
 
-namespace Autostop.Client.iOS.Controls
+namespace Autostop.Client.iOS.Views.Passenger
 {
-    public partial class UIPickupAddressTextField : BaseAddressTextField
+    public partial class PickupAddressTextField : BaseAddressTextField
     {
-        public UIPickupAddressTextField (IntPtr handle) : base (handle)
+        public PickupAddressTextField (IntPtr handle) : base (handle)
         {
         }
 

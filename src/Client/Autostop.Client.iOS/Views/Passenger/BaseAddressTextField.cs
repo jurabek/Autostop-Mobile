@@ -3,7 +3,7 @@ using Autostop.Client.Core.Enums;
 using CoreGraphics;
 using UIKit;
 
-namespace Autostop.Client.iOS.Controls
+namespace Autostop.Client.iOS.Views.Passenger
 {
 	public abstract class BaseAddressTextField : UITextField
 	{

@@ -4,12 +4,11 @@
 // actions declared in your storyboard file.
 // Manual changes to this file will not be maintained.
 //
-using Autostop.Client.iOS.Controls;
 using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace Autostop.Client.iOS.Controllers
+namespace Autostop.Client.iOS.Views.Passenger
 {
     [Register ("MainViewController")]
     partial class MainViewController
@@ -20,19 +19,11 @@ namespace Autostop.Client.iOS.Controllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        Autostop.Client.iOS.Controls.UIDestinationAddressTextField destinationAddressTextField { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        Google.Maps.MapView gmsMapView { get; set; }
+        Autostop.Client.iOS.Views.Passenger.AutostopMapView gmsMapView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton myLocationButton { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        Autostop.Client.iOS.Controls.UIPickupAddressTextField pickupAddressTextField { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -45,11 +36,6 @@ namespace Autostop.Client.iOS.Controllers
                 centerPinIcon = null;
             }
 
-            if (destinationAddressTextField != null) {
-                destinationAddressTextField.Dispose ();
-                destinationAddressTextField = null;
-            }
-
             if (gmsMapView != null) {
                 gmsMapView.Dispose ();
                 gmsMapView = null;
@@ -58,11 +44,6 @@ namespace Autostop.Client.iOS.Controllers
             if (myLocationButton != null) {
                 myLocationButton.Dispose ();
                 myLocationButton = null;
-            }
-
-            if (pickupAddressTextField != null) {
-                pickupAddressTextField.Dispose ();
-                pickupAddressTextField = null;
             }
 
             if (setPickupLocationButton != null) {

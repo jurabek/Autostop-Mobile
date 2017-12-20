@@ -2,10 +2,10 @@
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Extensions;
 using CoreGraphics;
-using UIKit;
 using GalaSoft.MvvmLight.Helpers;
+using UIKit;
 
-namespace Autostop.Client.iOS.Controls
+namespace Autostop.Client.iOS.Views.Passenger
 {
 	public sealed class SearchPlaceTextField : UITextField
 	{

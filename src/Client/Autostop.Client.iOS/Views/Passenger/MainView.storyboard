@@ -39,12 +39,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="GMSMapView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="443" customClass="AutostopMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </view>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1876" customClass="UIPickupAddressTextField" textAlignment="center">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pickup location" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1876" customClass="PickupAddressTextField" textAlignment="center">
                                 <rect key="frame" x="10" y="71" width="355" height="40"/>
                                 <color key="textColor" colorSpace="calibratedRGB" red="0" green="0" blue="0" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -54,7 +54,7 @@
                                     <constraint id="10639" firstAttribute="width" secondItem="1876" secondAttribute="height" multiplier="71:8"/>
                                 </constraints>
                             </textField>
-                            <textField contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1877" textAlignment="center" customClass="UIDestinationAddressTextField" opaque="NO">
+                            <textField contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Destination" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1877" textAlignment="center" customClass="DestinationAddressTextField" opaque="NO">
                                 <rect key="frame" x="10" y="113" width="355" height="40"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -85,7 +85,7 @@
                                 </constraints>
                             </button>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7694" opaque="NO">
-                                <rect key="frame" x="35" y="307" width="305" height="40"/>
+                                <rect key="frame" x="35" y="306" width="305" height="40"/>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="0.25882352941176473" green="0.83529411764705885" blue="0.31764705882352939" alpha="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="tintColor" colorSpace="calibratedRGB" red="0" green="0.52549019607843139" blue="1" alpha="1"/>
@@ -122,18 +122,18 @@
                             <constraint id="9585" firstItem="2320" firstAttribute="centerX" secondItem="6865" secondAttribute="centerX"/>
                             <constraint id="9586" firstItem="6865" firstAttribute="centerY" secondItem="2320" secondAttribute="centerY" constant="32" multiplier="0.97"/>
                             <constraint id="11325" firstItem="7694" firstAttribute="centerX" secondItem="6865" secondAttribute="centerX"/>
-                            <constraint id="11327" firstItem="6865" firstAttribute="centerY" secondItem="7694" secondAttribute="centerY" constant="32" multiplier="1.02"/>
+                            <constraint id="11327" firstItem="6865" firstAttribute="centerY" secondItem="7694" secondAttribute="centerY" constant="33" multiplier="1.02"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6865"/>
                     </view>
                     <navigationItem key="navigationItem" title="Pickup location" id="721"/>
                     <connections>
-                        <outlet property="gmsMapView" destination="443" id="name-outlet-443"/>
                         <outlet property="pickupAddressTextField" destination="1876" id="name-outlet-1876"/>
                         <outlet property="destinationAddressTextField" destination="1877" id="name-outlet-1877"/>
                         <outlet property="centerPinIcon" destination="2320" id="name-outlet-2320"/>
                         <outlet property="myLocationButton" destination="7124" id="name-outlet-7124"/>
                         <outlet property="setPickupLocationButton" destination="7694" id="name-outlet-7694"/>
+                        <outlet property="gmsMapView" destination="443" id="name-outlet-443"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="236" userLabel="First Responder" sceneMemberID="firstResponder"/>

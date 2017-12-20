@@ -1,5 +1,6 @@
 ﻿using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.Providers;
+using Autostop.Client.iOS.Views.Passenger;
 using Foundation;
 using Google.Maps;
 using UIKit;
@@ -28,9 +29,9 @@ namespace Autostop.Client.iOS
 
 			Window = new UIWindow(UIScreen.MainScreen.Bounds);
 			
-            var mainViewStoryBoard = UIStoryboard.FromName("MainView", NSBundle.MainBundle);
-            var viewController = mainViewStoryBoard.InstantiateInitialViewController();
-            Window.RootViewController = viewController;
+            //var mainViewStoryBoard = UIStoryboard.FromName("MainView", NSBundle.MainBundle);
+            //var viewController = mainViewStoryBoard.InstantiateInitialViewController();
+            Window.RootViewController = new UINavigationController(new TestMainViewController());
 
 			// make the window visible
 			Window.MakeKeyAndVisible();

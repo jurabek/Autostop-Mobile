@@ -8,10 +8,10 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace Autostop.Client.iOS.Controls
+namespace Autostop.Client.iOS.Views.Passenger
 {
-    [Register ("UIPickupAddressTextField")]
-    partial class UIPickupAddressTextField
+    [Register ("AutostopMapView")]
+    partial class AutostopMapView
     {
         void ReleaseDesignerOutlets ()
         {
