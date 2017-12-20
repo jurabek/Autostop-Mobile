@@ -1,16 +1,14 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Autostop.Client.Core.Enums;
 using Autostop.Client.iOS.Extensions;
 using UIKit;
 
-namespace Autostop.Client.iOS.Views.Passenger
+namespace Autostop.Client.iOS.UI
 {
-	public partial class DestinationAddressTextField : BaseAddressTextField
+	public class DestinationAddressTextField : BaseAddressTextField
 	{
-		public DestinationAddressTextField(IntPtr handle) : base(handle)
-		{
-		}
-
 		protected override string LeftImageSource => "pickup_destination_dot.png";
 
 		public override AddressMode Mode
@@ -22,10 +20,10 @@ namespace Autostop.Client.iOS.Views.Passenger
 				switch (value)
 				{
 					case AddressMode.Pickup:
-						Hidden = true;
+						Alpha = 0;
 						break;
 					case AddressMode.Destination:
-						Hidden = false;
+						Alpha = 1;
 						this.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
 						break;
 				}

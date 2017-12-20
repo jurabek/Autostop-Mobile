@@ -21,7 +21,7 @@ namespace Autostop.Client.iOS.Services
 		{
 			_viewFactory = viewFactory;
 			_viewAdapter = viewAdapter;
-			_navigationController = UIApplication.SharedApplication.KeyWindow.RootViewController as UINavigationController;
+			//_navigationController = UIApplication.SharedApplication.KeyWindow.RootViewController as UINavigationController;
 		}
 
 		public void NavigateTo(Type viewModelType)

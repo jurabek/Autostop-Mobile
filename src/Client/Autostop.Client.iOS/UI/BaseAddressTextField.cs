@@ -3,7 +3,7 @@ using Autostop.Client.Core.Enums;
 using CoreGraphics;
 using UIKit;
 
-namespace Autostop.Client.iOS.Views.Passenger
+namespace Autostop.Client.iOS.UI
 {
 	public abstract class BaseAddressTextField : UITextField
 	{
@@ -11,13 +11,15 @@ namespace Autostop.Client.iOS.Views.Passenger
 		private readonly UIView _leftImageView;
 
 
-		protected BaseAddressTextField(IntPtr handle) : base(handle)
+		protected BaseAddressTextField()
 		{
 			_loadingActivatyIndacator = GetLocationsLoadActivityIndacator();
 			_leftImageView = GetLocationsTextFieldLeftImageView();
 			LeftViewMode = UITextFieldViewMode.Always;
 		    LeftView = _leftImageView;
 			ShouldBeginEditing = _ => false;
+			BackgroundColor = UIColor.White;
+			BorderStyle = UITextBorderStyle.None;
 		}
 
 		private bool _loading;

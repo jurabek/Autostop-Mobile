@@ -24,10 +24,11 @@ namespace Autostop.Client.iOS
 		public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 		{
 			Forms.Init();
+			Window = new UIWindow(UIScreen.MainScreen.Bounds);
+
 			MapServices.ProvideAPIKey(GoogleMapsApi.iOSSdkKey);
 			new Bootstrapper().Build();
 
-			Window = new UIWindow(UIScreen.MainScreen.Bounds);
 			
             //var mainViewStoryBoard = UIStoryboard.FromName("MainView", NSBundle.MainBundle);
             //var viewController = mainViewStoryBoard.InstantiateInitialViewController();
