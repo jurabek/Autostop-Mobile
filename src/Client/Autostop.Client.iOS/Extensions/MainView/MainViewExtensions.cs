@@ -11,7 +11,7 @@ namespace Autostop.Client.iOS.Extensions.MainView
 {
 	public static class MainViewExtensions
 	{
-		public static SearchPlaceTextField GetSearchText(this TestMainViewController controller, BaseSearchPlaceViewModel vm, UIViewController viewController)
+		public static SearchPlaceTextField GetSearchText(this MainViewController controller, BaseSearchPlaceViewModel vm, UIViewController viewController)
 		{
 			viewController.EdgesForExtendedLayout = UIRectEdge.None;
 			viewController.NavigationItem.HidesBackButton = true;

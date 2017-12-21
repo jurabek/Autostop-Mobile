@@ -17,7 +17,7 @@ namespace Autostop.Client.Core
     {
 	    public static IContainer Container;
 
-	    public void Build()
+	    public IContainer Build()
 	    {
 			var builder = new ContainerBuilder();
 		    var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
@@ -33,6 +33,7 @@ namespace Autostop.Client.Core
 			ContainerRegistery(builder);
 
 		    Container = builder.Build();
+	        return Container;
 	    }
 
 

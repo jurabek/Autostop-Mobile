@@ -14,7 +14,6 @@ namespace Autostop.Client.iOS.UI
 			TintColor = UIColor.Black;
 			BackgroundColor = UIColor.White;
 			ImageEdgeInsets = new UIEdgeInsets(10, 10, 10, 10);
-			this.ToCircleButton();
 		}
 	}
 }

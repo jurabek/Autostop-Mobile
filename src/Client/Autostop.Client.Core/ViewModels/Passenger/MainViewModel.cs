@@ -20,7 +20,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private readonly IGeocodingProvider _geocodingProvider;
 		private bool _isPickupAddressLoading;
 		private bool _isDestinationAddressLoading;
-		private AddressMode _addressMode;
+	    private AddressMode _addressMode;
 		private Location _myLocation;
 		private bool _cameraUpdated;
 		private IDisposable _cameraPositionSubscriber;
@@ -43,6 +43,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
 			RequestToRide = new RelayCommand(RequesToRideAction);
 			GoToMyLocation = new RelayCommand(() => MyLocation = _locationManager.Location);
+		    AddressMode = AddressMode.Pickup;
 		}
 
 		public override Task Load()
@@ -72,9 +73,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 				{
 					await CameraLocationChanged(location);
 				});
-
-			AddressMode = AddressMode.Pickup;
-			
+            
 			return base.Load();
 		}
 

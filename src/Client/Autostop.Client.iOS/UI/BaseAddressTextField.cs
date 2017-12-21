@@ -17,7 +17,6 @@ namespace Autostop.Client.iOS.UI
 			_leftImageView = GetLocationsTextFieldLeftImageView();
 			LeftViewMode = UITextFieldViewMode.Always;
 		    LeftView = _leftImageView;
-			ShouldBeginEditing = _ => false;
 			BackgroundColor = UIColor.White;
 			BorderStyle = UITextBorderStyle.None;
 		}

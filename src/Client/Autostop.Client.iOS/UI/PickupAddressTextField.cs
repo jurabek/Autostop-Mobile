@@ -11,23 +11,23 @@ namespace Autostop.Client.iOS.UI
 	{
 		protected override string LeftImageSource => "pickup_location_dot.png";
 
-		public override AddressMode Mode
-		{
-			get => base.Mode;
-			set
-			{
-				base.Mode = value;
+		//public override AddressMode Mode
+		//{
+		//	get => base.Mode;
+		//	set
+		//	{
+		//		base.Mode = value;
 
-				switch (value)
-				{
-					case AddressMode.Pickup:
-						this.RoundCorners(UIRectCorner.AllCorners, 5);
-						break;
-					case AddressMode.Destination:
-						this.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
-						break;
-				}
-			}
-		}
+		//		switch (value)
+		//		{
+		//			case AddressMode.Pickup:
+		//				this.RoundCorners(UIRectCorner.AllCorners, 5);
+		//				break;
+		//			case AddressMode.Destination:
+		//				this.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
+		//				break;
+		//		}
+		//	}
+		//}
 	}
 }

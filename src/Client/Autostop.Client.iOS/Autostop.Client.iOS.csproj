@@ -124,7 +124,7 @@
     <BundleResource Include="Resources\set_location.png" />
     <BundleResource Include="Resources\work.png" />
     <BundleResource Include="Resources\car.png" />
-    <Compile Include="Views\Passenger\TestMainViewController.cs" />
+    <Compile Include="Views\Passenger\MainViewController.cs" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
