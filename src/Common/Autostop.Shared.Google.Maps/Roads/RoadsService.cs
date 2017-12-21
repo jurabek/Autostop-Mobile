@@ -1,45 +1,44 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using Google.Maps.Internal;
 
 namespace Google.Maps.Roads
 {
-	public class RoadsService : IDisposable
-	{
-		public static readonly Uri HttpsUri = new Uri("https://roads.googleapis.com/v1/");
+    public class RoadsService : IDisposable
+    {
+        public static readonly Uri HttpsUri = new Uri("https://roads.googleapis.com/v1/");
 
-		Uri baseUri;
-		MapsHttp http;
+        private readonly Uri baseUri;
+        private MapsHttp http;
 
-		public RoadsService(GoogleSigned signingSvc = null, Uri baseUri = null)
-		{
-			this.baseUri = baseUri ?? HttpsUri;
+        public RoadsService(GoogleSigned signingSvc = null, Uri baseUri = null)
+        {
+            this.baseUri = baseUri ?? HttpsUri;
 
-			this.http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
-		}
+            http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
+        }
 
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
+        public void Dispose()
+        {
+            if (http != null)
+            {
+                http.Dispose();
+                http = null;
+            }
+        }
 
-		public SnapToRoadsResponse GetResponse(SnapToRoadsRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        public SnapToRoadsResponse GetResponse(SnapToRoadsRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-			return http.Get<SnapToRoadsResponse>(url);
-		}
+            return http.Get<SnapToRoadsResponse>(url);
+        }
 
-		public async Task<SnapToRoadsResponse> GetResponseAsync(SnapToRoadsRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        public async Task<SnapToRoadsResponse> GetResponseAsync(SnapToRoadsRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-			return await http.GetAsync<SnapToRoadsResponse>(url);
-		}
-	}
+            return await http.GetAsync<SnapToRoadsResponse>(url);
+        }
+    }
 }

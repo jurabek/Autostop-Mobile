@@ -15,166 +15,156 @@
  * limitations under the License.
  */
 
-using Newtonsoft.Json;
 using System;
 using System.Globalization;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Google.Maps
 {
-	[JsonObject(MemberSerialization.OptIn)]
-	public class ViaLatLng : Location, IEquatable<ViaLatLng>
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ViaLatLng" /> class.
-		/// </summary>
-		public ViaLatLng()
-		{
-		}
+    [JsonObject(MemberSerialization.OptIn)]
+    public class ViaLatLng : Location, IEquatable<ViaLatLng>
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ViaLatLng" /> class.
+        /// </summary>
+        public ViaLatLng()
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
-		/// </summary>
-		/// <param name="latitude">Latitude coordinates.</param>
-		/// <param name="longitude">Longitude coordinates.</param>
-		public ViaLatLng(decimal latitude, decimal longitude)
-		{
-			this._latitude = Convert.ToDouble(latitude);
-			this._longitude = Convert.ToDouble(longitude);
-		}
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
+        /// </summary>
+        /// <param name="latitude">Latitude coordinates.</param>
+        /// <param name="longitude">Longitude coordinates.</param>
+        public ViaLatLng(decimal latitude, decimal longitude)
+        {
+            Latitude = Convert.ToDouble(latitude);
+            Longitude = Convert.ToDouble(longitude);
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
-		/// </summary>
-		/// <param name="latitude">Latitude coordinates.</param>
-		/// <param name="longitude">Longitude coordinates.</param>
-		public ViaLatLng(double latitude, double longitude)
-		{
-			this._latitude = latitude;
-			this._longitude = longitude;
-		}
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
+        /// </summary>
+        /// <param name="latitude">Latitude coordinates.</param>
+        /// <param name="longitude">Longitude coordinates.</param>
+        public ViaLatLng(double latitude, double longitude)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
-		/// </summary>
-		/// <param name="latitude">Latitude coordinates.</param>
-		/// <param name="longitude">Longitude coordinates.</param>
-		public ViaLatLng(float latitude, float longitude)
-		{
-			this._latitude = Convert.ToDouble(latitude);
-			this._longitude = Convert.ToDouble(longitude);
-		}
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ViaLatLng" /> class with the given latitude and longitude coordinates.
+        /// </summary>
+        /// <param name="latitude">Latitude coordinates.</param>
+        /// <param name="longitude">Longitude coordinates.</param>
+        public ViaLatLng(float latitude, float longitude)
+        {
+            Latitude = Convert.ToDouble(latitude);
+            Longitude = Convert.ToDouble(longitude);
+        }
 
-		private double _latitude;
-		private double _longitude;
+        /// <summary>
+        ///     Gets the latitude coordinate.
+        /// </summary>
+        [JsonProperty("lat")]
+        public double Latitude { get; }
 
-		/// <summary>
-		/// Gets the latitude coordinate.
-		/// </summary>
-		[JsonProperty("lat")]
-		public double Latitude
-		{
-			get { return _latitude; }
-		}
+        /// <summary>
+        ///     Gets the longitude coordinate.
+        /// </summary>
+        [JsonProperty("lng")]
+        public double Longitude { get; }
 
-		/// <summary>
-		/// Gets the longitude coordinate.
-		/// </summary>
-		[JsonProperty("lng")]
-		public double Longitude
-		{
-			get { return _longitude; }
-		}
+        public bool Equals(ViaLatLng other)
+        {
+            if (other == null)
+                return false;
 
-		/// <summary>
-		/// Gets the string representation of the latitude and longitude coordinates. Default format is "N6" for 6 decimal precision.
-		/// </summary>
-		/// <returns>Latitude and longitude coordinates.</returns>
-		public override string ToString()
-		{
-			return this.ToString("N6");
-		}
+            if (other.Latitude == Latitude && other.Longitude == Longitude)
+                return true;
 
-		/// <summary>
-		/// Gets the string representation of the latitude and longitude coordinates. The format is applies to a System.Double, so any format applicable for System.Double will work.
-		/// </summary>
-		/// <param name="format"></param>
-		/// <returns></returns>
-		public string ToString(string format)
-		{
-			System.Text.StringBuilder sb = new System.Text.StringBuilder(50); //default to 50 in the internal array.
-			sb.Append("via:");
-			sb.Append(this.Latitude.ToString(format, System.Globalization.CultureInfo.InvariantCulture));
-			sb.Append(",");
-			sb.Append(this.Longitude.ToString(format, System.Globalization.CultureInfo.InvariantCulture));
+            return false;
+        }
 
-			return sb.ToString();
-		}
+        /// <summary>
+        ///     Gets the string representation of the latitude and longitude coordinates. Default format is "N6" for 6 decimal
+        ///     precision.
+        /// </summary>
+        /// <returns>Latitude and longitude coordinates.</returns>
+        public override string ToString()
+        {
+            return ToString("N6");
+        }
 
-		/// <summary>
-		/// Gets the current instance as a URL encoded value.
-		/// </summary>
-		/// <returns></returns>
-		public override string GetAsUrlParameter()
-		{
-			//we're not returning crazy characters so just return the string.
-			//prevents the comma from being converted to %2c, expanding the single character to three characters.
-			return this.ToString("R");
-		}
+        /// <summary>
+        ///     Gets the string representation of the latitude and longitude coordinates. The format is applies to a System.Double,
+        ///     so any format applicable for System.Double will work.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public string ToString(string format)
+        {
+            var sb = new StringBuilder(50); //default to 50 in the internal array.
+            sb.Append("via:");
+            sb.Append(Latitude.ToString(format, CultureInfo.InvariantCulture));
+            sb.Append(",");
+            sb.Append(Longitude.ToString(format, CultureInfo.InvariantCulture));
 
-		/// <summary>
-		/// Parses a ViaLatLng from a set of latitude/longitude coordinates
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public static ViaLatLng Parse(string value)
-		{
-			if(value == null) throw new ArgumentNullException("value");
+            return sb.ToString();
+        }
 
-			try
-			{
-				string[] parts = value.Split(',');
+        /// <summary>
+        ///     Gets the current instance as a URL encoded value.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetAsUrlParameter()
+        {
+            //we're not returning crazy characters so just return the string.
+            //prevents the comma from being converted to %2c, expanding the single character to three characters.
+            return ToString("R");
+        }
 
-				if(parts.Length != 2) throw new FormatException("Missing data for points.");
+        /// <summary>
+        ///     Parses a ViaLatLng from a set of latitude/longitude coordinates
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ViaLatLng Parse(string value)
+        {
+            if (value == null) throw new ArgumentNullException("value");
 
-				double latitude = double.Parse(parts[0].Trim(), CultureInfo.InvariantCulture);
-				double longitude = double.Parse(parts[1].Trim(), CultureInfo.InvariantCulture);
+            try
+            {
+                var parts = value.Split(',');
 
-				ViaLatLng vialatlng = new ViaLatLng(latitude, longitude);
+                if (parts.Length != 2) throw new FormatException("Missing data for points.");
 
-				return vialatlng;
-			}
-			catch(Exception ex)
-			{
-				throw new FormatException("Failed to parse ViaLatLng.", ex);
-			}
-		}
+                var latitude = double.Parse(parts[0].Trim(), CultureInfo.InvariantCulture);
+                var longitude = double.Parse(parts[1].Trim(), CultureInfo.InvariantCulture);
 
-		public override bool Equals(object obj)
-		{
-			return Equals(obj as ViaLatLng);
-		}
+                var vialatlng = new ViaLatLng(latitude, longitude);
 
-		public bool Equals(ViaLatLng other)
-		{
-			if(other == null)
-			{
-				return false;
-			}
+                return vialatlng;
+            }
+            catch (Exception ex)
+            {
+                throw new FormatException("Failed to parse ViaLatLng.", ex);
+            }
+        }
 
-			if(other.Latitude == this.Latitude && other.Longitude == this.Longitude)
-			{
-				return true;
-			}
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ViaLatLng);
+        }
 
-			return false;
-		}
-
-		public override int GetHashCode()
-		{
-			int hash = 13;
-			hash += (hash * 7) + this.Latitude.GetHashCode();
-			hash += (hash * 7) + this.Longitude.GetHashCode();
-			return hash;
-		}
-	}
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            hash += hash * 7 + Latitude.GetHashCode();
+            hash += hash * 7 + Longitude.GetHashCode();
+            return hash;
+        }
+    }
 }

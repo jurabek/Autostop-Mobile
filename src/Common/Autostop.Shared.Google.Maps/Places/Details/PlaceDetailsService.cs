@@ -14,59 +14,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Threading.Tasks;
-
 using Google.Maps.Internal;
 
 namespace Google.Maps.Places.Details
 {
-	/// <summary>
-	/// Provides a direct way to access Places Details via an HTTP request.
-	/// </summary>
-	public class PlaceDetailsService : IDisposable
-	{
-		public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/place/details/");
+    /// <summary>
+    ///     Provides a direct way to access Places Details via an HTTP request.
+    /// </summary>
+    public class PlaceDetailsService : IDisposable
+    {
+        public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/place/details/");
 
-		Uri baseUri;
-		MapsHttp http;
+        private readonly Uri baseUri;
+        private MapsHttp http;
 
-		public PlaceDetailsService(GoogleSigned signingSvc = null, Uri baseUri = null)
-		{
-			this.baseUri = baseUri ?? HttpsUri;
+        public PlaceDetailsService(GoogleSigned signingSvc = null, Uri baseUri = null)
+        {
+            this.baseUri = baseUri ?? HttpsUri;
 
-			this.http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
-		}
+            http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
+        }
+
+        public void Dispose()
+        {
+            if (http != null)
+            {
+                http.Dispose();
+                http = null;
+            }
+        }
 
 
-		/// <summary>
-		/// Sends the specified request to the Google Maps Places web
-		/// service and parses the response as an PlaceDetailsResponse
-		/// object.
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public PlaceDetailsResponse GetResponse(PlaceDetailsRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        /// <summary>
+        ///     Sends the specified request to the Google Maps Places web
+        ///     service and parses the response as an PlaceDetailsResponse
+        ///     object.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public PlaceDetailsResponse GetResponse(PlaceDetailsRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-			return http.Get<PlaceDetailsResponse>(url);
-		}
+            return http.Get<PlaceDetailsResponse>(url);
+        }
 
-		public async Task<PlaceDetailsResponse> GetResponseAsync(PlaceDetailsRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        public async Task<PlaceDetailsResponse> GetResponseAsync(PlaceDetailsRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-			return await http.GetAsync<PlaceDetailsResponse>(url);
-		}
-
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
-	}
+            return await http.GetAsync<PlaceDetailsResponse>(url);
+        }
+    }
 }

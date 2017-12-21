@@ -10,36 +10,37 @@ using Location = Autostop.Common.Shared.Models.Location;
 
 namespace Autostop.Client.Core.Providers
 {
-	public class GeocodingProvider : IGeocodingProvider
-	{
-		private readonly IGeocodingService _geocodingService;
-		public GeocodingProvider(IGeocodingService geocodingService)
-		{
-			geocodingService.Requires(nameof(geocodingService));
+    public class GeocodingProvider : IGeocodingProvider
+    {
+        private readonly IGeocodingService _geocodingService;
 
-			_geocodingService = geocodingService;
-		}
+        public GeocodingProvider(IGeocodingService geocodingService)
+        {
+            geocodingService.Requires(nameof(geocodingService));
 
-		public async Task<Address> ReverseGeocoding(Location location)
-		{
-			if (!location.IsValid() || Math.Abs(location.Latitude) <= 0 && Math.Abs(location.Longitude) <= 0)
-				return null;
+            _geocodingService = geocodingService;
+        }
 
-			var request = new GeocodingRequest { Address = new LatLng(location.Latitude, location.Longitude) };
-			var response = await _geocodingService.GetResponseAsync(request);
+        public async Task<Address> ReverseGeocoding(Location location)
+        {
+            if (!location.IsValid() || Math.Abs(location.Latitude) <= 0 && Math.Abs(location.Longitude) <= 0)
+                return null;
 
-			if (response.Status != ServiceResponseStatus.Ok)
-				return null;
+            var request = new GeocodingRequest {Address = new LatLng(location.Latitude, location.Longitude)};
+            var response = await _geocodingService.GetResponseAsync(request);
 
-			var address = response.Results.FirstOrDefault();
-			if (address == null)
-				return null;
-			
-			return new Address
-			{
-				FormattedAddress = address.FormattedAddress,
-				Location = location
-			};
-		}
-	}
+            if (response.Status != ServiceResponseStatus.Ok)
+                return null;
+
+            var address = response.Results.FirstOrDefault();
+            if (address == null)
+                return null;
+
+            return new Address
+            {
+                FormattedAddress = address.FormattedAddress,
+                Location = location
+            };
+        }
+    }
 }

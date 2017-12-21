@@ -5,6 +5,6 @@ namespace Autostop.Client.Abstraction.Repositores
 {
     public interface ICarsRepository
     {
-	    ObservableCollection<Location> GetOnlineDriversLocation();
+        ObservableCollection<Location> GetOnlineDriversLocation();
     }
 }

@@ -4,8 +4,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 {
     public class DestinationSearchPlaceViewModel : BaseSearchPlaceViewModel
     {
-	    public DestinationSearchPlaceViewModel(IPlacesProvider placesProvider) : base(placesProvider)
-	    {
-	    }
+        public DestinationSearchPlaceViewModel(IPlacesProvider placesProvider) : base(placesProvider)
+        {
+        }
     }
 }

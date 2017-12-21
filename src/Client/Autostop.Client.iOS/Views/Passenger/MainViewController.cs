@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading;
 using Autofac;
+using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core;
 using Autostop.Client.Core.Enums;
@@ -22,21 +22,38 @@ using UIKit;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
-    public class MainViewController : UIViewController
+    public class MainViewController : UIViewController, IScreenFor<MainViewModel>
     {
-        private readonly PickupAddressTextField _pickupAddressTextField = new PickupAddressTextField();
+        private readonly INavigationService _navigationService;
+
+        private readonly UIImageView _centerPinImageView = new UIImageView(Icons.Pin)
+        {
+            ContentMode = UIViewContentMode.ScaleAspectFit,
+            TranslatesAutoresizingMaskIntoConstraints = false
+        };
+        
         private readonly DestinationAddressTextField _destinationAddressTextField = new DestinationAddressTextField();
-        private readonly AutostopMapView _mapView = new AutostopMapView { TranslatesAutoresizingMaskIntoConstraints = false };
-        private readonly MyLocationButton _myLocationButton = new MyLocationButton { TranslatesAutoresizingMaskIntoConstraints = false };
-        private readonly UIButton _setPickupButton = new UIButton { BackgroundColor = Colors.PickupButtonColor, TranslatesAutoresizingMaskIntoConstraints = false };
-        private readonly UIImageView _centerPinImageView = new UIImageView(Icons.Pin) { ContentMode = UIViewContentMode.ScaleAspectFit, TranslatesAutoresizingMaskIntoConstraints = false };
-        private readonly IContainer _container = BootstrapperBase.Container;
-        private List<Binding> _bindings;
+
+        private readonly AutostopMapView _mapView =
+            new AutostopMapView {TranslatesAutoresizingMaskIntoConstraints = false};
+
+        private readonly MyLocationButton _myLocationButton =
+            new MyLocationButton {TranslatesAutoresizingMaskIntoConstraints = false};
+
+        private readonly PickupAddressTextField _pickupAddressTextField = new PickupAddressTextField();
+
+        private readonly UIButton _setPickupButton = new UIButton
+        {
+            BackgroundColor = Colors.PickupButtonColor,
+            TranslatesAutoresizingMaskIntoConstraints = false
+        };
+
         private UIStackView _addresseStackView;
+        private List<Binding> _bindings;
 
         public MainViewController(INavigationService navigationService)
         {
-            ViewModel = _container.Resolve<MainViewModel>();
+            _navigationService = navigationService;
         }
 
         public MainViewModel ViewModel { get; set; }
@@ -48,7 +65,7 @@ namespace Autostop.Client.iOS.Views.Passenger
             _mapView.MyLocationEnabled = true;
             _setPickupButton.Layer.CornerRadius = 20;
             _setPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
-            _addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
+            _addresseStackView = new UIStackView(new UIView[] {_pickupAddressTextField, _destinationAddressTextField})
             {
                 Axis = UILayoutConstraintAxis.Vertical,
                 TranslatesAutoresizingMaskIntoConstraints = false,
@@ -81,7 +98,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
             ViewModel.ObservablePropertyChanged(() => ViewModel.AddressMode)
                 .Subscribe(_ => ViewDidLayoutSubviews());
-            
+
             var marker = new Marker();
             marker.Position = new CLLocationCoordinate2D(38.578545, 68.741587);
             marker.Icon = UIImage.FromFile("car.png");
@@ -115,10 +132,11 @@ namespace Autostop.Client.iOS.Views.Passenger
 
         private void ShowNavigationBar(EventPattern<GMSCameraEventArgs> eventPattern)
         {
-            //NavigationController.NavigationBarHidden = false;
+            //
             _myLocationButton.Hidden = false;
             UIView.Animate(0.3, () =>
             {
+                NavigationController.NavigationBarHidden = false;
                 _setPickupButton.Transform = CGAffineTransform.MakeIdentity();
                 _setPickupButton.Alpha = 1;
             });
@@ -126,10 +144,10 @@ namespace Autostop.Client.iOS.Views.Passenger
 
         private void HideNavigationBar(EventPattern<GMSWillMoveEventArgs> eventPattern)
         {
-            //NavigationController.NavigationBarHidden = true;
             _myLocationButton.Hidden = true;
             UIView.Animate(0.3, () =>
             {
+                NavigationController.NavigationBarHidden = true;
                 _setPickupButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
                 _setPickupButton.Alpha = 0;
             });
@@ -137,29 +155,29 @@ namespace Autostop.Client.iOS.Views.Passenger
 
         private bool DestinationAddressShouldBeginEditing(UITextField textField)
         {
-            //_navigationService.NavigateTo<DestinationSearchPlaceViewModel>((view, vm) =>
-            //{
-            //	if (view is UIViewController searchPlaces)
-            //	{
-            //		var searchTextField = this.GetSearchText(vm, searchPlaces);
-            //		searchTextField.Placeholder = "Search destination location";
-            //	}
-            //});
+            _navigationService.NavigateTo<DestinationSearchPlaceViewModel>((view, vm) =>
+            {
+                if (view is UIViewController searchPlaces)
+                {
+                    var searchTextField = this.GetSearchText(vm, searchPlaces);
+                    searchTextField.Placeholder = "Search destination location";
+                }
+            });
 
             return false;
         }
 
         private bool PickupAddressShouldBeginEditing(UITextField textField)
         {
-            //_navigationService.NavigateTo<PickupSearchPlaceViewModel>((view, vm) =>
-            //{
-            //	if (view is UIViewController searchPlaces)
-            //	{
-            //		var searchTextField = this.GetSearchText(vm, searchPlaces);
-            //		searchTextField.Placeholder = "Search pickup location";
-            //		vm.SearchText = ViewModel.PickupAddress.FormattedAddress;
-            //	}
-            //});
+            _navigationService.NavigateTo<PickupSearchPlaceViewModel>((view, vm) =>
+            {
+                if (view is UIViewController searchPlaces)
+                {
+                    var searchTextField = this.GetSearchText(vm, searchPlaces);
+                    searchTextField.Placeholder = "Search pickup location";
+                    vm.SearchText = ViewModel.PickupAddress.FormattedAddress;
+                }
+            });
 
             return false;
         }
@@ -193,9 +211,10 @@ namespace Autostop.Client.iOS.Views.Passenger
                     () => ViewModel.IsDestinationAddressLoading, BindingMode.TwoWay),
 
                 this.SetBinding(
-                    () => _mapView.Camera,
-                    () => ViewModel.MyLocation, BindingMode.TwoWay)
-                    .ConvertTargetToSource(location => CameraPosition.FromCamera(location.Latitude, location.Longitude, 17))
+                        () => _mapView.Camera,
+                        () => ViewModel.MyLocation, BindingMode.TwoWay)
+                    .ConvertTargetToSource(location =>
+                        CameraPosition.FromCamera(location.Latitude, location.Longitude, 17))
             };
         }
 
@@ -231,13 +250,14 @@ namespace Autostop.Client.iOS.Views.Passenger
                 _myLocationButton.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
                 _myLocationButton.BottomAnchor.ConstraintEqualTo(View.BottomAnchor, -150),
                 _myLocationButton.WidthAnchor.ConstraintEqualTo(40),
-                _myLocationButton.HeightAnchor.ConstraintEqualTo(40),
+                _myLocationButton.HeightAnchor.ConstraintEqualTo(40)
             });
 
             NSLayoutConstraint.ActivateConstraints(new[]
             {
                 _centerPinImageView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
-                _centerPinImageView.CenterYAnchor.ConstraintEqualTo(View.CenterYAnchor),
+                NSLayoutConstraint.Create(_centerPinImageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
+                    NSLayoutAttribute.CenterY, (nfloat) 0.93, 0),
                 _centerPinImageView.WidthAnchor.ConstraintEqualTo(46),
                 _centerPinImageView.HeightAnchor.ConstraintEqualTo(60)
             });
@@ -245,9 +265,10 @@ namespace Autostop.Client.iOS.Views.Passenger
             NSLayoutConstraint.ActivateConstraints(new[]
             {
                 _setPickupButton.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
-                _setPickupButton.CenterYAnchor.ConstraintEqualTo(View.CenterYAnchor),
+                NSLayoutConstraint.Create(_setPickupButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
+                    NSLayoutAttribute.CenterY, (nfloat) 0.88, 0),
                 _setPickupButton.WidthAnchor.ConstraintEqualTo(305),
-                _setPickupButton.HeightAnchor.ConstraintEqualTo(35),
+                _setPickupButton.HeightAnchor.ConstraintEqualTo(35)
             });
         }
 
@@ -255,9 +276,7 @@ namespace Autostop.Client.iOS.Views.Passenger
         {
             base.Dispose(disposing);
             if (disposing)
-            {
                 ViewModel.Dispose();
-            }
         }
     }
 }

@@ -105,11 +105,10 @@
     <Compile Include="UI\MyLocationButton.cs" />
     <Compile Include="UI\PickupAddressTextField.cs" />
     <Compile Include="UI\SearchPlaceTextField.cs" />
-    <Compile Include="Extensions\BindingExtenstions.cs" />
+    <Compile Include="Extensions\CommandBindingExtensions.cs" />
     <Compile Include="Extensions\MainView\MainViewExtensions.cs" />
     <Compile Include="Extensions\UIViewExtenstions.cs" />
-    <Compile Include="Helpers\Settings.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="Application.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="Resources\pickup_destination_dot.png" />
     <BundleResource Include="Resources\pickup_location_dot.png" />

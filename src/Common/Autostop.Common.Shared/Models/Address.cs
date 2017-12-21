@@ -2,8 +2,8 @@
 {
     public class Address
     {
-	    public string FormattedAddress { get; set; }
+        public string FormattedAddress { get; set; }
 
-	    public Location Location { get; set; }
+        public Location Location { get; set; }
     }
 }

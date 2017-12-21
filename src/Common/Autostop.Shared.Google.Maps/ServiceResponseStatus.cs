@@ -17,48 +17,48 @@
 
 namespace Google.Maps
 {
-	public enum ServiceResponseStatus
-	{
-		Unknown = 0,
+    public enum ServiceResponseStatus
+    {
+        Unknown = 0,
 
-		/// <summary>
-		/// Indicates that no errors occurred; the address was successfully 
-		/// parsed and at least one geocode was returned.
-		/// </summary>
-		Ok = -1,
+        /// <summary>
+        ///     Indicates that no errors occurred; the address was successfully
+        ///     parsed and at least one geocode was returned.
+        /// </summary>
+        Ok = -1,
 
-		/// <summary>
-		/// Indicating the service request was malformed.
-		/// </summary>
-		InvalidRequest = 1,
+        /// <summary>
+        ///     Indicating the service request was malformed.
+        /// </summary>
+        InvalidRequest = 1,
 
-		/// <summary>
-		/// Indicates that the geocode was successful but returned no results.
-		/// This may occur if the geocode was passed a non-existent address or
-		/// a latlng in a remote location.
-		/// </summary>
-		ZeroResults = 2,
+        /// <summary>
+        ///     Indicates that the geocode was successful but returned no results.
+        ///     This may occur if the geocode was passed a non-existent address or
+        ///     a latlng in a remote location.
+        /// </summary>
+        ZeroResults = 2,
 
-		/// <summary>
-		/// Indicates that you are over your quota.
-		/// </summary>
-		OverQueryLimit = 3,
+        /// <summary>
+        ///     Indicates that you are over your quota.
+        /// </summary>
+        OverQueryLimit = 3,
 
-		/// <summary>
-		/// Indicates that your request was denied.
-		/// </summary>
-		RequestDenied = 4,
+        /// <summary>
+        ///     Indicates that your request was denied.
+        /// </summary>
+        RequestDenied = 4,
 
-		/// <summary>
-		/// At least one of the provided locations in the request could not
-		/// be geocoded.
-		/// </summary>
-		NotFound = 5,
+        /// <summary>
+        ///     At least one of the provided locations in the request could not
+        ///     be geocoded.
+        /// </summary>
+        NotFound = 5,
 
-		/// <summary>
-		/// Indicates that too many waypoints were provided in the request.
-		/// Without an API key the maximum number is 8.
-		/// </summary>
-		MaxWaypointsExceeded = 6
-	}
+        /// <summary>
+        ///     Indicates that too many waypoints were provided in the request.
+        ///     Without an API key the maximum number is 8.
+        /// </summary>
+        MaxWaypointsExceeded = 6
+    }
 }

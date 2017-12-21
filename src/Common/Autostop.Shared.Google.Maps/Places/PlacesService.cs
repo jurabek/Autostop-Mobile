@@ -14,83 +14,84 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Threading.Tasks;
-
 using Google.Maps.Internal;
+using Google.Maps.Places.Autocomplete;
 
 namespace Google.Maps.Places
 {
-	/// <summary>
-	/// The Google Places API allows you to query for place information 
-	/// on a variety of categories, such as: establishments, prominent 
-	/// points of interest, geographic locations, and more. You can search 
-	/// for places either by proximity or a text string.
-	/// </summary>
-	public class PlacesService : IDisposable, IPlacesService
-	{
-		public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/place/");
-		public static readonly Uri HttpUri = new Uri("http://maps.googleapis.com/maps/api/place/");
+    /// <summary>
+    ///     The Google Places API allows you to query for place information
+    ///     on a variety of categories, such as: establishments, prominent
+    ///     points of interest, geographic locations, and more. You can search
+    ///     for places either by proximity or a text string.
+    /// </summary>
+    public class PlacesService : IDisposable, IPlacesService
+    {
+        public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/place/");
+        public static readonly Uri HttpUri = new Uri("http://maps.googleapis.com/maps/api/place/");
 
-		Uri baseUri;
-		MapsHttp http;
+        private readonly Uri baseUri;
+        private MapsHttp http;
 
-		public PlacesService(GoogleSigned signingSvc = null, Uri baseUri = null)
-		{
-			this.baseUri = baseUri ?? HttpsUri;
+        public PlacesService(GoogleSigned signingSvc = null, Uri baseUri = null)
+        {
+            this.baseUri = baseUri ?? HttpsUri;
 
-			this.http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
-		}
+            http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
+        }
 
-		/// <summary>
-		/// Sends the specified request to the Google Maps Geocoding web
-		/// service and parses the response as an GeocodingResponse
-		/// object.
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public PlacesResponse GetResponse<TRequest>(TRequest request) where TRequest : PlacesRequest
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        public void Dispose()
+        {
+            if (http != null)
+            {
+                http.Dispose();
+                http = null;
+            }
+        }
 
-			return http.Get<PlacesResponse>(url);
-		}
+        /// <summary>
+        ///     Sends the specified request to the Google Maps Geocoding web
+        ///     service and parses the response as an GeocodingResponse
+        ///     object.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public PlacesResponse GetResponse<TRequest>(TRequest request) where TRequest : PlacesRequest
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		public async Task<PlacesResponse> GetResponseAsync<TRequest>(TRequest request) where TRequest : PlacesRequest
-		{
-			var url = new Uri(baseUri, request.ToUri());
+            return http.Get<PlacesResponse>(url);
+        }
 
-			return await http.GetAsync<PlacesResponse>(url);
-		}
+        public async Task<PlacesResponse> GetResponseAsync<TRequest>(TRequest request) where TRequest : PlacesRequest
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		/// <summary>
-		/// Sends the specified request to the Google Maps Places Autocomplate web
-		/// service and parses the response as an AutocompleteResponse
-		/// object.
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public AutocompleteResponse GetAutocompleteResponse(AutocompleteRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+            return await http.GetAsync<PlacesResponse>(url);
+        }
 
-			return http.Get<AutocompleteResponse>(url);
-		}
+        /// <summary>
+        ///     Sends the specified request to the Google Maps Places Autocomplate web
+        ///     service and parses the response as an AutocompleteResponse
+        ///     object.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public AutocompleteResponse GetAutocompleteResponse(AutocompleteRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		public async Task<AutocompleteResponse> GetAutocompleteResponseAsync(AutocompleteRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+            return http.Get<AutocompleteResponse>(url);
+        }
 
-			return await http.GetAsync<AutocompleteResponse>(url);
-		}
+        public async Task<AutocompleteResponse> GetAutocompleteResponseAsync(AutocompleteRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
-	}
+            return await http.GetAsync<AutocompleteResponse>(url);
+        }
+    }
 }

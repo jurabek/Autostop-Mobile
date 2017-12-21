@@ -1,61 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Google.Maps
 {
-	public class LatLngComparer : IEqualityComparer<LatLng>
-	{
+    public class LatLngComparer : IEqualityComparer<LatLng>
+    {
+        private LatLngComparer(float epsilon)
+        {
+            Epsilon = epsilon;
+        }
 
-		public static LatLngComparer Within(float epsilon)
-		{
-			return new LatLngComparer(epsilon);
-		}
+        public float Epsilon { get; }
 
-		private LatLngComparer(float epsilon)
-		{
-			this._epsilon = epsilon;
-		}
+        public bool Equals(LatLng x, LatLng y)
+        {
+            if (x == null || y == null) return false;
 
-		Single _epsilon;
-		public Single Epsilon { get { return this._epsilon; } }
+            if (Equals(x.Latitude, y.Latitude, Epsilon) == false)
+                return false;
 
-		public bool Equals(LatLng x, LatLng y)
-		{
-			if(x == null || y == null) return false;
+            if (Equals(x.Longitude, y.Longitude, Epsilon) == false)
+                return false;
 
-			if(this.Equals(x.Latitude, y.Latitude, this._epsilon) == false)
-				return false;
+            return true;
+        }
 
-			if(this.Equals(x.Longitude, y.Longitude, this._epsilon) == false)
-				return false;
+        public int GetHashCode(LatLng value)
+        {
+            return value.Latitude.GetHashCode() ^ value.Longitude.GetHashCode();
+        }
 
-			return true;
-		}
+        public static LatLngComparer Within(float epsilon)
+        {
+            return new LatLngComparer(epsilon);
+        }
 
-		public int GetHashCode(LatLng value)
-		{
-			return value.Latitude.GetHashCode() ^ value.Longitude.GetHashCode();
-		}
+        private bool Equals(double a, double b, float epsilonParam)
+        {
+            var epsilon = Convert.ToDouble(epsilonParam);
+            var absA = Math.Abs(a);
+            var absB = Math.Abs(b);
+            var diff = Math.Abs(a - b);
 
-		private bool Equals(double a, double b, float epsilonParam)
-		{
-			double epsilon = Convert.ToDouble(epsilonParam);
-			double absA = Math.Abs(a);
-			double absB = Math.Abs(b);
-			double diff = Math.Abs(a - b);
-
-			if(a * b == 0)
-			{ // a or b or both are zero
-			  // relative error is not meaningful here
-				return diff < (epsilon * epsilon);
-			}
-			else
-			{ // use relative error
-				return diff / (absA + absB) < epsilon;
-			}
-		}
-
-	}
+            if (a * b == 0)
+                return diff < epsilon * epsilon;
+            return diff / (absA + absB) < epsilon;
+        }
+    }
 }

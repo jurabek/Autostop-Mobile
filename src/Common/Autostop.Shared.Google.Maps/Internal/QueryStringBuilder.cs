@@ -15,58 +15,57 @@
  * limitations under the License.
  */
 
-using System;
+using System.Text;
 
 namespace Google.Maps.Internal
 {
-	internal class QueryStringBuilder
-	{
-		System.Text.StringBuilder StringBuilder { get { return this._sb; } }
-		System.Text.StringBuilder _sb = new System.Text.StringBuilder();
+    internal class QueryStringBuilder
+    {
+        private StringBuilder StringBuilder { get; } = new StringBuilder();
 
-		public override string ToString()
-		{
-			return _sb.ToString();
-		}
+        public override string ToString()
+        {
+            return StringBuilder.ToString();
+        }
 
-		/// <summary>
-		/// Appends a key/value pair when the value isn't null.
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public QueryStringBuilder Append(string key, string value)
-		{
-			if(string.IsNullOrEmpty(value) == false)
-			{
-				if(_sb.Length > 0) _sb.Append("&");
-				_sb.Append(key).Append("=").Append(value);
-			}
-			return this;
-		}
-		//public QueryStringBuilder Append(string key, System.Nullable<T> value)
-		//{
-		//    if (value != null)
-		//    {
-		//        if (_sb.Length > 0) _sb.Append("&");
-		//        _sb.Append(key).Append("=").Append(value);
-		//    }
-		//    return this;
-		//}
+        /// <summary>
+        ///     Appends a key/value pair when the value isn't null.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public QueryStringBuilder Append(string key, string value)
+        {
+            if (string.IsNullOrEmpty(value) == false)
+            {
+                if (StringBuilder.Length > 0) StringBuilder.Append("&");
+                StringBuilder.Append(key).Append("=").Append(value);
+            }
+            return this;
+        }
+        //public QueryStringBuilder Append(string key, System.Nullable<T> value)
+        //{
+        //    if (value != null)
+        //    {
+        //        if (_sb.Length > 0) _sb.Append("&");
+        //        _sb.Append(key).Append("=").Append(value);
+        //    }
+        //    return this;
+        //}
 
-		/// <summary>
-		/// Appends a value when the string isn't null.
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public QueryStringBuilder Append(string value)
-		{
-			if(string.IsNullOrEmpty(value) == false)
-			{
-				if(_sb.Length > 0) _sb.Append("&");
-				_sb.Append(value);
-			}
-			return this;
-		}
-	}
+        /// <summary>
+        ///     Appends a value when the string isn't null.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public QueryStringBuilder Append(string value)
+        {
+            if (string.IsNullOrEmpty(value) == false)
+            {
+                if (StringBuilder.Length > 0) StringBuilder.Append("&");
+                StringBuilder.Append(value);
+            }
+            return this;
+        }
+    }
 }

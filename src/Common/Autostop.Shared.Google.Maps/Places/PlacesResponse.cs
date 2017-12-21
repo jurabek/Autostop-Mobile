@@ -20,35 +20,35 @@ using Newtonsoft.Json;
 
 namespace Google.Maps.Places
 {
-	public class PlacesResponse : IServiceResponse
-	{
-		/// <summary>
-		/// Contains the ServiceResponseStatus.
-		/// </summary>
-		[JsonProperty("status")]
-		public ServiceResponseStatus Status { get; set; }
+    public class PlacesResponse : IServiceResponse
+    {
+        /// <summary>
+        ///     The results returned from the API, if any.
+        /// </summary>
+        [JsonProperty("results")]
+        public PlacesResult[] Results { get; set; }
 
-		/// <summary>
-		/// More detailed information about the reasons behind the given status code, if other than OK.
-		/// </summary>
-		[JsonProperty("error_message")]
-		public string ErrorMessage { get; set; }
+        /// <summary>
+        ///     The token to get the next page, if any.
+        ///     Contains a token that can be used to return up to 20 additional
+        ///     results. A next_page_token will not be returned if there are no
+        ///     additional results to display. The maximum number of results that
+        ///     can be returned is 60. There is a short delay between when a
+        ///     next_page_token is issued, and when it will become valid.
+        /// </summary>
+        [JsonProperty("next_page_token")]
+        public string NextPageToken { get; set; }
 
-		/// <summary>
-		/// The results returned from the API, if any.
-		/// </summary>
-		[JsonProperty("results")]
-		public PlacesResult[] Results { get; set; }
+        /// <summary>
+        ///     Contains the ServiceResponseStatus.
+        /// </summary>
+        [JsonProperty("status")]
+        public ServiceResponseStatus Status { get; set; }
 
-		/// <summary>
-		/// The token to get the next page, if any.
-		/// Contains a token that can be used to return up to 20 additional
-		/// results. A next_page_token will not be returned if there are no
-		/// additional results to display. The maximum number of results that
-		/// can be returned is 60. There is a short delay between when a
-		/// next_page_token is issued, and when it will become valid.
-		/// </summary>
-		[JsonProperty("next_page_token")]
-		public string NextPageToken { get; set; }
-	}
+        /// <summary>
+        ///     More detailed information about the reasons behind the given status code, if other than OK.
+        /// </summary>
+        [JsonProperty("error_message")]
+        public string ErrorMessage { get; set; }
+    }
 }

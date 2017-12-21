@@ -16,27 +16,26 @@
  */
 
 using Newtonsoft.Json;
-using System;
 
 namespace Google.Maps.Shared
 {
-	[JsonObject(MemberSerialization.OptIn)]
-	public class Viewport
-	{
-		private Viewport()
-		{
-		}
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Viewport
+    {
+        private Viewport()
+        {
+        }
 
-		public Viewport(LatLng southWest, LatLng northEast)
-		{
-			this.Southwest = southWest;
-			this.Northeast = northEast;
-		}
+        public Viewport(LatLng southWest, LatLng northEast)
+        {
+            Southwest = southWest;
+            Northeast = northEast;
+        }
 
-		[JsonProperty("southwest")]
-		public LatLng Southwest { get; set; }
+        [JsonProperty("southwest")]
+        public LatLng Southwest { get; set; }
 
-		[JsonProperty("northeast")]
-		public LatLng Northeast { get; set; }
-	}
+        [JsonProperty("northeast")]
+        public LatLng Northeast { get; set; }
+    }
 }

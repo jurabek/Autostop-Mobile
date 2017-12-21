@@ -19,16 +19,16 @@ using Newtonsoft.Json;
 
 namespace Google.Maps.Elevation
 {
-	[JsonObject(MemberSerialization.OptIn)]
-	public class ElevationResult
-	{
-		[JsonProperty("location")]
-		public LatLng Location { get; set; }
+    [JsonObject(MemberSerialization.OptIn)]
+    public class ElevationResult
+    {
+        [JsonProperty("location")]
+        public LatLng Location { get; set; }
 
-		[JsonProperty("elevation")]
-		public decimal Elevation { get; set; }
+        [JsonProperty("elevation")]
+        public decimal Elevation { get; set; }
 
-		[JsonProperty("resolution")]
-		public decimal Resolution { get; set; }
-	}
+        [JsonProperty("resolution")]
+        public decimal Resolution { get; set; }
+    }
 }

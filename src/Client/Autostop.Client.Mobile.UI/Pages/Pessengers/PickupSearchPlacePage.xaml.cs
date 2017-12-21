@@ -5,20 +5,20 @@ using Xamarin.Forms.Xaml;
 
 namespace Autostop.Client.Mobile.UI.Pages.Pessengers
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PickupSearchPlacePage : ContentPage, IScreenFor<PickupSearchPlaceViewModel>
-	{
-		public PickupSearchPlacePage ()
-		{
-			InitializeComponent ();
-		}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class PickupSearchPlacePage : ContentPage, IScreenFor<PickupSearchPlaceViewModel>
+    {
+        public PickupSearchPlacePage()
+        {
+            InitializeComponent();
+        }
 
-		protected override void OnAppearing()
-		{
-			base.OnAppearing();
-			BindingContext = ViewModel;
-		}
+        public PickupSearchPlaceViewModel ViewModel { get; set; }
 
-		public PickupSearchPlaceViewModel ViewModel { get; set; }
-	}
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext = ViewModel;
+        }
+    }
 }

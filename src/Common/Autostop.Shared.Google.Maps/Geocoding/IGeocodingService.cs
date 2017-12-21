@@ -2,9 +2,9 @@
 
 namespace Google.Maps.Geocoding
 {
-	public interface IGeocodingService
-	{
-		GeocodeResponse GetResponse(GeocodingRequest request);
-		Task<GeocodeResponse> GetResponseAsync(GeocodingRequest request);
-	}
+    public interface IGeocodingService
+    {
+        GeocodeResponse GetResponse(GeocodingRequest request);
+        Task<GeocodeResponse> GetResponseAsync(GeocodingRequest request);
+    }
 }

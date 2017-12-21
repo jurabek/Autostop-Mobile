@@ -5,19 +5,19 @@ using Autostop.Client.Abstraction.Factories;
 
 namespace Autostop.Client.Core.Factories
 {
-	public class ViewFactory : IViewFactory
-	{
-		private readonly IContainer _container = BootstrapperBase.Container;
-		
-		public virtual IScreenFor<TViewModel> CreateView<TViewModel>(TViewModel vm)
-		{
-			var viewType = typeof(IScreenFor<>).MakeGenericType(vm.GetType());
-			if (!(_container.Resolve(viewType) is IScreenFor<TViewModel> view))
-				throw new ArgumentException($"Resolve type {typeof(TViewModel).Name} does not implement IScreen");
+    public class ViewFactory : IViewFactory
+    {
+        private readonly IContainer _container = BootstrapperBase.Container;
 
-			view.ViewModel = vm;
+        public virtual IScreenFor<TViewModel> CreateView<TViewModel>(TViewModel vm)
+        {
+            var viewType = typeof(IScreenFor<>).MakeGenericType(vm.GetType());
+            if (!(_container.Resolve(viewType) is IScreenFor<TViewModel> view))
+                throw new ArgumentException($"Resolve type {typeof(TViewModel).Name} does not implement IScreen");
 
-			return view;
-		}
-	}
+            view.ViewModel = vm;
+
+            return view;
+        }
+    }
 }

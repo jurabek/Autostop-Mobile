@@ -1,6 +1,4 @@
-﻿using Google.Maps;
-
-namespace Autostop.Client.Abstraction.Adapters
+﻿namespace Autostop.Client.Abstraction.Adapters
 {
     public interface ILocationAdapter
     {

@@ -17,60 +17,59 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Google.Maps.Internal;
 
 namespace Google.Maps.Geocoding
 {
-	/// <summary>
-	/// Provides a direct way to access a geocoder via an HTTP request.
-	/// Additionally, the service allows you to perform the converse operation
-	/// (turning coordinates into addresses); this process is known as
-	/// "reverse geocoding."
-	/// </summary>
-	public class GeocodingService : IDisposable, IGeocodingService
-	{
-		public static readonly Uri HttpsUri = new Uri("https://maps.google.com/maps/api/geocode/");
-		public static readonly Uri HttpUri = new Uri("http://maps.google.com/maps/api/geocode/");
+    /// <summary>
+    ///     Provides a direct way to access a geocoder via an HTTP request.
+    ///     Additionally, the service allows you to perform the converse operation
+    ///     (turning coordinates into addresses); this process is known as
+    ///     "reverse geocoding."
+    /// </summary>
+    public class GeocodingService : IDisposable, IGeocodingService
+    {
+        public static readonly Uri HttpsUri = new Uri("https://maps.google.com/maps/api/geocode/");
+        public static readonly Uri HttpUri = new Uri("http://maps.google.com/maps/api/geocode/");
 
-		Uri baseUri;
-		MapsHttp http;
+        private readonly Uri baseUri;
+        private MapsHttp http;
 
-		public GeocodingService(GoogleSigned signingSvc = null, Uri baseUri = null)
-		{
-			this.baseUri = baseUri ?? HttpsUri;
+        public GeocodingService(GoogleSigned signingSvc = null, Uri baseUri = null)
+        {
+            this.baseUri = baseUri ?? HttpsUri;
 
-			this.http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
-		}
+            http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
+        }
 
-		/// <summary>
-		/// Sends the specified request to the Google Maps Geocoding web
-		/// service and parses the response as an GeocodingResponse
-		/// object.
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public GeocodeResponse GetResponse(GeocodingRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+        public void Dispose()
+        {
+            if (http != null)
+            {
+                http.Dispose();
+                http = null;
+            }
+        }
 
-			return http.Get<GeocodeResponse>(url);
-		}
+        /// <summary>
+        ///     Sends the specified request to the Google Maps Geocoding web
+        ///     service and parses the response as an GeocodingResponse
+        ///     object.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public GeocodeResponse GetResponse(GeocodingRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		public async Task<GeocodeResponse> GetResponseAsync(GeocodingRequest request)
-		{
-			var url = new Uri(baseUri, request.ToUri());
+            return http.Get<GeocodeResponse>(url);
+        }
 
-			return await http.GetAsync<GeocodeResponse>(url);
-		}
+        public async Task<GeocodeResponse> GetResponseAsync(GeocodingRequest request)
+        {
+            var url = new Uri(baseUri, request.ToUri());
 
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
-	}
+            return await http.GetAsync<GeocodeResponse>(url);
+        }
+    }
 }

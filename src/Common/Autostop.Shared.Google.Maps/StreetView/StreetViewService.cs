@@ -14,87 +14,86 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.IO;
 using System.Threading.Tasks;
-
 using Google.Maps.Internal;
 
 namespace Google.Maps.StreetView
 {
-	/// <summary>
-	/// The Google Street View Image API lets you embed a static (non-interactive) Street View panorama or thumbnail
-	/// into your web page, without the use of JavaScript. The viewport is defined with URL parameters sent through
-	/// a standard HTTP request, and is returned as a static image.
-	/// </summary>
-	/// <see href="https://developers.google.com/maps/documentation/streetview/intro"/>
-	public class StreetViewService : IDisposable
-	{
-		public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/streetview");
+    /// <summary>
+    ///     The Google Street View Image API lets you embed a static (non-interactive) Street View panorama or thumbnail
+    ///     into your web page, without the use of JavaScript. The viewport is defined with URL parameters sent through
+    ///     a standard HTTP request, and is returned as a static image.
+    /// </summary>
+    /// <see href="https://developers.google.com/maps/documentation/streetview/intro" />
+    public class StreetViewService : IDisposable
+    {
+        public static readonly Uri HttpsUri = new Uri("https://maps.googleapis.com/maps/api/streetview");
 
-		Uri baseUri;
-		MapsHttp http;
+        private readonly Uri baseUri;
+        private MapsHttp http;
 
-		public StreetViewService(GoogleSigned signingSvc = null, Uri baseUri = null)
-		{
-			this.baseUri = baseUri ?? HttpsUri;
+        public StreetViewService(GoogleSigned signingSvc = null, Uri baseUri = null)
+        {
+            this.baseUri = baseUri ?? HttpsUri;
 
-			this.http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
-		}
+            http = new MapsHttp(signingSvc ?? GoogleSigned.SigningInstance);
+        }
 
-		public byte[] GetImage(StreetViewRequest request)
-		{
-			var stream = GetStream(request);
+        public void Dispose()
+        {
+            if (http != null)
+            {
+                http.Dispose();
+                http = null;
+            }
+        }
 
-			return StreamToArray(stream);
-		}
+        public byte[] GetImage(StreetViewRequest request)
+        {
+            var stream = GetStream(request);
 
-		public async Task<byte[]> GetImageAsync(StreetViewRequest request)
-		{
-			var stream = await GetStreamAsync(request);
+            return StreamToArray(stream);
+        }
 
-			return StreamToArray(stream);
-		}
+        public async Task<byte[]> GetImageAsync(StreetViewRequest request)
+        {
+            var stream = await GetStreamAsync(request);
 
-		public Stream GetStream(StreetViewRequest request)
-		{
-			var uri = new Uri(baseUri, request.ToUri());
+            return StreamToArray(stream);
+        }
 
-			return http.GetStream(uri);
-		}
+        public Stream GetStream(StreetViewRequest request)
+        {
+            var uri = new Uri(baseUri, request.ToUri());
 
-		public Task<Stream> GetStreamAsync(StreetViewRequest request)
-		{
-			var uri = new Uri(baseUri, request.ToUri());
+            return http.GetStream(uri);
+        }
 
-			return http.GetStreamAsync(uri);
-		}
+        public Task<Stream> GetStreamAsync(StreetViewRequest request)
+        {
+            var uri = new Uri(baseUri, request.ToUri());
 
-		Byte[] StreamToArray(Stream inputStream)
-		{
-			var outputStream = new MemoryStream();
+            return http.GetStreamAsync(uri);
+        }
 
-			int bytesRead = 0;
-			const int BYTE_BUFFER_LENGTH = 4096;
-			byte[] buffer = new byte[BYTE_BUFFER_LENGTH];
+        private byte[] StreamToArray(Stream inputStream)
+        {
+            var outputStream = new MemoryStream();
 
-			do
-			{
-				bytesRead = inputStream.Read(buffer, 0, BYTE_BUFFER_LENGTH);
-				outputStream.Write(buffer, 0, bytesRead);
-			}
-			while (bytesRead > 0);
+            var bytesRead = 0;
+            const int BYTE_BUFFER_LENGTH = 4096;
+            var buffer = new byte[BYTE_BUFFER_LENGTH];
 
-			return outputStream.ToArray();
-		}
+            do
+            {
+                bytesRead = inputStream.Read(buffer, 0, BYTE_BUFFER_LENGTH);
+                outputStream.Write(buffer, 0, bytesRead);
+            } while (bytesRead > 0);
 
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
-	}
+            return outputStream.ToArray();
+        }
+    }
 }

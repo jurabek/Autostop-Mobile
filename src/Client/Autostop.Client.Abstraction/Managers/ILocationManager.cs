@@ -5,12 +5,11 @@ namespace Autostop.Client.Abstraction.Managers
 {
     public interface ILocationManager : IDisposable
     {
-	    void StartUpdatingLocation();
+        IObservable<Location> LocationChanged { get; }
 
-	    void StopUpdatingLocation();
-		
-	    IObservable<Location> LocationChanged { get; }
+        Location Location { get; }
+        void StartUpdatingLocation();
 
-	    Location Location { get; }
+        void StopUpdatingLocation();
     }
 }

@@ -15,81 +15,83 @@
  * limitations under the License.
  */
 
-using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 
 namespace Google.Maps.Shared
 {
-	public class AddressComponent : IEquatable<AddressComponent>
-	{
-		/// <summary>
-		/// The full text description or name of the address component as
-		/// returned by the Geocoder.
-		/// </summary>
-		[JsonProperty("long_name")]
-		public string LongName { get; set; }
+    public class AddressComponent : IEquatable<AddressComponent>
+    {
+        /// <summary>
+        ///     The full text description or name of the address component as
+        ///     returned by the Geocoder.
+        /// </summary>
+        [JsonProperty("long_name")]
+        public string LongName { get; set; }
 
-		/// <summary>
-		/// An abbreviated textual name for the address component, if available.
-		/// For example, an address component for the state of Alaska may have
-		/// a short_name of "AK" using the 2-letter postal abbreviation.
-		/// </summary>
-		[JsonProperty("short_name")]
-		public string ShortName { get; set; }
+        /// <summary>
+        ///     An abbreviated textual name for the address component, if available.
+        ///     For example, an address component for the state of Alaska may have
+        ///     a short_name of "AK" using the 2-letter postal abbreviation.
+        /// </summary>
+        [JsonProperty("short_name")]
+        public string ShortName { get; set; }
 
-		/// <summary>
-		/// Indicates the type of address component. This array contains a set
-		/// of one or more tags.
-		/// </summary>
-		[JsonProperty("types")]
-		public AddressType[] Types { get; set; }
+        /// <summary>
+        ///     Indicates the type of address component. This array contains a set
+        ///     of one or more tags.
+        /// </summary>
+        [JsonProperty("types")]
+        public AddressType[] Types { get; set; }
 
-		public override bool Equals(object obj)
-		{
-			return Equals(obj as AddressComponent);
-		}
-		public bool Equals(AddressComponent obj)
-		{
-			if(obj == null) return false;
+        public bool Equals(AddressComponent obj)
+        {
+            if (obj == null) return false;
 
-			if(string.Compare(this.ShortName, obj.ShortName) != 0 || string.Compare(this.LongName, obj.LongName) != 0)
-				return false;
+            if (string.Compare(ShortName, obj.ShortName) != 0 || string.Compare(LongName, obj.LongName) != 0)
+                return false;
 
-			int thisTypesLength = -1, objTypesLength = -1;
-			if(this.Types != null) thisTypesLength = this.Types.Length;
-			if(obj.Types != null) objTypesLength = obj.Types.Length;
+            int thisTypesLength = -1, objTypesLength = -1;
+            if (Types != null) thisTypesLength = Types.Length;
+            if (obj.Types != null) objTypesLength = obj.Types.Length;
 
-			try
-			{
-				for(int i = 0; i < objTypesLength; i++)
-				{
-					AddressType thisType = this.Types[i];
-					AddressType objType = obj.Types[i];
-					if(thisType != objType) return false;
-				}
-			}
-			catch { return false; }
+            try
+            {
+                for (var i = 0; i < objTypesLength; i++)
+                {
+                    var thisType = Types[i];
+                    var objType = obj.Types[i];
+                    if (thisType != objType) return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
 
-			//they seem to be equal
-			return true;
-		}
+            //they seem to be equal
+            return true;
+        }
 
-		public override int GetHashCode()
-		{
-			int hash = 13;
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as AddressComponent);
+        }
 
-			//let hash code overflow and roll around
-			unchecked
-			{
-				hash += (hash * 7) + (this.ShortName ?? "").GetHashCode();
-				hash += (hash * 7) + (this.LongName ?? "").GetHashCode();
-				if(this.Types != null)
-				{
-					foreach(var type in this.Types) hash += (hash * 7) + type.GetHashCode();
-				}
-			}
+        public override int GetHashCode()
+        {
+            var hash = 13;
 
-			return hash;
-		}
-	}
+            //let hash code overflow and roll around
+            unchecked
+            {
+                hash += hash * 7 + (ShortName ?? "").GetHashCode();
+                hash += hash * 7 + (LongName ?? "").GetHashCode();
+                if (Types != null)
+                    foreach (var type in Types) hash += hash * 7 + type.GetHashCode();
+            }
+
+            return hash;
+        }
+    }
 }

@@ -5,19 +5,19 @@ using Xamarin.Forms;
 
 namespace Autostop.Client.iOS.Adapters
 {
-	public class PageToViewControllerAdapter : IViewAdapter<UIViewController>
-	{
-		public UIViewController GetView<TViewModel>(IScreenFor<TViewModel> view)
-		{
-			switch (view)
-			{
-				case Page page:
-					return page.CreateViewController();
-				case UIViewController resultView:
-					return resultView;
-			}
+    public class PageToViewControllerAdapter : IViewAdapter<UIViewController>
+    {
+        public UIViewController GetView<TViewModel>(IScreenFor<TViewModel> view)
+        {
+            switch (view)
+            {
+                case Page page:
+                    return page.CreateViewController();
+                case UIViewController resultView:
+                    return resultView;
+            }
 
-			return default(UIViewController);
-		}
-	}
+            return default(UIViewController);
+        }
+    }
 }

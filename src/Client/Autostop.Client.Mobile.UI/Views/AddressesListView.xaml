@@ -1,25 +1,29 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ListView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Autostop.Client.Mobile.UI.Views.AddressesListView"
-             SeparatorVisibility="None">
+
+<ListView xmlns="http://xamarin.com/schemas/2014/forms"
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          x:Class="Autostop.Client.Mobile.UI.Views.AddressesListView"
+          HasUnevenRows="True"
+          SeparatorVisibility="None">
     <ListView.ItemTemplate>
         <DataTemplate>
             <ViewCell>
                 <ViewCell.View>
                     <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding Icon}" 
-                               VerticalOptions="Center" 
-                               WidthRequest="20" HeightRequest="20" 
-                               Margin="10, 5"  Grid.Column="0"/>
                         
-                        <StackLayout Grid.Column="1" VerticalOptions="Center"  Margin="10, 5" Spacing="0">
-                            <Label Text="{Binding PrimaryText}" FontSize="12" TextColor="Black"/>
-                            <Label Text="{Binding SecondaryText}" FontSize="10" TextColor="DimGray" LineBreakMode="TailTruncation"/>
+                        <Image Source="{Binding Icon}"
+                               VerticalOptions="Center"
+                               WidthRequest="20" HeightRequest="20"
+                               Margin="10, 5" Grid.Column="0" />
+
+                        <StackLayout Grid.Column="1" VerticalOptions="Center" Margin="10, 5" Spacing="0">
+                            <Label Text="{Binding PrimaryText}" FontSize="Medium" TextColor="Black" />
+                            <Label Text="{Binding SecondaryText}" FontSize="Small" TextColor="DimGray"
+                                   LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </Grid>
                 </ViewCell.View>

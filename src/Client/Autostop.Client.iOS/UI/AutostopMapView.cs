@@ -3,17 +3,8 @@ using Google.Maps;
 
 namespace Autostop.Client.iOS.UI
 {
-	class AutostopMapView : Google.Maps.MapView
-	{
-		private ObservableCollection<Marker> _markers;
-		public ObservableCollection<Marker> Markers
-		{
-			get => _markers;
-			set
-			{
-				_markers = value;
-				// Create markers for current map
-			}
-		}
-	}
+    public class AutostopMapView : MapView
+    {
+        public ObservableCollection<Marker> Markers { get; set; }
+    }
 }

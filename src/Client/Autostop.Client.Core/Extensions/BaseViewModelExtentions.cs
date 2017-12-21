@@ -9,25 +9,27 @@ namespace Autostop.Client.Core.Extensions
 {
     public static class BaseViewModelExtentions
     {
-        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm, string propertyName)
+        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm,
+            string propertyName)
         {
             return vm.Changed
                 .Where(c => c.PropertyName == propertyName)
-                .Select(c => (TProperty)c.Sender
+                .Select(c => (TProperty) c.Sender
                     .GetType()
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .FirstOrDefault(p => p.Name == propertyName)
                     .GetValue(c.Sender));
         }
 
-        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm, Expression<Func<TProperty>> propertyExpression)
+        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm,
+            Expression<Func<TProperty>> propertyExpression)
         {
             if (!(propertyExpression.Body is MemberExpression member))
                 throw new ArgumentException(string.Format(
                     "Expression '{0}' refers to a method, not a property.",
                     propertyExpression.ToString()));
 
-            PropertyInfo propInfo = member.Member as PropertyInfo;
+            var propInfo = member.Member as PropertyInfo;
             if (propInfo == null)
                 throw new ArgumentException(string.Format(
                     "Expression '{0}' refers to a field, not a property.",

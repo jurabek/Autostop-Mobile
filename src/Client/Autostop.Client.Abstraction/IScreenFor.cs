@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Autostop.Client.Abstraction
+﻿namespace Autostop.Client.Abstraction
 {
     public interface IScreenFor<TViewModel>
     {

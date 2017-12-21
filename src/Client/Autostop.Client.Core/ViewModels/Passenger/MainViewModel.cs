@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
@@ -8,170 +6,165 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
 using Autostop.Client.Core.Enums;
 using Autostop.Common.Shared.Models;
-using GalaSoft.MvvmLight.Command;
 using Conditions;
+using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-	public class MainViewModel : BaseViewModel, IMainViewModel
-	{
-		private readonly ILocationManager _locationManager;
-		private readonly IGeocodingProvider _geocodingProvider;
-		private bool _isPickupAddressLoading;
-		private bool _isDestinationAddressLoading;
-	    private AddressMode _addressMode;
-		private Location _myLocation;
-		private bool _cameraUpdated;
-		private IDisposable _cameraPositionSubscriber;
-		private IDisposable _myLocationSubscriber;
-		private IDisposable _camerStartMovingSubscriber;
+    public class MainViewModel : BaseViewModel, IMainViewModel
+    {
+        private readonly IGeocodingProvider _geocodingProvider;
+        private readonly ILocationManager _locationManager;
+        private AddressMode _addressMode;
+        private IDisposable _cameraPositionSubscriber;
+        private bool _cameraUpdated;
+        private IDisposable _camerStartMovingSubscriber;
+        private bool _isDestinationAddressLoading;
+        private bool _isPickupAddressLoading;
+        private Location _myLocation;
+        private IDisposable _myLocationSubscriber;
 
-		public MainViewModel(
-			ILocationManager locationManager,
-			IGeocodingProvider geocodingProvider)
-		{
-			locationManager.Requires(nameof(locationManager)).IsNotNull();
-			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
+        public MainViewModel(
+            ILocationManager locationManager,
+            IGeocodingProvider geocodingProvider)
+        {
+            locationManager.Requires(nameof(locationManager)).IsNotNull();
+            geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
 
-			_locationManager = locationManager;
-			_geocodingProvider = geocodingProvider;
-			_locationManager.StartUpdatingLocation();
+            _locationManager = locationManager;
+            _geocodingProvider = geocodingProvider;
+            _locationManager.StartUpdatingLocation();
 
-			MyLocationObservable = _locationManager.LocationChanged;
-			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
-			SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
-			RequestToRide = new RelayCommand(RequesToRideAction);
-			GoToMyLocation = new RelayCommand(() => MyLocation = _locationManager.Location);
-		    AddressMode = AddressMode.Pickup;
-		}
+            MyLocationObservable = _locationManager.LocationChanged;
+            SetPickupLocation = new RelayCommand(SetPickupLocationAction);
+            SetDestinationLocation = new RelayCommand(SetDestinationLocationAction);
+            RequestToRide = new RelayCommand(RequesToRideAction);
+            GoToMyLocation = new RelayCommand(() => MyLocation = _locationManager.Location);
+        }
 
-		public override Task Load()
-		{
-			_myLocationSubscriber = MyLocationObservable
-				.Subscribe(async location =>
-				{
-					if (_cameraUpdated)
-						return;
+        public bool IsPickupAddressLoading
+        {
+            get => _isPickupAddressLoading;
+            set => RaiseAndSetIfChanged(ref _isPickupAddressLoading, value);
+        }
 
-					GoToMyLocation.Execute(null);
-					_cameraUpdated = true;
-					await CameraLocationChanged(location);
-				});
+        public bool IsDestinationAddressLoading
+        {
+            get => _isDestinationAddressLoading;
+            set => RaiseAndSetIfChanged(ref _isDestinationAddressLoading, value);
+        }
 
-			_camerStartMovingSubscriber = CameraStartMoving
-				.Subscribe(moving =>
-				{
-					if (AddressMode == AddressMode.Pickup)
-						IsPickupAddressLoading = true;
-					else if (AddressMode == AddressMode.Destination)
-						IsDestinationAddressLoading = true;
-				});
+        public AddressMode AddressMode
+        {
+            get => _addressMode;
+            set => RaiseAndSetIfChanged(ref _addressMode, value);
+        }
 
-			_cameraPositionSubscriber = CameraPositionObservable
-				.Subscribe(async location =>
-				{
-					await CameraLocationChanged(location);
-				});
-            
-			return base.Load();
-		}
+        public Location MyLocation
+        {
+            get => _myLocation;
+            private set
+            {
+                _myLocation = value;
+                RaisePropertyChanged();
+            }
+        }
 
-		private void RequesToRideAction()
-		{
-		}
+        public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
 
-		private void SetDestinationLocationAction()
-		{
-		}
+        public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
 
-		private void SetPickupLocationAction()
-		{
-			AddressMode = AddressMode.Destination;
-		}
+        public IObservable<Location> MyLocationObservable { get; }
 
-		private async Task CameraLocationChanged(Location location)
-		{
+        public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
 
-			if (AddressMode == AddressMode.Pickup)
-			{
-				var address = await _geocodingProvider.ReverseGeocoding(location);
-				if (address != null)
-				{
-					PickupAddress.FormattedAddress = address.FormattedAddress;
-					PickupAddress.Location = address.Location;
-				}
-				IsPickupAddressLoading = false;
-			}
-			else if (AddressMode == AddressMode.Destination)
-			{
-				var address = await _geocodingProvider.ReverseGeocoding(location);
-				if (address != null)
-				{
-					DestinationAddress.FormattedAddress = address.FormattedAddress;
-					DestinationAddress.Location = address.Location;
-				}
-				IsDestinationAddressLoading = false;
-			}
-		}
+        public IObservable<bool> CameraStartMoving { get; set; }
 
-		public bool IsPickupAddressLoading
-		{
-			get => _isPickupAddressLoading;
-			set => RaiseAndSetIfChanged(ref _isPickupAddressLoading, value);
-		}
+        public ICommand SetPickupLocation { get; }
 
-		public bool IsDestinationAddressLoading
-		{
-			get => _isDestinationAddressLoading;
-			set => RaiseAndSetIfChanged(ref _isDestinationAddressLoading, value);
-		}
+        public ICommand SetDestinationLocation { get; }
 
-		public AddressMode AddressMode
-		{
-			get => _addressMode;
-			set => RaiseAndSetIfChanged(ref _addressMode, value);
-		}
+        public ICommand RequestToRide { get; }
 
-		public Location MyLocation
-		{
-			get => _myLocation;
-			private set
-			{
-				_myLocation = value;
-				RaisePropertyChanged();
-			}
-		}
+        public ICommand GoToMyLocation { get; }
 
-		public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
+        public override Task Load()
+        {
+            _myLocationSubscriber = MyLocationObservable
+                .Subscribe(async location =>
+                {
+                    if (_cameraUpdated)
+                        return;
 
-		public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
+                    GoToMyLocation.Execute(null);
+                    _cameraUpdated = true;
+                    await CameraLocationChanged(location);
+                });
 
-		public IObservable<Location> MyLocationObservable { get; }
+            _camerStartMovingSubscriber = CameraStartMoving
+                .Subscribe(moving =>
+                {
+                    if (AddressMode == AddressMode.Pickup)
+                        IsPickupAddressLoading = true;
+                    else if (AddressMode == AddressMode.Destination)
+                        IsDestinationAddressLoading = true;
+                });
 
-		public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
+            _cameraPositionSubscriber = CameraPositionObservable
+                .Subscribe(async location => { await CameraLocationChanged(location); });
+            AddressMode = AddressMode.Pickup;
+            return base.Load();
+        }
 
-		public IObservable<bool> CameraStartMoving { get; set; }
+        private void RequesToRideAction()
+        {
+        }
 
-		public ICommand SetPickupLocation { get; }
+        private void SetDestinationLocationAction()
+        {
+        }
 
-		public ICommand SetDestinationLocation { get; }
+        private void SetPickupLocationAction()
+        {
+            AddressMode = AddressMode.Destination;
+        }
 
-		public ICommand RequestToRide { get; }
+        private async Task CameraLocationChanged(Location location)
+        {
+            if (AddressMode == AddressMode.Pickup)
+            {
+                var address = await _geocodingProvider.ReverseGeocoding(location);
+                if (address != null)
+                {
+                    PickupAddress.FormattedAddress = address.FormattedAddress;
+                    PickupAddress.Location = address.Location;
+                }
+                IsPickupAddressLoading = false;
+            }
+            else if (AddressMode == AddressMode.Destination)
+            {
+                var address = await _geocodingProvider.ReverseGeocoding(location);
+                if (address != null)
+                {
+                    DestinationAddress.FormattedAddress = address.FormattedAddress;
+                    DestinationAddress.Location = address.Location;
+                }
+                IsDestinationAddressLoading = false;
+            }
+        }
 
-		public ICommand GoToMyLocation { get; }
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-
-			if (disposing)
-			{
-				_locationManager.StopUpdatingLocation();
-				_cameraPositionSubscriber.Dispose();
-				_myLocationSubscriber.Dispose();
-				_camerStartMovingSubscriber.Dispose();
-			}
-		}
-	}
+            if (disposing)
+            {
+                _locationManager.StopUpdatingLocation();
+                _cameraPositionSubscriber.Dispose();
+                _myLocationSubscriber.Dispose();
+                _camerStartMovingSubscriber.Dispose();
+            }
+        }
+    }
 }

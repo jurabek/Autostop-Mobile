@@ -17,72 +17,72 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.IO;
-
 using Newtonsoft.Json;
 
 namespace Google.Maps.Internal
 {
-	public class MapsHttp : IDisposable
-	{
-		JsonSerializerSettings settings = new JsonSerializerSettings
-		{
-			Converters = new List<JsonConverter> { new JsonEnumTypeConverter(), new JsonLocationConverter() }
-		};
+    public class MapsHttp : IDisposable
+    {
+        private HttpClient client;
 
-		GoogleSigned signingSvc;
-		HttpClient client;
+        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> {new JsonEnumTypeConverter(), new JsonLocationConverter()}
+        };
 
-		public MapsHttp(GoogleSigned signingSvc)
-		{
-			this.signingSvc = signingSvc;
-			this.client = new HttpClient();
-		}
+        private readonly GoogleSigned signingSvc;
 
-		public async Task<T> GetAsync<T>(Uri uri) where T : class
-		{
-			uri = SignUri(uri);
+        public MapsHttp(GoogleSigned signingSvc)
+        {
+            this.signingSvc = signingSvc;
+            client = new HttpClient();
+        }
 
-			var json = await client.GetStringAsync(uri).ConfigureAwait(false);
+        public void Dispose()
+        {
+            if (client != null)
+            {
+                client.Dispose();
+                client = null;
+            }
+        }
 
-			var result = JsonConvert.DeserializeObject<T>(json, settings);
+        public async Task<T> GetAsync<T>(Uri uri) where T : class
+        {
+            uri = SignUri(uri);
 
-			return result;
-		}
+            var json = await client.GetStringAsync(uri).ConfigureAwait(false);
 
-		public T Get<T>(Uri uri) where T : class
-		{
-			return GetAsync<T>(uri).GetAwaiter().GetResult();
-		}
+            var result = JsonConvert.DeserializeObject<T>(json, settings);
 
-		public async Task<Stream> GetStreamAsync(Uri uri)
-		{
-			uri = SignUri(uri);
+            return result;
+        }
 
-			return await client.GetStreamAsync(uri).ConfigureAwait(false);
-		}
+        public T Get<T>(Uri uri) where T : class
+        {
+            return GetAsync<T>(uri).GetAwaiter().GetResult();
+        }
 
-		public Stream GetStream(Uri uri)
-		{
-			return GetStreamAsync(uri).GetAwaiter().GetResult();
-		}
+        public async Task<Stream> GetStreamAsync(Uri uri)
+        {
+            uri = SignUri(uri);
 
-		Uri SignUri(Uri uri)
-		{
-			if (signingSvc == null) return uri;
+            return await client.GetStreamAsync(uri).ConfigureAwait(false);
+        }
 
-			return new Uri(signingSvc.GetSignedUri(uri));
-		}
+        public Stream GetStream(Uri uri)
+        {
+            return GetStreamAsync(uri).GetAwaiter().GetResult();
+        }
 
-		public void Dispose()
-		{
-			if (client != null)
-			{
-				client.Dispose();
-				client = null;
-			}
-		}
-	}
+        private Uri SignUri(Uri uri)
+        {
+            if (signingSvc == null) return uri;
+
+            return new Uri(signingSvc.GetSignedUri(uri));
+        }
+    }
 }

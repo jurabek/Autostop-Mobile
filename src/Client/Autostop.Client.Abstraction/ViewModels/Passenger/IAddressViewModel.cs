@@ -6,6 +6,6 @@ namespace Autostop.Client.Abstraction.ViewModels.Passenger
     {
         string FormattedAddress { get; set; }
 
-		Location Location { get; set; }
+        Location Location { get; set; }
     }
 }

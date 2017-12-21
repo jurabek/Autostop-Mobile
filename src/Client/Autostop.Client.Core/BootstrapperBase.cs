@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
-using Autostop.Client.Abstraction.Adapters;
+﻿using Autofac;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.Providers;
@@ -15,28 +11,28 @@ namespace Autostop.Client.Core
 {
     public abstract class BootstrapperBase
     {
-	    public static IContainer Container;
+        public static IContainer Container;
 
-	    public IContainer Build()
-	    {
-			var builder = new ContainerBuilder();
-		    var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
+        public IContainer Build()
+        {
+            var builder = new ContainerBuilder();
+            var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
 
-			builder.RegisterType<MainViewModel>().AsSelf();
-		    builder.RegisterType<PickupSearchPlaceViewModel>().AsSelf();
-		    builder.RegisterType<DestinationSearchPlaceViewModel>().AsSelf();
-			builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
-		    builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();
-		    builder.RegisterInstance(new PlacesService(googleSigned)).As<IPlacesService>();
-		    builder.RegisterInstance(new GeocodingService(googleSigned)).As<IGeocodingService>();
+            builder.RegisterType<MainViewModel>().AsSelf();
+            builder.RegisterType<PickupSearchPlaceViewModel>().AsSelf();
+            builder.RegisterType<DestinationSearchPlaceViewModel>().AsSelf();
+            builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
+            builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();
+            builder.RegisterInstance(new PlacesService(googleSigned)).As<IPlacesService>();
+            builder.RegisterInstance(new GeocodingService(googleSigned)).As<IGeocodingService>();
 
-			ContainerRegistery(builder);
+            ContainerRegistery(builder);
 
-		    Container = builder.Build();
-	        return Container;
-	    }
+            Container = builder.Build();
+            return Container;
+        }
 
 
-	    protected abstract void ContainerRegistery(ContainerBuilder builder);
+        protected abstract void ContainerRegistery(ContainerBuilder builder);
     }
 }
