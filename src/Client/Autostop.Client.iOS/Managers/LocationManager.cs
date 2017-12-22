@@ -15,12 +15,13 @@ namespace Autostop.Client.iOS.Managers
         public LocationManager()
         {
             _localtionManager = new CLLocationManager {PausesLocationUpdatesAutomatically = false};
+            _localtionManager.RequestWhenInUseAuthorization();
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-                _localtionManager.RequestAlwaysAuthorization();
+            //if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            //    _localtionManager.RequestAlwaysAuthorization();
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-                _localtionManager.AllowsBackgroundLocationUpdates = true;
+            //if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            //    _localtionManager.AllowsBackgroundLocationUpdates = true;
 
             LocationChanged = Observable
                 .FromEventPattern<EventHandler<CLLocationsUpdatedEventArgs>, CLLocationsUpdatedEventArgs>
@@ -30,6 +31,11 @@ namespace Autostop.Client.iOS.Managers
                 .Select(location => location.Coordinate)
                 .Select(c => new Location(c.Latitude, c.Longitude))
                 .Do(l => Location = l);
+
+            HeadingChanged = Observable
+                .FromEventPattern<EventHandler<CLHeadingUpdatedEventArgs>, CLHeadingUpdatedEventArgs>
+                (e => _localtionManager.UpdatedHeading += e, e => _localtionManager.UpdatedHeading -= e)
+                .Select(e => e.EventArgs.NewHeading.TrueHeading);
         }
 
         public void StartUpdatingLocation()
@@ -42,7 +48,10 @@ namespace Autostop.Client.iOS.Managers
             _localtionManager.StopUpdatingLocation();
         }
 
+        public double Course => _localtionManager.Location.Course;
+
         public IObservable<Location> LocationChanged { get; }
+        public IObservable<double> HeadingChanged { get; }
 
         public Location Location { get; private set; }
 

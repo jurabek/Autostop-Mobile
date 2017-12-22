@@ -7,7 +7,12 @@ namespace Autostop.Client.Abstraction.Managers
     {
         IObservable<Location> LocationChanged { get; }
 
+        IObservable<double> HeadingChanged { get; }
+
         Location Location { get; }
+
+        double Course { get; }
+
         void StartUpdatingLocation();
 
         void StopUpdatingLocation();

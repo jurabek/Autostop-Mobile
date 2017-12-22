@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Autofac;
 using Autostop.Client.Abstraction;
+using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core;
 using Autostop.Client.Core.Enums;
@@ -25,8 +26,9 @@ namespace Autostop.Client.iOS.Views.Passenger
 	public class MainViewController : UIViewController, IScreenFor<MainViewModel>
 	{
 		private readonly INavigationService _navigationService;
+	    private readonly ILocationManager _locationManager;
 
-		private readonly UIImageView _centerPinImageView = new UIImageView(Icons.Pin)
+	    private readonly UIImageView _centerPinImageView = new UIImageView(Icons.Pin)
 		{
 			ContentMode = UIViewContentMode.ScaleAspectFit,
 			TranslatesAutoresizingMaskIntoConstraints = false
@@ -51,9 +53,12 @@ namespace Autostop.Client.iOS.Views.Passenger
 		private UIStackView _addresseStackView;
 		private List<Binding> _bindings;
 
-		public MainViewController(INavigationService navigationService)
+		public MainViewController(
+            INavigationService navigationService,
+            ILocationManager locationManager)
 		{
-			_navigationService = navigationService;
+		    _navigationService = navigationService;
+		    _locationManager = locationManager;
 		}
 
 		public MainViewModel ViewModel { get; set; }
@@ -98,16 +103,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 			ViewModel.ObservablePropertyChanged(() => ViewModel.AddressMode)
 				.Subscribe(_ => ViewDidLayoutSubviews());
-
-			foreach (var availableDriver in MockData.AvailableDrivers)
-			{
-				var marker = new Marker();
-				marker.Position = new CLLocationCoordinate2D(availableDriver.Latitude, availableDriver.Longitude);
-				marker.IconView = new UIImageView(new CGRect(0, 0, 20, 40)) { Image = UIImage.FromFile("car.png") };
-				marker.Map = _mapView;
-				marker.Rotation = 90;
-			}
-
+            
 			await ViewModel.Load();
 		}
 
@@ -137,8 +133,22 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		private void ShowNavigationBar(EventPattern<GMSCameraEventArgs> eventPattern)
 		{
-			//
-			_myLocationButton.Hidden = false;
+            _mapView.Clear();
+		    foreach (var availableDriver in MockData.AvailableDrivers)
+		    {
+		        var marker = new Marker();
+		        var p = new CLLocationCoordinate2D(availableDriver.Latitude, availableDriver.Longitude);
+		        marker.Position = p;
+		        marker.IconView = new UIImageView(new CGRect(0, 0, 20, 40)) { Image = UIImage.FromFile("car.png") };
+		        marker.Map = _mapView;
+		        marker.GroundAnchor = new CGPoint(0.5, 0.5);
+		        marker.Flat = true;
+		        marker.Rotation = eventPattern.EventArgs.Position.Bearing;
+		    }
+
+
+            //
+            _myLocationButton.Hidden = false;
 			UIView.Animate(0.3, () =>
 			{
 				//NavigationController.NavigationBarHidden = false;
