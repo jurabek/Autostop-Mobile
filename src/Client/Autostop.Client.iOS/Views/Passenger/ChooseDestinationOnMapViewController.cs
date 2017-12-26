@@ -4,10 +4,12 @@ using System.Text;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
+using JetBrains.Annotations;
 using UIKit;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
+	[UsedImplicitly]
 	public class ChooseDestinationOnMapViewController : BaseChooseOnMapViewController<ChooseDestinationOnMapViewModel>
 	{
 		public override void ViewDidLoad()

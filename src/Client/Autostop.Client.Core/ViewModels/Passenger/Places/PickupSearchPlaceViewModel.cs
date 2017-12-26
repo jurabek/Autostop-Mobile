@@ -15,8 +15,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 
 		public PickupSearchPlaceViewModel(
 			INavigationService navigationService,
-			IPlacesProvider placesProvider, 
-			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, navigationService)
+			IPlacesProvider placesProvider,
+			IGeocodingProvider geocodingProvider,
+			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, geocodingProvider, navigationService)
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 			PlaceholderText = "Set pickup location";

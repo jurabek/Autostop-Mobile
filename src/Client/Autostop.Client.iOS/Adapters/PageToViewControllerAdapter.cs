@@ -22,15 +22,12 @@ namespace Autostop.Client.iOS.Adapters
             return default(UIViewController);
         }
 
-	    public UIViewController GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : IBaseSearchPlaceViewModel
+	    public UIViewController GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : ISearchableViewModel
 		{
 		    if (view is Page page)
 		    {
-			    var navigationBar = ((UINavigationController) UIApplication.SharedApplication.KeyWindow.RootViewController).NavigationBar;
-
 				var uiViewController = page.CreateViewController();
-			    navigationBar.BarTintColor = UIColor.FromRGB(245, 245, 245);
-			    uiViewController.CreateSearchViewOnNavigationBar(view.ViewModel);
+				uiViewController.CreateSearchViewOnNavigationBar(view.ViewModel);
 				return uiViewController;
 			}
 			return null;

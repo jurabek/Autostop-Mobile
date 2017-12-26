@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Reflection;
+using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.ViewModels;
 
 namespace Autostop.Client.Core.Extensions
@@ -21,7 +22,7 @@ namespace Autostop.Client.Core.Extensions
                     .GetValue(c.Sender));
         }
 
-        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm,
+        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this IObservableViewModel vm,
             Expression<Func<TProperty>> propertyExpression)
         {
             if (!(propertyExpression.Body is MemberExpression member))

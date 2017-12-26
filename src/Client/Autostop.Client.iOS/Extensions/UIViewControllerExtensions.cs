@@ -7,7 +7,7 @@ namespace Autostop.Client.iOS.Extensions
 {
     public static class UIViewControllerExtensions
     {
-        public static void CreateSearchViewOnNavigationBar(this UIViewController viewController, ISearchableViewModel vm)
+        public static NavigationBarSearchTextField CreateSearchViewOnNavigationBar(this UIViewController viewController, ISearchableViewModel vm)
         {
 	        var navigationBar = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).NavigationBar;
 
@@ -18,6 +18,8 @@ namespace Autostop.Client.iOS.Extensions
 			var searchTextField = new NavigationBarSearchTextField(frame, vm);
             viewController.NavigationItem.TitleView = searchTextField;
             searchTextField.BecomeFirstResponder();
+
+	        return searchTextField;
         }
     }
 }

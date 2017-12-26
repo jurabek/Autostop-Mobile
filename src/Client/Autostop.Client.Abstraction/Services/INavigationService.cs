@@ -11,10 +11,14 @@ namespace Autostop.Client.Abstraction.Services
 
         void NavigateTo<TViewModel>();
 
-        void NavigateTo<TViewModel>(Action<object, TViewModel> configure);
+	    void NavigateToModal<TViewModel>();
 
-	    void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : IBaseSearchPlaceViewModel;
+		void NavigateTo<TViewModel>(Action<object, TViewModel> configure);
 
-        void GoBack();
+	    void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel;
+
+	    void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel;
+
+		void GoBack();
     }
 }

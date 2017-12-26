@@ -18,7 +18,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			IPlacesProvider placesProvider,
 		    IEmptyAutocompleteResultProvider autocompleteResultProvider,
 			ISettingsProvider settingsProvider,
-			IGeocodingProvider geocodingProvider) : base(placesProvider, navigationService)
+			IGeocodingProvider geocodingProvider) : base(placesProvider, geocodingProvider, navigationService)
 	    {
 		    _autocompleteResultProvider = autocompleteResultProvider;
 		    PlaceholderText = "Set home address";

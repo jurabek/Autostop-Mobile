@@ -1,11 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
+using Autostop.Client.Abstraction.Services;
+using Autostop.Common.Shared.Models;
+using GalaSoft.MvvmLight.Command;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    public class ChooseDestinationOnMapViewModel : BaseChooseOnMapViewModel
+    public sealed class ChooseDestinationOnMapViewModel : BaseChooseOnMapViewModel
     {
+	    private readonly INavigationService _navigationService;
+
+	    public ChooseDestinationOnMapViewModel(INavigationService navigationService)
+	    {
+		    _navigationService = navigationService;
+
+		    GoBack = new RelayCommand(GoBackExecute);
+	    }
+
+	    private void GoBackExecute()
+	    {
+		    _navigationService.GoBack();
+	    }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Autostop.Client.Core.ViewModels
+﻿namespace Autostop.Client.Abstraction
 {
     public class ObservablePropertyChangedEventArgs<TSender>
     {

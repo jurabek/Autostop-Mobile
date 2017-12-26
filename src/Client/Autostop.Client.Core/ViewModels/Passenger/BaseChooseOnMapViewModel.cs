@@ -11,6 +11,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		public bool IsSearching { get; set; }
 		public string PlaceholderText { get; set; }
 		public string SearchText { get; set; }
-		public ICommand GoBack { get; }
+		public ICommand GoBack { get; protected set; }
 	}
 }

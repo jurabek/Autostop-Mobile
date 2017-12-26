@@ -25,6 +25,7 @@ namespace Autostop.Client.iOS
             builder.RegisterType<PageToViewControllerAdapter>().As<IViewAdapter<UIViewController>>();
             builder.RegisterType<NavigationService>().As<INavigationService>();
             builder.RegisterType<MainViewController>().As<IScreenFor<MainViewModel>>();
+	        builder.RegisterType<ChooseDestinationOnMapViewController>().As<IScreenFor<ChooseDestinationOnMapViewModel>>();
 
             builder.ClientTypesRegistry();
         }

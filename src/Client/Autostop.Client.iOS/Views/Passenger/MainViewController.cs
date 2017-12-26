@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction;
-using Autostop.Client.Core.Enums;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
@@ -38,6 +37,18 @@ namespace Autostop.Client.iOS.Views.Passenger
 			TranslatesAutoresizingMaskIntoConstraints = false
 		};
 
+		private readonly RequestUIView requestUiView = new RequestUIView
+		{
+			TranslatesAutoresizingMaskIntoConstraints = false
+		};
+
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
+			NavigationController.NavigationBar.BarTintColor = UIColor.White;
+			NavigationController.NavigationBar.Translucent = false;
+		}
+
 		public override async void ViewDidLoad()
 		{
 			base.ViewDidLoad();
@@ -48,22 +59,37 @@ namespace Autostop.Client.iOS.Views.Passenger
 			SetupConstraints();
 			AddSubscribers();
 			await ViewModel.Load();
+			_setPickupButton.TouchUpInside += _setPickupButton_TouchUpInside;
+		}
+
+		private bool hidden;
+		private NSLayoutConstraint _requestHeightConstraint;
+
+		private void _setPickupButton_TouchUpInside(object sender, EventArgs e)
+		{
+			hidden = !hidden;
+			UIView.Animate(0.1, 0, UIViewAnimationOptions.CurveEaseIn, () =>
+			{
+				_requestHeightConstraint.Active = hidden;
+				View.SetNeedsLayout();
+				View.LayoutIfNeeded();
+			}, null);
 		}
 
 		public override void ViewDidLayoutSubviews()
 		{
 			base.ViewDidLayoutSubviews();
 
-			if (ViewModel.AddressMode == AddressMode.Pickup)
-			{
-				_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
-				_destinationAddressTextField.Alpha = 0;
-			}
-			else if (ViewModel.AddressMode == AddressMode.Destination)
+			if (ViewModel.RideViewModel.HasPickupLocation)
 			{
 				_pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
 				_destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
 				_destinationAddressTextField.Alpha = 1;
+			}
+			else
+			{
+				_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
+				_destinationAddressTextField.Alpha = 0;
 			}
 
 			_myLocationButton.ToCircleButton();
@@ -71,7 +97,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		private void AddSubscribers()
 		{
-			ViewModel.ObservablePropertyChanged(() => ViewModel.AddressMode)
+			ViewModel.RideViewModel.ObservablePropertyChanged(() => ViewModel.RideViewModel.HasPickupLocation)
 				.Subscribe(_ => ViewDidLayoutSubviews());
 
 			ViewModel.CameraStartMoving
@@ -103,15 +129,15 @@ namespace Autostop.Client.iOS.Views.Passenger
 				Axis = UILayoutConstraintAxis.Vertical,
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				Distribution = UIStackViewDistribution.FillEqually,
-				Spacing = 5
+				Spacing = 2
 			};
 			_pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
 			_destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
 		}
-		
+
 		private void AddCommands()
 		{
-			this.BindCommand(_setPickupButton, ViewModel.SetPickupLocation);
+			this.BindCommand(_setPickupButton, ViewModel.RideViewModel.SetPickupLocation);
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
 		}
 
@@ -121,27 +147,15 @@ namespace Autostop.Client.iOS.Views.Passenger
 			{
 				this.SetBinding(
 					() => _pickupAddressTextField.Text,
-					() => ViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
+					() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _destinationAddressTextField.Text,
-					() => ViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
-
-				this.SetBinding(
-					() => _pickupAddressTextField.Mode,
-					() => ViewModel.AddressMode, BindingMode.TwoWay),
-
-				this.SetBinding(
-					() => _destinationAddressTextField.Mode,
-					() => ViewModel.AddressMode, BindingMode.TwoWay),
+					() => ViewModel.RideViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _pickupAddressTextField.Loading,
-					() => ViewModel.IsPickupAddressLoading, BindingMode.TwoWay),
-
-				this.SetBinding(
-					() => _destinationAddressTextField.Loading,
-					() => ViewModel.IsDestinationAddressLoading, BindingMode.TwoWay),
+					() => ViewModel.RideViewModel.IsPickupAddressLoading, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _mapView.OnlineDrivers,
@@ -162,6 +176,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 			View.AddSubview(_centerPinImageView);
 			View.AddSubview(_setPickupButton);
 			View.AddSubview(_myLocationButton);
+			View.AddSubview(requestUiView);
 		}
 
 		private void SetupConstraints()
@@ -207,6 +222,14 @@ namespace Autostop.Client.iOS.Views.Passenger
 				_setPickupButton.WidthAnchor.ConstraintEqualTo(305),
 				_setPickupButton.HeightAnchor.ConstraintEqualTo(35)
 			});
+
+			_requestHeightConstraint = requestUiView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor, (nfloat)0.3);
+			
+			NSLayoutConstraint.ActivateConstraints(new[]
+			{
+				requestUiView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor),
+				requestUiView.WidthAnchor.ConstraintEqualTo(View.WidthAnchor),
+			});
 		}
 
 		private void CamerPostionIdle(Location location)
@@ -240,7 +263,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 			ViewModel.NavigateToPickupSearch.Execute(null);
 			return false;
 		}
-		
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);

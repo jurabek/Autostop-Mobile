@@ -6,6 +6,6 @@ namespace Autostop.Client.Abstraction.Adapters
     {
         TView GetView<TViewModel>(IScreenFor<TViewModel> view);
 
-	    TView GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : IBaseSearchPlaceViewModel;
+	    TView GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : ISearchableViewModel;
     }
 }

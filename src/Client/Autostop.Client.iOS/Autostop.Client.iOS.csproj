@@ -107,6 +107,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Constants\Colors.cs" />
     <Compile Include="Constants\Icons.cs" />
+    <Compile Include="Renderers\AutostopXamarinFormsPageRenderer.cs" />
     <Compile Include="UI\MapView.cs" />
     <Compile Include="UI\BaseAddressTextField.cs" />
     <Compile Include="UI\DestinationAddressTextField.cs" />
@@ -131,6 +132,7 @@
     <BundleResource Include="Resources\set_location.png" />
     <BundleResource Include="Resources\work.png" />
     <BundleResource Include="Resources\car.png" />
+    <Compile Include="UI\RequestUIView.cs" />
     <Compile Include="Views\Passenger\BaseChooseOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseDestinationOnMapViewController.cs" />
     <Compile Include="Views\Passenger\MainViewController.cs" />

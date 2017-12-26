@@ -45,6 +45,13 @@ namespace Autostop.Client.iOS.Services
             _navigationController.PushViewController(viewController, false);
         }
 
+	    public void NavigateToModal<TViewModel>()
+	    {
+			var viewModel = _container.Resolve<TViewModel>();
+		    var viewController = GetViewController(viewModel);
+		    _navigationController.PopToViewController(viewController, false);
+		}
+
         public void NavigateTo<TViewModel>(Action<object, TViewModel> configure)
         {
             var viewModel = _container.Resolve<TViewModel>();
@@ -53,14 +60,21 @@ namespace Autostop.Client.iOS.Services
             _navigationController.PushViewController(viewController, false);
         }
 
-	    public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : IBaseSearchPlaceViewModel
-	    {
+	    public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel
+		{
 		    var viewModel = _container.Resolve<TViewModel>();
 			var view = _viewFactory.CreateView(viewModel);
 		    var viewController = _viewAdapter.GetSearchView(view);
 		    callBack(viewModel);
 			_navigationController.PushViewController(viewController, false);
 		}
+
+	    public void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel
+		{
+		    var view = _viewFactory.CreateView(viewModel);
+		    var viewController = _viewAdapter.GetSearchView(view);
+		    _navigationController.PushViewController(viewController, false);
+	    }
 
 		public void GoBack()
         {
