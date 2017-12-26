@@ -5,6 +5,8 @@ namespace Autostop.Client.Abstraction.Providers
 {
     public interface IGeocodingProvider
     {
-        Task<Address> ReverseGeocoding(Location location);
+        Task<Address> ReverseGeocodingFromLocation(Location location);
+
+	    Task<Address> ReverseGeocodingFromPlaceId(string placeId);
     }
 }

@@ -3,6 +3,7 @@ using Autofac;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
+using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core;
 using UIKit;
 
@@ -52,9 +53,18 @@ namespace Autostop.Client.iOS.Services
             _navigationController.PushViewController(viewController, false);
         }
 
-        public void GoBack()
+	    public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : IBaseSearchPlaceViewModel
+	    {
+		    var viewModel = _container.Resolve<TViewModel>();
+			var view = _viewFactory.CreateView(viewModel);
+		    var viewController = _viewAdapter.GetSearchView(view);
+		    callBack(viewModel);
+			_navigationController.PushViewController(viewController, false);
+		}
+
+		public void GoBack()
         {
-            _navigationController.PopViewController(true);
+            _navigationController.PopViewController(false);
         }
 
         private UIViewController GetViewController<TViewModel>(TViewModel viewModel)

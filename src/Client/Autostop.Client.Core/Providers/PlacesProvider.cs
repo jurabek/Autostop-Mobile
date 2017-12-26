@@ -3,9 +3,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Managers;
+using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.ViewModels;
+using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels;
+using Autostop.Client.Core.ViewModels.Passenger;
 using Conditions;
 using Google.Maps;
 using Google.Maps.Places;
@@ -29,8 +32,11 @@ namespace Autostop.Client.Core.Providers
             _placesService = placesService;
         }
 
-        public async Task<ObservableCollection<IAutoCompleteResultViewModel>> GetAutoCompleteResponse(string input)
+        public async Task<ObservableCollection<IAutoCompleteResultModel>> GetAutoCompleteResponse(string input)
         {
+	        if (input == "AAA")
+		        throw new Exception("AAA");
+
             var currentLocation = _locationManager.Location;
             try
             {
@@ -47,8 +53,8 @@ namespace Autostop.Client.Core.Providers
                 if (result?.Status != ServiceResponseStatus.Ok)
                     return null;
 
-                var addresses = new ObservableCollection<IAutoCompleteResultViewModel>(result.Predictions.Select(p =>
-                    new AutoCompleteResultViewModel
+                var addresses = new ObservableCollection<IAutoCompleteResultModel>(result.Predictions.Select(p =>
+                    new AutoCompleteResultModel
                     {
                         PrimaryText = p.StructuredFormatting?.MainText,
                         SecondaryText = p.StructuredFormatting?.SecondaryText,

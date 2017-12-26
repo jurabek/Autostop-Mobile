@@ -4,6 +4,9 @@ namespace Autostop.Client.iOS.Constants
 {
     public static class Icons
     {
-        public static UIImage Pin = UIImage.FromFile("pin_pickup.png");
+        public static readonly UIImage PickupPin = UIImage.FromFile("pin_pickup.png");
+		public static readonly UIImage DestinationPin = UIImage.FromFile("pickup_destination_dot.png");
+	    public static readonly UIImage Car = UIImage.FromFile("car.png");
+
     }
 }

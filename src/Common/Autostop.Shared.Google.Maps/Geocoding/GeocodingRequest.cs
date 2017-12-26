@@ -21,86 +21,88 @@ using Google.Maps.Shared;
 
 namespace Google.Maps.Geocoding
 {
-    /// <summary>
-    ///     Provides a request for the Google Maps Geocoding web service.
-    /// </summary>
-    public class GeocodingRequest : BaseRequest
-    {
-        /// <summary>
-        ///     The address that you want to geocode.  Use LatLng to perform a reverse geocoding request.
-        /// </summary>
-        /// <see href="http://code.google.com/apis/maps/documentation/geocoding/#ReverseGeocoding" />
-        /// <remarks>Required if latlng not present.</remarks>
-        public Location Address { get; set; }
+	/// <summary>
+	///     Provides a request for the Google Maps Geocoding web service.
+	/// </summary>
+	public class GeocodingRequest : BaseRequest
+	{
+		/// <summary>
+		///     The address that you want to geocode.  Use LatLng to perform a reverse geocoding request.
+		/// </summary>
+		/// <see href="http://code.google.com/apis/maps/documentation/geocoding/#ReverseGeocoding" />
+		/// <remarks>Required if latlng not present.</remarks>
+		public Location Address { get; set; }
 
-        /// <summary>
-        ///     Undocumented address component filters.
-        ///     Only geocoding results matching the component filters will be returned.
-        /// </summary>
-        /// <remarks>IE: country:uk|locality:stathern</remarks>
-        public ComponentFilter Components { get; set; }
+		/// <summary>
+		///     Undocumented address component filters.
+		///     Only geocoding results matching the component filters will be returned.
+		/// </summary>
+		/// <remarks>IE: country:uk|locality:stathern</remarks>
+		public ComponentFilter Components { get; set; }
 
-        /// <summary>
-        ///     The bounding box of the viewport within which to bias geocode
-        ///     results more prominently.
-        /// </summary>
-        /// <remarks>
-        ///     Optional. This parameter will only influence, not fully restrict, results
-        ///     from the geocoder.
-        /// </remarks>
-        /// <see href="http://code.google.com/apis/maps/documentation/geocoding/#Viewports" />
-        public Viewport Bounds { get; set; }
+		/// <summary>
+		///     The bounding box of the viewport within which to bias geocode
+		///     results more prominently.
+		/// </summary>
+		/// <remarks>
+		///     Optional. This parameter will only influence, not fully restrict, results
+		///     from the geocoder.
+		/// </remarks>
+		/// <see href="http://code.google.com/apis/maps/documentation/geocoding/#Viewports" />
+		public Viewport Bounds { get; set; }
 
-        /// <summary>
-        ///     The region code, specified as a ccTLD ("top-level domain")
-        ///     two-character value.
-        /// </summary>
-        /// <remarks>
-        ///     Optional. This parameter will only influence, not fully restrict, results
-        ///     from the geocoder.
-        /// </remarks>
-        /// <see href="http://code.google.com/apis/maps/documentation/geocoding/#RegionCodes" />
-        public string Region { get; set; }
+		/// <summary>
+		///     The region code, specified as a ccTLD ("top-level domain")
+		///     two-character value.
+		/// </summary>
+		/// <remarks>
+		///     Optional. This parameter will only influence, not fully restrict, results
+		///     from the geocoder.
+		/// </remarks>
+		/// <see href="http://code.google.com/apis/maps/documentation/geocoding/#RegionCodes" />
+		public string Region { get; set; }
 
-        /// <summary>
-        ///     The language in which to return results. If language is not
-        ///     supplied, the geocoder will attempt to use the native language of
-        ///     the domain from which the request is sent wherever possible.
-        /// </summary>
-        /// <remarks>Optional.</remarks>
-        /// <see href="http://code.google.com/apis/maps/faq.html#languagesupport" />
-        public string Language { get; set; }
+		/// <summary>
+		///     The language in which to return results. If language is not
+		///     supplied, the geocoder will attempt to use the native language of
+		///     the domain from which the request is sent wherever possible.
+		/// </summary>
+		/// <remarks>Optional.</remarks>
+		/// <see href="http://code.google.com/apis/maps/faq.html#languagesupport" />
+		public string Language { get; set; }
 
-        public override Uri ToUri()
-        {
-            if (Address == null) throw new InvalidOperationException("Address is required");
+		public override Uri ToUri()
+		{
+			if (Address == null) throw new InvalidOperationException("Address is required");
 
-            var qsb = new QueryStringBuilder();
+			var qsb = new QueryStringBuilder();
 
-            if (Address != null)
-                if (Address.GetType() == typeof(LatLng))
-                    qsb.Append("latlng", Address.GetAsUrlParameter());
-                else
-                    qsb.Append("address", Address.GetAsUrlParameter());
+			if (Address != null)
+				if (Address.GetType() == typeof(LatLng))
+					qsb.Append("latlng", Address.GetAsUrlParameter());
+				else if (Address.GetType() == typeof(PlaceIdLocation))
+					qsb.Append("place_id", Address.GetAsUrlParameter());
+				else
+					qsb.Append("address", Address.GetAsUrlParameter());
 
-            qsb.Append("bounds", GetBoundsStr())
-                .Append("components", Components != null ? Components.ToUrlParameters() : "")
-                .Append("region", Region)
-                .Append("language", Language);
+			qsb.Append("bounds", GetBoundsStr())
+				.Append("components", Components != null ? Components.ToUrlParameters() : "")
+				.Append("region", Region)
+				.Append("language", Language);
 
-            var url = "json?" + qsb;
+			var url = "json?" + qsb;
 
-            return new Uri(url, UriKind.Relative);
-        }
+			return new Uri(url, UriKind.Relative);
+		}
 
-        private string GetBoundsStr()
-        {
-            if (Bounds == null) return null;
+		private string GetBoundsStr()
+		{
+			if (Bounds == null) return null;
 
-            var swStr = Bounds.Southwest.GetAsUrlParameter();
-            var neStr = Bounds.Northeast.GetAsUrlParameter();
+			var swStr = Bounds.Southwest.GetAsUrlParameter();
+			var neStr = Bounds.Northeast.GetAsUrlParameter();
 
-            return string.Concat(swStr + Constants.PIPE_URL_ENCODED + neStr);
-        }
-    }
+			return string.Concat(swStr + Constants.PIPE_URL_ENCODED + neStr);
+		}
+	}
 }

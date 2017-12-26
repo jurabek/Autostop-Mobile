@@ -1,6 +1,6 @@
-﻿namespace Autostop.Client.Abstraction.ViewModels
+﻿namespace Autostop.Client.Abstraction.Models
 {
-    public interface IAutoCompleteResultViewModel
+    public interface IAutoCompleteResultModel
     {
         string PlaceId { get; set; }
         string PrimaryText { get; set; }

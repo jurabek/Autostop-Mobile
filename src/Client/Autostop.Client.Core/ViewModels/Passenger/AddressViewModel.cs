@@ -6,7 +6,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
     public class AddressViewModel : BaseViewModel, IAddressViewModel
     {
         private string _formattedAddress;
-
         private Location _location;
 
         public string FormattedAddress
@@ -20,5 +19,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger
             get => _location;
             set => RaiseAndSetIfChanged(ref _location, value);
         }
+
+	    public void SetAddress(Address address)
+	    {
+		    FormattedAddress = address.FormattedAddress;
+		    Location = address.Location;
+		}
     }
 }

@@ -6,7 +6,8 @@ namespace Autostop.Client.iOS.UI
     {
         public MyLocationButton()
         {
-            SetImage(UIImage.FromFile("location.png"), UIControlState.Normal);
+	        TranslatesAutoresizingMaskIntoConstraints = false;
+			SetImage(UIImage.FromFile("location.png"), UIControlState.Normal);
             TintColor = UIColor.Black;
             BackgroundColor = UIColor.White;
             ImageEdgeInsets = new UIEdgeInsets(10, 10, 10, 10);

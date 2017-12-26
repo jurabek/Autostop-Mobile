@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using System.Reactive.Linq;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Autostop.Client.Mobile.UI.Views
@@ -9,6 +11,10 @@ namespace Autostop.Client.Mobile.UI.Views
         public AddressesListView() : base(ListViewCachingStrategy.RecycleElementAndDataTemplate)
         {
             InitializeComponent();
-        }
+	        Observable.FromEventPattern<SelectedItemChangedEventArgs>(this, "ItemSelected")
+		        .Select(x => x.Sender)
+		        .Cast<ListView>()
+		        .Subscribe(l => l.SelectedItem = null);
+		}
     }
 }

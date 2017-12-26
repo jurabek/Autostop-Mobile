@@ -1,4 +1,5 @@
 ﻿using System;
+using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 
 namespace Autostop.Client.Abstraction.Services
 {
@@ -11,6 +12,8 @@ namespace Autostop.Client.Abstraction.Services
         void NavigateTo<TViewModel>();
 
         void NavigateTo<TViewModel>(Action<object, TViewModel> configure);
+
+	    void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : IBaseSearchPlaceViewModel;
 
         void GoBack();
     }

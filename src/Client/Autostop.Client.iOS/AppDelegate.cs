@@ -29,7 +29,7 @@ namespace Autostop.Client.iOS
                 .Resolve<INavigationService>()
                 .NavigateTo<MainViewModel>();
 
-            UINavigationBar.Appearance.BackgroundColor = UIColor.White;
+	        UINavigationBar.Appearance.BarTintColor = UIColor.White;
             UINavigationBar.Appearance.Translucent = false;
             UINavigationBar.Appearance.ShadowImage = new UIImage();
             UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);

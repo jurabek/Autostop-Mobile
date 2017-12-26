@@ -1,120 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Reactive.Linq;
-using Autofac;
 using Autostop.Client.Abstraction;
-using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Core;
 using Autostop.Client.Core.Enums;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
-using Autostop.Client.iOS.Extensions.MainView;
 using Autostop.Client.iOS.UI;
 using Autostop.Common.Shared.Models;
 using CoreGraphics;
-using CoreLocation;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
+using JetBrains.Annotations;
 using UIKit;
+using MapView = Autostop.Client.iOS.UI.MapView;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
+	[UsedImplicitly]
 	public class MainViewController : UIViewController, IScreenFor<MainViewModel>
 	{
-		private readonly INavigationService _navigationService;
-
-		private readonly UIImageView _centerPinImageView = new UIImageView(Icons.Pin)
+		private UIStackView _addresseStackView;
+		private List<Binding> _bindings;
+		private readonly DestinationAddressTextField _destinationAddressTextField = new DestinationAddressTextField();
+		private readonly PickupAddressTextField _pickupAddressTextField = new PickupAddressTextField();
+		private readonly MapView _mapView = new MapView();
+		private readonly MyLocationButton _myLocationButton = new MyLocationButton();
+		private readonly UIImageView _centerPinImageView = new UIImageView(Icons.PickupPin)
 		{
 			ContentMode = UIViewContentMode.ScaleAspectFit,
 			TranslatesAutoresizingMaskIntoConstraints = false
 		};
-
-		private readonly DestinationAddressTextField _destinationAddressTextField = new DestinationAddressTextField();
-
-		private readonly AutostopMapView _mapView =
-			new AutostopMapView { TranslatesAutoresizingMaskIntoConstraints = false };
-
-		private readonly MyLocationButton _myLocationButton =
-			new MyLocationButton { TranslatesAutoresizingMaskIntoConstraints = false };
-
-		private readonly PickupAddressTextField _pickupAddressTextField = new PickupAddressTextField();
-
 		private readonly UIButton _setPickupButton = new UIButton
 		{
 			BackgroundColor = Colors.PickupButtonColor,
 			TranslatesAutoresizingMaskIntoConstraints = false
 		};
 
-		private UIStackView _addresseStackView;
-		private List<Binding> _bindings;
-
-		public MainViewController(INavigationService navigationService)
-		{
-			_navigationService = navigationService;
-		}
-
-		public MainViewModel ViewModel { get; set; }
-
 		public override async void ViewDidLoad()
 		{
 			base.ViewDidLoad();
-
-			_mapView.MyLocationEnabled = true;
-			_setPickupButton.Layer.CornerRadius = 20;
-			_setPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
-			_addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
-			{
-				Axis = UILayoutConstraintAxis.Vertical,
-				TranslatesAutoresizingMaskIntoConstraints = false,
-				Distribution = UIStackViewDistribution.FillEqually,
-				Spacing = 5
-			};
-
-			_pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
-			_destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
-
-			ViewModel.CameraPositionObservable = Observable
-				.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
-					e => _mapView.CameraPositionIdle += e,
-					e => _mapView.CameraPositionIdle -= e)
-				.Do(ShowNavigationBar)
-				.Select(e => e.EventArgs.Position.Target)
-				.Select(c => new Location(c.Latitude, c.Longitude));
-
-			ViewModel.CameraStartMoving = Observable
-				.FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
-					e => _mapView.WillMove += e,
-					e => _mapView.WillMove -= e)
-				.Do(HideNavigationBar)
-				.Select(e => e.EventArgs.Gesture);
-
+			InitSubViews();
 			AddCommands();
 			SetupBindings();
 			AddSubViews();
 			SetupConstraints();
-
-			ViewModel.ObservablePropertyChanged(() => ViewModel.AddressMode)
-				.Subscribe(_ => ViewDidLayoutSubviews());
-
-			foreach (var availableDriver in MockData.AvailableDrivers)
-			{
-				var marker = new Marker();
-				marker.Position = new CLLocationCoordinate2D(availableDriver.Latitude, availableDriver.Longitude);
-				marker.IconView = new UIImageView(new CGRect(0, 0, 20, 40)) { Image = UIImage.FromFile("car.png") };
-				marker.Map = _mapView;
-				marker.Rotation = 90;
-			}
-
+			AddSubscribers();
 			await ViewModel.Load();
 		}
 
 		public override void ViewDidLayoutSubviews()
 		{
 			base.ViewDidLayoutSubviews();
-			_myLocationButton.ToCircleButton();
 
 			if (ViewModel.AddressMode == AddressMode.Pickup)
 			{
@@ -127,64 +65,54 @@ namespace Autostop.Client.iOS.Views.Passenger
 				_destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
 				_destinationAddressTextField.Alpha = 1;
 			}
+
+			_myLocationButton.ToCircleButton();
 		}
 
+		private void AddSubscribers()
+		{
+			ViewModel.ObservablePropertyChanged(() => ViewModel.AddressMode)
+				.Subscribe(_ => ViewDidLayoutSubviews());
+
+			ViewModel.CameraStartMoving
+				.Subscribe(CameraWillMove);
+
+			ViewModel.CameraPositionObservable
+				.Subscribe(CamerPostionIdle);
+		}
+
+		private void InitSubViews()
+		{
+			ViewModel.CameraPositionObservable = Observable
+				.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
+					e => _mapView.CameraPositionIdle += e,
+					e => _mapView.CameraPositionIdle -= e)
+				.Select(e => e.EventArgs.Position.Target)
+				.Select(c => new Location(c.Latitude, c.Longitude));
+
+			ViewModel.CameraStartMoving = Observable
+				.FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
+					e => _mapView.WillMove += e,
+					e => _mapView.WillMove -= e)
+				.Select(e => e.EventArgs.Gesture);
+
+			_setPickupButton.Layer.CornerRadius = 20;
+			_setPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
+			_addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
+			{
+				Axis = UILayoutConstraintAxis.Vertical,
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Distribution = UIStackViewDistribution.FillEqually,
+				Spacing = 5
+			};
+			_pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
+			_destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
+		}
+		
 		private void AddCommands()
 		{
 			this.BindCommand(_setPickupButton, ViewModel.SetPickupLocation);
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
-		}
-
-		private void ShowNavigationBar(EventPattern<GMSCameraEventArgs> eventPattern)
-		{
-			//
-			_myLocationButton.Hidden = false;
-			UIView.Animate(0.3, () =>
-			{
-				//NavigationController.NavigationBarHidden = false;
-				_setPickupButton.Transform = CGAffineTransform.MakeIdentity();
-				_setPickupButton.Alpha = 1;
-			});
-		}
-
-		private void HideNavigationBar(EventPattern<GMSWillMoveEventArgs> eventPattern)
-		{
-			_myLocationButton.Hidden = true;
-			UIView.Animate(0.3, () =>
-			{
-				//NavigationController.NavigationBarHidden = true;
-				_setPickupButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
-				_setPickupButton.Alpha = 0;
-			});
-		}
-
-		private bool DestinationAddressShouldBeginEditing(UITextField textField)
-		{
-			_navigationService.NavigateTo<DestinationSearchPlaceViewModel>((view, vm) =>
-			{
-				if (view is UIViewController searchPlaces)
-				{
-					var searchTextField = this.GetSearchText(vm, searchPlaces);
-					searchTextField.Placeholder = "Search destination location";
-				}
-			});
-
-			return false;
-		}
-
-		private bool PickupAddressShouldBeginEditing(UITextField textField)
-		{
-			_navigationService.NavigateTo<PickupSearchPlaceViewModel>((view, vm) =>
-			{
-				if (view is UIViewController searchPlaces)
-				{
-					var searchTextField = this.GetSearchText(vm, searchPlaces);
-					searchTextField.Placeholder = "Search pickup location";
-					vm.SearchText = ViewModel.PickupAddress.FormattedAddress;
-				}
-			});
-
-			return false;
 		}
 
 		private void SetupBindings()
@@ -216,8 +144,12 @@ namespace Autostop.Client.iOS.Views.Passenger
 					() => ViewModel.IsDestinationAddressLoading, BindingMode.TwoWay),
 
 				this.SetBinding(
+					() => _mapView.OnlineDrivers,
+					() => ViewModel.OnlineDrivers, BindingMode.TwoWay),
+
+				this.SetBinding(
 						() => _mapView.Camera,
-						() => ViewModel.MyLocation, BindingMode.TwoWay)
+						() => ViewModel.CameraTarget, BindingMode.TwoWay)
 					.ConvertTargetToSource(location =>
 						CameraPosition.FromCamera(location.Latitude, location.Longitude, 17))
 			};
@@ -277,11 +209,48 @@ namespace Autostop.Client.iOS.Views.Passenger
 			});
 		}
 
+		private void CamerPostionIdle(Location location)
+		{
+			UIView.Animate(0.3, () =>
+			{
+				_myLocationButton.Hidden = false;
+				_setPickupButton.Transform = CGAffineTransform.MakeIdentity();
+				_setPickupButton.Alpha = 1;
+			});
+		}
+
+		private void CameraWillMove(bool gesture)
+		{
+			UIView.Animate(0.3, () =>
+			{
+				_myLocationButton.Hidden = true;
+				_setPickupButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
+				_setPickupButton.Alpha = 0;
+			});
+		}
+
+		private bool DestinationAddressShouldBeginEditing(UITextField textField)
+		{
+			ViewModel.NavigateToDestinationSearch.Execute(null);
+			return false;
+		}
+
+		private bool PickupAddressShouldBeginEditing(UITextField textField)
+		{
+			ViewModel.NavigateToPickupSearch.Execute(null);
+			return false;
+		}
+		
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 			if (disposing)
+			{
 				ViewModel.Dispose();
+				_bindings.ForEach(b => b.Detach());
+			}
 		}
+
+		public MainViewModel ViewModel { get; set; }
 	}
 }

@@ -7,30 +7,21 @@ namespace Autostop.Client.Core
 {
 	public class MockData
 	{
-		public static List<Location> AvailableDrivers = new List<Location>()
+		public static List<DriverLocation> AvailableDrivers = new List<DriverLocation>()
 		{
-			new Location(38.55607757,68.79287839),
-			new Location(38.55809112,68.79502952),
-			new Location(38.55246141,68.78715992),
-			new Location(38.5613882,68.78055096 ),
-			new Location(38.57373621, 68.79303932),
-			new Location(68.79303932, 68.7504673),
-			new Location(38.5501792, 68.79878998),
-			new Location(38.55415625,68.79873633),
-			new Location(38.55564968,68.8009572 ),
-			new Location(38.58645948,68.74661565),
-			new Location(38.58928564,68.74261379),
-			new Location(38.58524345,68.72638106),
-			new Location(38.58457671,68.74488294),
-			new Location(38.58582211,38.58582211),
-			new Location(38.58554536,68.75836372),
-			new Location(68.75836372,68.74456644),
-			new Location(38.51526154,68.75484198),
-			new Location(38.52075566,68.77643108),
-			new Location(38.61330097,68.78264737),
-			new Location(38.62120845,68.78396273),
+			new DriverLocation(38.56807585, 68.79274321, 38.56584446,68.79513574),
+			new DriverLocation(38.56724202, 68.79100996, 38.56819832, 68.79237789),
+			new DriverLocation(38.56301738, 68.80038214, 38.56299222, 68.80820346),
+			new DriverLocation(38.57040698, 68.79230118, 38.57044473, 68.79531062),
+			new DriverLocation(38.5758214, 68.78957605, 38.5758256, 68.79273033),
+			new DriverLocation(38.58720754, 68.74127698, 38.59024332, 68.7422533),
+			new DriverLocation(38.58327426, 68.74003243, 38.58283815, 68.73638463),
+			new DriverLocation(38.57790989, 68.75492191, 38.5764337, 68.75484145),
+			new DriverLocation(38.61213484, 68.78023124, 38.61133003, 68.77977526),
+			new DriverLocation(38.61198143, 68.78131914, 38.61138411, 68.78131646),
+			new DriverLocation(38.57086414, 68.80309439, 38.57222302, 68.80517042),
+			new DriverLocation(38.57222721, 68.80424774, 38.5736322, 68.80290663),
+			new DriverLocation(38.5668918, 68.79437882, 38.56788585, 68.79337567)
 		};
 	}
 }
-
-
