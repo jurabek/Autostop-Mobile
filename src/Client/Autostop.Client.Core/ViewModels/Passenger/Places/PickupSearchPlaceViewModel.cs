@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
@@ -14,10 +15,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
 		public PickupSearchPlaceViewModel(
+			IScheduler scheduler,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
-			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, geocodingProvider, navigationService)
+			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 		}

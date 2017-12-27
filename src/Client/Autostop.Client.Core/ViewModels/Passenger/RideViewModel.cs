@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
 using GalaSoft.MvvmLight.Command;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
+    [UsedImplicitly]
     public class RideViewModel : BaseViewModel, IRideViewModel
 	{
 		private bool _isPickupAddressLoading;
+		private bool _hasPickupLocation;
 
 		public RideViewModel()
 		{
-			SetPickupLocation = new RelayCommand(() =>
-			{
-				HasPickupLocation = true;
-			});
+			SetPickupLocation = new RelayCommand(SetPickupLocationAction);
+		}
+
+		private void SetPickupLocationAction()
+		{
+			HasPickupLocation = true;
 		}
 
 		public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
@@ -32,8 +34,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			set => RaiseAndSetIfChanged(ref _isPickupAddressLoading, value);
 		}
 		
-		private bool _hasPickupLocation;
-
 		public bool HasPickupLocation
 		{
 			get => _hasPickupLocation;

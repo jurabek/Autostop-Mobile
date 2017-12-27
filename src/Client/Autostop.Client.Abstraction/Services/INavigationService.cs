@@ -22,5 +22,7 @@ namespace Autostop.Client.Abstraction.Services
 	    void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel;
 
 		void GoBack();
+
+	    void NavigaeToRoot();
     }
 }

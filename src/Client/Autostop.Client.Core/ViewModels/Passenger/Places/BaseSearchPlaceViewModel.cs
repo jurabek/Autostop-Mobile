@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -19,15 +20,17 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
 	public abstract class BaseSearchPlaceViewModel : BaseViewModel, IBaseSearchPlaceViewModel
 	{
-	    private readonly Subject<Address> _selectedAddress = new Subject<Address>();
-        private readonly IGeocodingProvider _geocodingProvider;
+		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
+		private readonly IPlacesProvider _placesProvider;
+		private readonly IGeocodingProvider _geocodingProvider;
 		private readonly INavigationService _navigationService;
 		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
 		private IAutoCompleteResultModel _selectedSearchResult;
-	    private bool _isLoading;
-	    private string _searchText;
+		private bool _isLoading;
+		private string _searchText;
 
-        protected BaseSearchPlaceViewModel(
+		protected BaseSearchPlaceViewModel(
+			IScheduler scheduler,
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
 			INavigationService navigationService)
@@ -35,29 +38,22 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			placesProvider.Requires(nameof(placesProvider)).IsNotNull();
 			navigationService.Requires(nameof(navigationService)).IsNotNull();
 
+			_placesProvider = placesProvider;
 			_geocodingProvider = geocodingProvider;
 			_navigationService = navigationService;
 			SelectedAddress = _selectedAddress;
 
+
 			this.ObservablePropertyChanged(() => SearchText)
-				.Throttle(TimeSpan.FromMilliseconds(300))
+				.Throttle(TimeSpan.FromMilliseconds(300), scheduler)
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe(async searchText =>
 				{
-					try
-					{
-						IsSearching = true;
-						if (string.IsNullOrEmpty(searchText))
-							SearchResults = GetEmptyAutocompleteResult();
-						else
-							SearchResults = await placesProvider.GetAutoCompleteResponse(searchText);
-						IsSearching = false;
-					}
-					catch (Exception)
-					{
-						SearchResults = null;
-						IsSearching = false;
-					}
+#if UNIT_TEST
+
+					await Search(searchText);
+#endif
+
 				});
 
 			this.ObservablePropertyChanged(() => SelectedSearchResult)
@@ -70,6 +66,18 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 				.Subscribe();
 
 			GoBack = new RelayCommand(() => navigationService.GoBack());
+		}
+
+		public async Task Search(string searchText)
+		{
+			IsSearching = true;
+
+			if (string.IsNullOrEmpty(searchText))
+				SearchResults = GetEmptyAutocompleteResult();
+			else
+				SearchResults = await _placesProvider.GetAutoCompleteResponse(searchText);
+
+			IsSearching = false;
 		}
 
 		private async Task SelectedAutocompleteResultModel(IAutoCompleteResultModel result)
@@ -114,9 +122,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			set => RaiseAndSetIfChanged(ref _searchText, value);
 		}
 
-	    public virtual string PlaceholderText => "Search";
+		public virtual string PlaceholderText => "Search";
 
-	    public ObservableCollection<IAutoCompleteResultModel> SearchResults
+		public ObservableCollection<IAutoCompleteResultModel> SearchResults
 		{
 			get => _searchResults;
 			set => RaiseAndSetIfChanged(ref _searchResults, value);

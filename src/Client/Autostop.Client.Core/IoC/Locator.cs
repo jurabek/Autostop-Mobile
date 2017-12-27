@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Reactive.Concurrency;
+using Autofac;
 using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Providers;
@@ -13,7 +14,7 @@ using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Google.Maps;
 using Google.Maps.Geocoding;
 using Google.Maps.Places;
-using IoCConstants = Autostop.Common.Shared.Constants.IoC;
+using Const = Autostop.Common.Shared.Constants.IoC;
 
 namespace Autostop.Client.Core.IoC
 {
@@ -28,9 +29,9 @@ namespace Autostop.Client.Core.IoC
 
 	        builder.RegisterType<RideViewModel>().As<IRideViewModel>();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<PickupSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(IoCConstants.ViewModelKeys.PickupSearch);
-            builder.RegisterType<DestinationSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(IoCConstants.ViewModelKeys.DestinationSearch);
-            builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(IoCConstants.ViewModelKeys.ChooseDestinationOnMap);
+            builder.RegisterType<PickupSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(Const.ViewModelKeys.PickupSearch);
+            builder.RegisterType<DestinationSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(Const.ViewModelKeys.DestinationSearch);
+            builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(Const.ViewModelKeys.ChooseDestinationOnMap);
 
             builder.RegisterType<SearchHomeAddressViewModel>().AsSelf();
 	        builder.RegisterType<SearchWorkAddressViewModel>().AsSelf();
@@ -47,7 +48,7 @@ namespace Autostop.Client.Core.IoC
             builder.RegisterType<SearchPlaceViewModelFactory>().As<ISearchPlaceViewModelFactory>();
             builder.RegisterType<ChooseOnMapViewModelFactory>().As<IChooseOnMapViewModelFactory>();
             builder.RegisterType<AutoMapperFacade>().As<IAutoMapperFacade>();
-
+	        builder.RegisterInstance(Scheduler.Default).As<IScheduler>();
 
             ContainerRegistery(builder);
             Container = builder.Build();

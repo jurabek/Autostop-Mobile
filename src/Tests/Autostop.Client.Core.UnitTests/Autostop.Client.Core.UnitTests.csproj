@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;UNIT_TEST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;UNIT_TEST</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extras.Moq" Version="4.2.0" />
+    <PackageReference Include="AutoFixture" Version="4.0.0-rc1" />
+    <PackageReference Include="AutoFixture.Idioms" Version="4.0.0-rc1" />
+    <PackageReference Include="AutoFixture.NUnit3" Version="4.0.0-rc1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="Microsoft.Reactive.Testing" Version="3.1.1" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta7" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="MvvmLightLibsStd10" Version="5.4.0.1-alpha" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit.Runners" Version="3.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Client\Autostop.Client.Abstraction\Autostop.Client.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Client\Autostop.Client.Core\Autostop.Client.Core.csproj" />
+    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
+    <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj" />
+  </ItemGroup>
+
+</Project>

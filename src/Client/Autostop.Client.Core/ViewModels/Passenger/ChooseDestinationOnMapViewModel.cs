@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
@@ -9,60 +10,56 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    [UsedImplicitly]
-    public sealed class ChooseDestinationOnMapViewModel : BaseChooseOnMapViewModel
-    {
-        public IRideViewModel RideViewModel { get; }
+	[UsedImplicitly]
+	public sealed class ChooseDestinationOnMapViewModel : BaseChooseOnMapViewModel
+	{
+		public IRideViewModel RideViewModel { get; }
 
-        private readonly INavigationService _navigationService;
-        private readonly IGeocodingProvider _geocodingProvider;
-        private Address _currentAddress;
+		private readonly INavigationService _navigationService;
+		private readonly IGeocodingProvider _geocodingProvider;
+		private Address _currentAddress;
 
-        public ChooseDestinationOnMapViewModel(
-            IRideViewModel rideViewModel,
-            INavigationService navigationService,
-            IGeocodingProvider geocodingProvider)
-        {
-            RideViewModel = rideViewModel;
-            _navigationService = navigationService;
-            _geocodingProvider = geocodingProvider;
-            GoBack = new RelayCommand(GoBackExecute);
-            Done = new RelayCommand(() =>
-            {
-                RideViewModel.DestinationAddress.SetAddress(_currentAddress);
-                _navigationService.GoBack();
-                _navigationService.GoBack();
-            });
-        }
+		public ChooseDestinationOnMapViewModel(
+			IRideViewModel rideViewModel,
+			INavigationService navigationService,
+			IGeocodingProvider geocodingProvider)
+		{
+			RideViewModel = rideViewModel;
+			_navigationService = navigationService;
+			_geocodingProvider = geocodingProvider;
 
-        private void GoBackExecute()
-        {
-            _navigationService.GoBack();
-        }
+			GoBack = new RelayCommand(GoBackAction);
+			Done = new RelayCommand(DoneAction);
+		}
 
-        public override Task Load()
-        {
-            CameraTarget = RideViewModel.PickupAddress.Location;
+		private void DoneAction()
+		{
+			RideViewModel.DestinationAddress.SetAddress(_currentAddress);
+			_navigationService.NavigaeToRoot();
+		}
 
-            CameraStartMoving
-                .Subscribe(moving =>
-                {
-                    IsSearching = true;
-                });
+		private void GoBackAction()
+		{
+			_navigationService.GoBack();
+		}
 
-            CameraPositionObservable
-                .Subscribe(async location =>
-                {
-                    var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-                    if (address != null)
-                    {
-                        SearchText = address.FormattedAddress;
-                        _currentAddress = address;
-                    }
-                    IsSearching = false;
-                });
+		public override Task Load()
+		{
+			CameraTarget = RideViewModel.PickupAddress.Location;
+			CameraStartMoving
+				.Do(_ => IsSearching = true)
+				.Subscribe();
 
-            return base.Load();
-        }
-    }
+			CameraPositionObservable
+				.Subscribe(async location =>
+				{
+					var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
+					SearchText = address.FormattedAddress;
+					_currentAddress = address;
+					IsSearching = false;
+				});
+
+			return base.Load();
+		}
+	}
 }

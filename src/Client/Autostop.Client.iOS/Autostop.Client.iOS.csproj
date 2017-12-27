@@ -109,7 +109,7 @@
     <Compile Include="Constants\Icons.cs" />
     <Compile Include="Mappers\AutoMapperProfile.cs" />
     <Compile Include="Mappers\iOSAutoMapperConfiguration.cs" />
-    <Compile Include="Renderers\AutostopXamarinFormsPageRenderer.cs" />
+    <Compile Include="Renderers\CustomPageRenderer.cs" />
     <Compile Include="UI\MapView.cs" />
     <Compile Include="UI\BaseAddressTextField.cs" />
     <Compile Include="UI\DestinationAddressTextField.cs" />

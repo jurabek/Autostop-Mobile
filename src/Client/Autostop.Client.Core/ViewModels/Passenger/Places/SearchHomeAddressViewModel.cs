@@ -4,8 +4,8 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using System;
+using System.Reactive.Concurrency;
 using Autostop.Client.Core.Models;
-using Autostop.Common.Shared.Models;
 using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
@@ -16,11 +16,12 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
 	    public SearchHomeAddressViewModel(
+			IScheduler scheduler,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 		    IEmptyAutocompleteResultProvider autocompleteResultProvider,
 			ISettingsProvider settingsProvider,
-			IGeocodingProvider geocodingProvider) : base(placesProvider, geocodingProvider, navigationService)
+			IGeocodingProvider geocodingProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
 	    {
 		    _autocompleteResultProvider = autocompleteResultProvider;
 
@@ -30,11 +31,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 					if (result is AutoCompleteResultModel)
 					{
 						var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
-						settingsProvider.HomeAddress = new Address
-						{
-							FormattedAddress = address.FormattedAddress,
-							Location = address.Location
-						};
+						settingsProvider.HomeAddress = address;
 						GoBackCallback?.Invoke();
 					}
 				});

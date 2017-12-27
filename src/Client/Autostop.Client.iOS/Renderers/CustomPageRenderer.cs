@@ -3,10 +3,10 @@ using Autostop.Client.Mobile.UI.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(Page), typeof(AutostopXamarinFormsPageRenderer))]
+[assembly: ExportRenderer(typeof(Page), typeof(CustomPageRenderer))]
 namespace Autostop.Client.iOS.Renderers
 {
-	public class AutostopXamarinFormsPageRenderer : PageRenderer
+	public class CustomPageRenderer : PageRenderer
 	{
 		public override void ViewWillAppear(bool animated)
 		{

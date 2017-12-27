@@ -9,7 +9,6 @@ using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
 using Autostop.Client.iOS.UI;
 using CoreGraphics;
-using CoreLocation;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
 using JetBrains.Annotations;

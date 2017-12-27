@@ -5,6 +5,7 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using JetBrains.Annotations;
 using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.ViewModels;
@@ -18,22 +19,24 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
         public DestinationSearchPlaceViewModel(
+			IScheduler scheduler,
             IRideViewModel rideViewModel,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
             IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
-			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, geocodingProvider, navigationService)
+			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
 	    {
 	        _autocompleteResultProvider = autocompleteResultProvider;
-
-            var chooseDestinationOnMapViewModel = chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(rideViewModel);
-
+			
 		    this.ObservablePropertyChanged(() => SelectedSearchResult)
 				.Where(r => r is SetLocationOnMapResultModel)
 			    .Subscribe(r =>
 			    {
-					navigationService.NavigateTo(chooseDestinationOnMapViewModel as ChooseDestinationOnMapViewModel);
+				    var chooseDestinationOnMapViewModel =
+					    chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(rideViewModel) as
+						    ChooseDestinationOnMapViewModel;
+					navigationService.NavigateTo(chooseDestinationOnMapViewModel);
 			    });
 	    }
 

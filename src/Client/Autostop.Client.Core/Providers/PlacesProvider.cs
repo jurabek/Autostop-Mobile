@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Managers;
@@ -34,9 +35,6 @@ namespace Autostop.Client.Core.Providers
 
         public async Task<ObservableCollection<IAutoCompleteResultModel>> GetAutoCompleteResponse(string input)
         {
-	        if (input == "AAA")
-		        throw new Exception("AAA");
-
             var currentLocation = _locationManager.Location;
             try
             {
@@ -66,8 +64,10 @@ namespace Autostop.Client.Core.Providers
             }
             catch (Exception e)
             {
-                return null;
+				Debug.WriteLine(e);
             }
-        }
-    }
+
+	        return null;
+		}
+	}
 }
