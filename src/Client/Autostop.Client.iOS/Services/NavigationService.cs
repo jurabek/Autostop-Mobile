@@ -5,13 +5,14 @@ using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core;
+using Autostop.Client.Core.IoC;
 using UIKit;
 
 namespace Autostop.Client.iOS.Services
 {
     public class NavigationService : INavigationService
     {
-        private readonly IContainer _container = BootstrapperBase.Container;
+        private readonly IContainer _container = Locator.Container;
         private readonly UINavigationController _navigationController;
         private readonly IViewAdapter<UIViewController> _viewAdapter;
         private readonly IViewFactory _viewFactory;
@@ -45,7 +46,13 @@ namespace Autostop.Client.iOS.Services
             _navigationController.PushViewController(viewController, false);
         }
 
-	    public void NavigateToModal<TViewModel>()
+        public void NavigateTo<TViewModel>(TViewModel viewModel)
+        {
+            var viewController = GetViewController(viewModel);
+            _navigationController.PushViewController(viewController, false);
+        }
+
+        public void NavigateToModal<TViewModel>()
 	    {
 			var viewModel = _container.Resolve<TViewModel>();
 		    var viewController = GetViewController(viewModel);
@@ -71,9 +78,17 @@ namespace Autostop.Client.iOS.Services
 
 	    public void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel
 		{
-		    var view = _viewFactory.CreateView(viewModel);
-		    var viewController = _viewAdapter.GetSearchView(view);
-		    _navigationController.PushViewController(viewController, false);
+		    try
+		    {
+		        var view = _viewFactory.CreateView(viewModel);
+		        var viewController = _viewAdapter.GetSearchView(view);
+		        _navigationController.PushViewController(viewController, false);
+            }
+		    catch (Exception e)
+		    {
+                System.Diagnostics.Debug.WriteLine(e);
+		    }
+		   
 	    }
 
 		public void GoBack()

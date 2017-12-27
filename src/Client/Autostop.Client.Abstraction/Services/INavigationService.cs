@@ -11,7 +11,9 @@ namespace Autostop.Client.Abstraction.Services
 
         void NavigateTo<TViewModel>();
 
-	    void NavigateToModal<TViewModel>();
+        void NavigateTo<TViewModel>(TViewModel viewModel);
+
+        void NavigateToModal<TViewModel>();
 
 		void NavigateTo<TViewModel>(Action<object, TViewModel> configure);
 

@@ -104,9 +104,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Adapters\PageToViewControllerAdapter.cs" />
-    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="IoC\iOSLocator.cs" />
     <Compile Include="Constants\Colors.cs" />
     <Compile Include="Constants\Icons.cs" />
+    <Compile Include="Mappers\AutoMapperProfile.cs" />
+    <Compile Include="Mappers\iOSAutoMapperConfiguration.cs" />
     <Compile Include="Renderers\AutostopXamarinFormsPageRenderer.cs" />
     <Compile Include="UI\MapView.cs" />
     <Compile Include="UI\BaseAddressTextField.cs" />
@@ -132,7 +134,7 @@
     <BundleResource Include="Resources\set_location.png" />
     <BundleResource Include="Resources\work.png" />
     <BundleResource Include="Resources\car.png" />
-    <Compile Include="UI\RequestUIView.cs" />
+    <Compile Include="UI\ConfirmitionView.cs" />
     <Compile Include="Views\Passenger\BaseChooseOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseDestinationOnMapViewController.cs" />
     <Compile Include="Views\Passenger\MainViewController.cs" />
@@ -225,6 +227,10 @@
     <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj">
       <Project>{998d76c3-259e-4780-825b-c8d8b81cf663}</Project>
       <Name>Autostop.Common.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj">
+      <Project>{B2B511DB-1C2C-4728-8ECA-E111E1A42A3E}</Project>
+      <Name>Autostop.Shared.Google.Maps</Name>
     </ProjectReference>
     <ProjectReference Include="..\Autostop.Client.Abstraction\Autostop.Client.Abstraction.csproj">
       <Project>{2da52ad9-cb09-4357-be62-4ec2173a82c3}</Project>

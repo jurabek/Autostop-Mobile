@@ -6,29 +6,34 @@ using Autostop.Client.Core.Extensions;
 using JetBrains.Annotations;
 using System;
 using System.Reactive.Linq;
+using Autostop.Client.Abstraction.Factories;
+using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Models;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
     [UsedImplicitly]
-    public class DestinationSearchPlaceViewModel : BaseSearchPlaceViewModel
+    public sealed class DestinationSearchPlaceViewModel : BaseSearchPlaceViewModel
     {
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-	    public DestinationSearchPlaceViewModel(
+        public DestinationSearchPlaceViewModel(
+            IRideViewModel rideViewModel,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
+            IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
 			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, geocodingProvider, navigationService)
 	    {
-		    _autocompleteResultProvider = autocompleteResultProvider;
-		    PlaceholderText = "Set destination location";
+	        _autocompleteResultProvider = autocompleteResultProvider;
+
+            var chooseDestinationOnMapViewModel = chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(rideViewModel);
 
 		    this.ObservablePropertyChanged(() => SelectedSearchResult)
 				.Where(r => r is SetLocationOnMapResultModel)
 			    .Subscribe(r =>
 			    {
-					navigationService.NavigateTo<ChooseDestinationOnMapViewModel>();
+					navigationService.NavigateTo(chooseDestinationOnMapViewModel as ChooseDestinationOnMapViewModel);
 			    });
 	    }
 
@@ -41,5 +46,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 				_autocompleteResultProvider.GetSetLocationOnMapResultModel()
 		    };
 		}
+
+        public override string PlaceholderText => "Set destination location";
     }
 }

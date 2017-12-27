@@ -13,7 +13,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 		where TViewModel : class, ISearchableViewModel
 	{
 		[UsedImplicitly] protected MapView MapView;
-		[UsedImplicitly] protected UIButton DoneButton { get; set; }
+	    [UsedImplicitly] protected UIButton DoneButton;
 		[UsedImplicitly] protected UIImageView CenterPinImageView;
 
 		public override void ViewDidLoad()
@@ -34,7 +34,9 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 			SetupConstraints();
 
-			this.CreateSearchViewOnNavigationBar(ViewModel).ClearButtonMode = UITextFieldViewMode.Never;
+			var searchTextField = this.CreateSearchViewOnNavigationBar(ViewModel);
+		    searchTextField.ClearButtonMode = UITextFieldViewMode.Never;
+		    searchTextField.ShouldBeginEditing = _ => false;
 		}
 
 		public override void ViewWillAppear(bool animated)

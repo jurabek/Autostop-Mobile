@@ -1,7 +1,10 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.iOS.IoC;
+using Autostop.Client.iOS.Mappers;
 using Foundation;
 using Google.Maps;
 using UIKit;
@@ -24,12 +27,14 @@ namespace Autostop.Client.iOS
             Forms.Init();
             MapServices.ProvideAPIKey(GoogleMapsApi.iOSSdkKey);
 
-            new Bootstrapper()
+            new iOSLocator()
                 .Build()
                 .Resolve<INavigationService>()
                 .NavigateTo<MainViewModel>();
 
-	        UINavigationBar.Appearance.BarTintColor = UIColor.White;
+            iOSAutoMapperConfiguration.Configure();
+
+            UINavigationBar.Appearance.BarTintColor = UIColor.White;
             UINavigationBar.Appearance.Translucent = false;
             UINavigationBar.Appearance.ShadowImage = new UIImage();
             UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);

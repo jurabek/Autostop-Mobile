@@ -19,16 +19,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
 	public abstract class BaseSearchPlaceViewModel : BaseViewModel, IBaseSearchPlaceViewModel
 	{
-		private readonly IGeocodingProvider _geocodingProvider;
+	    private readonly Subject<Address> _selectedAddress = new Subject<Address>();
+        private readonly IGeocodingProvider _geocodingProvider;
 		private readonly INavigationService _navigationService;
-		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
-		private bool _isLoading;
-		private string _searchText;
 		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
 		private IAutoCompleteResultModel _selectedSearchResult;
-		private string _placeholderText;
+	    private bool _isLoading;
+	    private string _searchText;
 
-		protected BaseSearchPlaceViewModel(
+        protected BaseSearchPlaceViewModel(
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
 			INavigationService navigationService)
@@ -109,19 +108,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			set => RaiseAndSetIfChanged(ref _isLoading, value);
 		}
 
-		public string SearchText
+		public virtual string SearchText
 		{
 			get => _searchText;
 			set => RaiseAndSetIfChanged(ref _searchText, value);
 		}
 
-		public string PlaceholderText
-		{
-			get => _placeholderText;
-			set => RaiseAndSetIfChanged(ref _placeholderText, value);
-		}
+	    public virtual string PlaceholderText => "Search";
 
-		public ObservableCollection<IAutoCompleteResultModel> SearchResults
+	    public ObservableCollection<IAutoCompleteResultModel> SearchResults
 		{
 			get => _searchResults;
 			set => RaiseAndSetIfChanged(ref _searchResults, value);
@@ -135,7 +130,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 
 		public IObservable<Address> SelectedAddress { get; }
 
-		public ICommand GoBack { get; }
+		public virtual ICommand GoBack { get; }
 
 		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
 	}

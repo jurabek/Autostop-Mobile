@@ -6,47 +6,50 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
-	public class SearchWorkAddressViewModel : BaseSearchPlaceViewModel
-	{
-		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
+    [UsedImplicitly]
+    public sealed class SearchWorkAddressViewModel : BaseSearchPlaceViewModel
+    {
+        private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-		public SearchWorkAddressViewModel(
-			INavigationService navigationService,
-			IPlacesProvider placesProvider,
-			IEmptyAutocompleteResultProvider autocompleteResultProvider,
-			ISettingsProvider settingsProvider,
-			IGeocodingProvider geocodingProvider) : base(placesProvider, geocodingProvider, navigationService)
-		{
-			_autocompleteResultProvider = autocompleteResultProvider;
-			PlaceholderText = "Set work address";
+        public SearchWorkAddressViewModel(
+            INavigationService navigationService,
+            IPlacesProvider placesProvider,
+            IEmptyAutocompleteResultProvider autocompleteResultProvider,
+            ISettingsProvider settingsProvider,
+            IGeocodingProvider geocodingProvider) : base(placesProvider, geocodingProvider, navigationService)
+        {
+            _autocompleteResultProvider = autocompleteResultProvider;
 
-			this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Subscribe(async result =>
-				{
-					if (result is AutoCompleteResultModel)
-					{
-						var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
-						settingsProvider.WorkAddress = new Address
-						{
-							FormattedAddress = address.FormattedAddress,
-							Location = address.Location
-						};
-						GoBackCallback?.Invoke();
-					}
-				});
-		}
+            this.ObservablePropertyChanged(() => SelectedSearchResult)
+                .Subscribe(async result =>
+                {
+                    if (result is AutoCompleteResultModel)
+                    {
+                        var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
+                        settingsProvider.WorkAddress = new Address
+                        {
+                            FormattedAddress = address.FormattedAddress,
+                            Location = address.Location
+                        };
+                        GoBackCallback?.Invoke();
+                    }
+                });
+        }
 
-		public Action GoBackCallback { get; set; }
-		
-		protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
-		{
-			return new ObservableCollection<IAutoCompleteResultModel>
-			{
-				_autocompleteResultProvider.GetSetLocationOnMapResultModel()
-			};
-		}
-	}
+        public Action GoBackCallback { get; set; }
+
+        protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
+        {
+            return new ObservableCollection<IAutoCompleteResultModel>
+            {
+                _autocompleteResultProvider.GetSetLocationOnMapResultModel()
+            };
+        }
+
+        public override string PlaceholderText => "Set work address";
+    }
 }

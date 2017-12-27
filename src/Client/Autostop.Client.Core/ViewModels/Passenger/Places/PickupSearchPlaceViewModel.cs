@@ -9,7 +9,7 @@ using Autostop.Client.Core.Models;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
-	public class PickupSearchPlaceViewModel : BaseSearchPlaceViewModel
+	public sealed class PickupSearchPlaceViewModel : BaseSearchPlaceViewModel
 	{
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
@@ -20,10 +20,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(placesProvider, geocodingProvider, navigationService)
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
-			PlaceholderText = "Set pickup location";
-
-			
-
 		}
 
 		protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
@@ -34,5 +30,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 				_autocompleteResultProvider.GetWorkResultModel()
 			};
 		}
+
+	    public override string PlaceholderText => "Set pickup location";
+
 	}
 }

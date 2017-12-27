@@ -14,7 +14,8 @@ namespace Autostop.Client.Core.Providers
     {
         private readonly IGeocodingService _geocodingService;
 
-        public GeocodingProvider(IGeocodingService geocodingService)
+        public GeocodingProvider(
+            IGeocodingService geocodingService)
         {
             geocodingService.Requires(nameof(geocodingService));
 

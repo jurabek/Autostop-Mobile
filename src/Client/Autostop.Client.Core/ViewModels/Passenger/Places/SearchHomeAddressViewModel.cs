@@ -6,10 +6,12 @@ using Autostop.Client.Core.Extensions;
 using System;
 using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
-    public class SearchHomeAddressViewModel : BaseSearchPlaceViewModel
+    [UsedImplicitly]
+    public sealed class SearchHomeAddressViewModel : BaseSearchPlaceViewModel
     {
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
@@ -21,7 +23,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			IGeocodingProvider geocodingProvider) : base(placesProvider, geocodingProvider, navigationService)
 	    {
 		    _autocompleteResultProvider = autocompleteResultProvider;
-		    PlaceholderText = "Set home address";
 
 		    this.ObservablePropertyChanged(() => SelectedSearchResult)
 				.Subscribe(async result =>
@@ -48,5 +49,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 				_autocompleteResultProvider.GetSetLocationOnMapResultModel()
 		    };
 	    }
+
+        public override string PlaceholderText => "Set home address";
     }
 }

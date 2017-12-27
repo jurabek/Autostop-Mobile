@@ -2,278 +2,296 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction;
+using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
 using Autostop.Client.iOS.UI;
-using Autostop.Common.Shared.Models;
 using CoreGraphics;
+using CoreLocation;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
 using JetBrains.Annotations;
 using UIKit;
 using MapView = Autostop.Client.iOS.UI.MapView;
+using Location = Autostop.Common.Shared.Models.Location;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
-	[UsedImplicitly]
-	public class MainViewController : UIViewController, IScreenFor<MainViewModel>
-	{
-		private UIStackView _addresseStackView;
-		private List<Binding> _bindings;
-		private readonly DestinationAddressTextField _destinationAddressTextField = new DestinationAddressTextField();
-		private readonly PickupAddressTextField _pickupAddressTextField = new PickupAddressTextField();
-		private readonly MapView _mapView = new MapView();
-		private readonly MyLocationButton _myLocationButton = new MyLocationButton();
-		private readonly UIImageView _centerPinImageView = new UIImageView(Icons.PickupPin)
-		{
-			ContentMode = UIViewContentMode.ScaleAspectFit,
-			TranslatesAutoresizingMaskIntoConstraints = false
-		};
-		private readonly UIButton _setPickupButton = new UIButton
-		{
-			BackgroundColor = Colors.PickupButtonColor,
-			TranslatesAutoresizingMaskIntoConstraints = false
-		};
+    [UsedImplicitly]
+    public class MainViewController : UIViewController, IScreenFor<MainViewModel>
+    {
+        private readonly MapView _mapView;
+        private readonly DestinationAddressTextField _destinationAddressTextField;
+        private readonly PickupAddressTextField _pickupAddressTextField;
+        private readonly MyLocationButton _myLocationButton;
+        private readonly UIImageView _centerPinImageView;
+        private readonly UIButton _setPickupButton;
+        private readonly UIStackView _addresseStackView;
+        private readonly ConfirmitionView _confirmitionView;
 
-		private readonly RequestUIView requestUiView = new RequestUIView
-		{
-			TranslatesAutoresizingMaskIntoConstraints = false
-		};
+        private bool _hidden;
+        private NSLayoutConstraint _confirmationViewHeightConstraint;
+        private List<Binding> _bindings;
 
-		public override void ViewWillAppear(bool animated)
-		{
-			base.ViewWillAppear(animated);
-			NavigationController.NavigationBar.BarTintColor = UIColor.White;
-			NavigationController.NavigationBar.Translucent = false;
-		}
+        public MainViewController(IAutoMapperFacade autoMapperFacade)
+        {
+            _mapView = new MapView();
+            _myLocationButton = new MyLocationButton();
 
-		public override async void ViewDidLoad()
-		{
-			base.ViewDidLoad();
-			InitSubViews();
-			AddCommands();
-			SetupBindings();
-			AddSubViews();
-			SetupConstraints();
-			AddSubscribers();
-			await ViewModel.Load();
-			_setPickupButton.TouchUpInside += _setPickupButton_TouchUpInside;
-		}
+            _destinationAddressTextField = new DestinationAddressTextField
+            {
+                ShouldBeginEditing = DestinationAddressShouldBeginEditing
+            };
 
-		private bool hidden;
-		private NSLayoutConstraint _requestHeightConstraint;
+            _pickupAddressTextField = new PickupAddressTextField
+            {
+                ShouldBeginEditing = PickupAddressShouldBeginEditing
+            };
 
-		private void _setPickupButton_TouchUpInside(object sender, EventArgs e)
-		{
-			hidden = !hidden;
-			UIView.Animate(0.1, 0, UIViewAnimationOptions.CurveEaseIn, () =>
-			{
-				_requestHeightConstraint.Active = hidden;
-				View.SetNeedsLayout();
-				View.LayoutIfNeeded();
-			}, null);
-		}
+            _centerPinImageView = new UIImageView(Icons.PickupPin)
+            {
+                ContentMode = UIViewContentMode.ScaleAspectFit,
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-		public override void ViewDidLayoutSubviews()
-		{
-			base.ViewDidLayoutSubviews();
+            _setPickupButton = new UIButton
+            {
+                BackgroundColor = Colors.PickupButtonColor,
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-			if (ViewModel.RideViewModel.HasPickupLocation)
-			{
-				_pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
-				_destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
-				_destinationAddressTextField.Alpha = 1;
-			}
-			else
-			{
-				_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
-				_destinationAddressTextField.Alpha = 0;
-			}
+            _confirmitionView = new ConfirmitionView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-			_myLocationButton.ToCircleButton();
-		}
+            _addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
+            {
+                Axis = UILayoutConstraintAxis.Vertical,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Distribution = UIStackViewDistribution.FillEqually,
+                Spacing = 2
+            };
 
-		private void AddSubscribers()
-		{
-			ViewModel.RideViewModel.ObservablePropertyChanged(() => ViewModel.RideViewModel.HasPickupLocation)
-				.Subscribe(_ => ViewDidLayoutSubviews());
+            _setPickupButton.Layer.CornerRadius = 20;
+            _setPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
+        }
 
-			ViewModel.CameraStartMoving
-				.Subscribe(CameraWillMove);
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            NavigationController.NavigationBar.BarTintColor = UIColor.White;
+            NavigationController.NavigationBar.Translucent = false;
+        }
 
-			ViewModel.CameraPositionObservable
-				.Subscribe(CamerPostionIdle);
-		}
+        public override async void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            AddCommands();
+            SetupBindings();
+            AddSubViews();
+            SetupConstraints();
+            AddSubscribers();
+            await ViewModel.Load();
+            _setPickupButton.TouchUpInside += _setPickupButton_TouchUpInside;
+        }
 
-		private void InitSubViews()
-		{
-			ViewModel.CameraPositionObservable = Observable
-				.FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
-					e => _mapView.CameraPositionIdle += e,
-					e => _mapView.CameraPositionIdle -= e)
-				.Select(e => e.EventArgs.Position.Target)
-				.Select(c => new Location(c.Latitude, c.Longitude));
+        private void _setPickupButton_TouchUpInside(object sender, EventArgs e)
+        {
+            _hidden = !_hidden;
+            UIView.Animate(0.1, 0, UIViewAnimationOptions.CurveEaseIn, () =>
+            {
+                _confirmationViewHeightConstraint.Active = _hidden;
+                View.SetNeedsLayout();
+                View.LayoutIfNeeded();
+            }, null);
+        }
 
-			ViewModel.CameraStartMoving = Observable
-				.FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
-					e => _mapView.WillMove += e,
-					e => _mapView.WillMove -= e)
-				.Select(e => e.EventArgs.Gesture);
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
 
-			_setPickupButton.Layer.CornerRadius = 20;
-			_setPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
-			_addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
-			{
-				Axis = UILayoutConstraintAxis.Vertical,
-				TranslatesAutoresizingMaskIntoConstraints = false,
-				Distribution = UIStackViewDistribution.FillEqually,
-				Spacing = 2
-			};
-			_pickupAddressTextField.ShouldBeginEditing = PickupAddressShouldBeginEditing;
-			_destinationAddressTextField.ShouldBeginEditing = DestinationAddressShouldBeginEditing;
-		}
+            if (ViewModel.RideViewModel.HasPickupLocation)
+            {
+                _pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
+                _destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
+                _destinationAddressTextField.Alpha = 1;
+            }
+            else
+            {
+                _pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
+                _destinationAddressTextField.Alpha = 0;
+            }
 
-		private void AddCommands()
-		{
-			this.BindCommand(_setPickupButton, ViewModel.RideViewModel.SetPickupLocation);
-			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
-		}
+            _myLocationButton.ToCircleButton();
+        }
 
-		private void SetupBindings()
-		{
-			_bindings = new List<Binding>
-			{
-				this.SetBinding(
-					() => _pickupAddressTextField.Text,
-					() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
+        private void AddSubscribers()
+        {
+            ViewModel.CameraPositionObservable = Observable
+                .FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
+                    e => _mapView.CameraPositionIdle += e,
+                    e => _mapView.CameraPositionIdle -= e)
+                .Select(e => e.EventArgs.Position.Target)
+                .Select(c => new Location(c.Latitude, c.Longitude));
 
-				this.SetBinding(
-					() => _destinationAddressTextField.Text,
-					() => ViewModel.RideViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
+            ViewModel.CameraStartMoving = Observable
+                .FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
+                    e => _mapView.WillMove += e,
+                    e => _mapView.WillMove -= e)
+                .Select(e => e.EventArgs.Gesture);
 
-				this.SetBinding(
-					() => _pickupAddressTextField.Loading,
-					() => ViewModel.RideViewModel.IsPickupAddressLoading, BindingMode.TwoWay),
+            ViewModel.RideViewModel.ObservablePropertyChanged(() => ViewModel.RideViewModel.HasPickupLocation)
+                .Subscribe(_ => ViewDidLayoutSubviews());
 
-				this.SetBinding(
-					() => _mapView.OnlineDrivers,
-					() => ViewModel.OnlineDrivers, BindingMode.TwoWay),
+            ViewModel.CameraStartMoving
+                .Subscribe(CameraWillMove);
 
-				this.SetBinding(
-						() => _mapView.Camera,
-						() => ViewModel.CameraTarget, BindingMode.TwoWay)
-					.ConvertTargetToSource(location =>
-						CameraPosition.FromCamera(location.Latitude, location.Longitude, 17))
-			};
-		}
+            ViewModel.CameraPositionObservable
+                .Subscribe(CamerPostionIdle);
+        }
 
-		private void AddSubViews()
-		{
-			View.AddSubview(_mapView);
-			View.AddSubview(_addresseStackView);
-			View.AddSubview(_centerPinImageView);
-			View.AddSubview(_setPickupButton);
-			View.AddSubview(_myLocationButton);
-			View.AddSubview(requestUiView);
-		}
+        private void AddCommands()
+        {
+            this.BindCommand(_setPickupButton, ViewModel.RideViewModel.SetPickupLocation);
+            this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
+        }
 
-		private void SetupConstraints()
-		{
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				_mapView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
-				_mapView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor),
-				_mapView.WidthAnchor.ConstraintEqualTo(View.WidthAnchor),
-				_mapView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor)
-			});
+        private void SetupBindings()
+        {
+            _bindings = new List<Binding>
+            {
+                this.SetBinding(
+                    () => _pickupAddressTextField.Text,
+                    () => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
 
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				_addresseStackView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, 6),
-				_addresseStackView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 10),
-				_addresseStackView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
-				_addresseStackView.HeightAnchor.ConstraintEqualTo(80)
-			});
+                this.SetBinding(
+                    () => _destinationAddressTextField.Text,
+                    () => ViewModel.RideViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
 
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				_myLocationButton.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
-				_myLocationButton.BottomAnchor.ConstraintEqualTo(View.BottomAnchor, -150),
-				_myLocationButton.WidthAnchor.ConstraintEqualTo(40),
-				_myLocationButton.HeightAnchor.ConstraintEqualTo(40)
-			});
+                this.SetBinding(
+                    () => _pickupAddressTextField.Loading,
+                    () => ViewModel.RideViewModel.IsPickupAddressLoading, BindingMode.TwoWay),
 
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				_centerPinImageView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
-				NSLayoutConstraint.Create(_centerPinImageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
-					NSLayoutAttribute.CenterY, (nfloat) 0.93, 0),
-				_centerPinImageView.WidthAnchor.ConstraintEqualTo(46),
-				_centerPinImageView.HeightAnchor.ConstraintEqualTo(60)
-			});
+                this.SetBinding(
+                    () => _mapView.OnlineDrivers,
+                    () => ViewModel.OnlineDrivers, BindingMode.TwoWay),
 
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				_setPickupButton.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
-				NSLayoutConstraint.Create(_setPickupButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
-					NSLayoutAttribute.CenterY, (nfloat) 0.88, 0),
-				_setPickupButton.WidthAnchor.ConstraintEqualTo(305),
-				_setPickupButton.HeightAnchor.ConstraintEqualTo(35)
-			});
+                this.SetBinding(
+                        () => _mapView.Camera,
+                        () => ViewModel.CameraTarget, BindingMode.TwoWay)
+                    .ConvertTargetToSource(location =>
+                        CameraPosition.FromCamera(location.Latitude,location.Longitude, 17))
+            };
+        }
 
-			_requestHeightConstraint = requestUiView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor, (nfloat)0.3);
-			
-			NSLayoutConstraint.ActivateConstraints(new[]
-			{
-				requestUiView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor),
-				requestUiView.WidthAnchor.ConstraintEqualTo(View.WidthAnchor),
-			});
-		}
+        private void AddSubViews()
+        {
+            View.AddSubview(_mapView);
+            View.AddSubview(_addresseStackView);
+            View.AddSubview(_centerPinImageView);
+            View.AddSubview(_setPickupButton);
+            View.AddSubview(_myLocationButton);
+            View.AddSubview(_confirmitionView);
+        }
 
-		private void CamerPostionIdle(Location location)
-		{
-			UIView.Animate(0.3, () =>
-			{
-				_myLocationButton.Hidden = false;
-				_setPickupButton.Transform = CGAffineTransform.MakeIdentity();
-				_setPickupButton.Alpha = 1;
-			});
-		}
+        private void SetupConstraints()
+        {
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _mapView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
+                _mapView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor),
+                _mapView.WidthAnchor.ConstraintEqualTo(View.WidthAnchor),
+                _mapView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor)
+            });
 
-		private void CameraWillMove(bool gesture)
-		{
-			UIView.Animate(0.3, () =>
-			{
-				_myLocationButton.Hidden = true;
-				_setPickupButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
-				_setPickupButton.Alpha = 0;
-			});
-		}
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _addresseStackView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, 6),
+                _addresseStackView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 10),
+                _addresseStackView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
+                _addresseStackView.HeightAnchor.ConstraintEqualTo(80)
+            });
 
-		private bool DestinationAddressShouldBeginEditing(UITextField textField)
-		{
-			ViewModel.NavigateToDestinationSearch.Execute(null);
-			return false;
-		}
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _myLocationButton.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
+                _myLocationButton.BottomAnchor.ConstraintEqualTo(View.BottomAnchor, -150),
+                _myLocationButton.WidthAnchor.ConstraintEqualTo(40),
+                _myLocationButton.HeightAnchor.ConstraintEqualTo(40)
+            });
 
-		private bool PickupAddressShouldBeginEditing(UITextField textField)
-		{
-			ViewModel.NavigateToPickupSearch.Execute(null);
-			return false;
-		}
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _centerPinImageView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                NSLayoutConstraint.Create(_centerPinImageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
+                    NSLayoutAttribute.CenterY, (nfloat) 0.93, 0),
+                _centerPinImageView.WidthAnchor.ConstraintEqualTo(46),
+                _centerPinImageView.HeightAnchor.ConstraintEqualTo(60)
+            });
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			if (disposing)
-			{
-				ViewModel.Dispose();
-				_bindings.ForEach(b => b.Detach());
-			}
-		}
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _setPickupButton.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                NSLayoutConstraint.Create(_setPickupButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
+                    NSLayoutAttribute.CenterY, (nfloat) 0.88, 0),
+                _setPickupButton.WidthAnchor.ConstraintEqualTo(305),
+                _setPickupButton.HeightAnchor.ConstraintEqualTo(35)
+            });
 
-		public MainViewModel ViewModel { get; set; }
-	}
+            _confirmationViewHeightConstraint = _confirmitionView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor, (nfloat)0.35);
+
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                _confirmitionView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor),
+                _confirmitionView.WidthAnchor.ConstraintEqualTo(View.WidthAnchor),
+            });
+        }
+
+        private void CamerPostionIdle(Common.Shared.Models.Location location)
+        {
+            UIView.Animate(0.3, () =>
+            {
+                _myLocationButton.Hidden = false;
+                _setPickupButton.Transform = CGAffineTransform.MakeIdentity();
+                _setPickupButton.Alpha = 1;
+            });
+        }
+
+        private void CameraWillMove(bool gesture)
+        {
+            UIView.Animate(0.3, () =>
+            {
+                _myLocationButton.Hidden = true;
+                _setPickupButton.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
+                _setPickupButton.Alpha = 0;
+            });
+        }
+
+        private bool DestinationAddressShouldBeginEditing(UITextField textField)
+        {
+            ViewModel.NavigateToDestinationSearch.Execute(null);
+            return false;
+        }
+
+        private bool PickupAddressShouldBeginEditing(UITextField textField)
+        {
+            ViewModel.NavigateToPickupSearch.Execute(null);
+            return false;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                ViewModel.Dispose();
+                _bindings.ForEach(b => b.Detach());
+            }
+        }
+
+        public MainViewModel ViewModel { get; set; }
+    }
 }

@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Adapters\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="ViewModels\Driver\" />
+    <Compile Remove="Adapters\**" />
+    <Compile Remove="ViewModels\Driver\**" />
+    <EmbeddedResource Remove="Adapters\**" />
+    <EmbeddedResource Remove="ViewModels\Driver\**" />
+    <None Remove="Adapters\**" />
+    <None Remove="ViewModels\Driver\**" />
   </ItemGroup>
 
   <ItemGroup>

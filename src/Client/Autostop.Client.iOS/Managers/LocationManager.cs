@@ -51,6 +51,7 @@ namespace Autostop.Client.iOS.Managers
         public double Course => _localtionManager.Location.Course;
 
         public IObservable<Location> LocationChanged { get; }
+
         public IObservable<double> HeadingChanged { get; }
 
         public Location Location { get; private set; }

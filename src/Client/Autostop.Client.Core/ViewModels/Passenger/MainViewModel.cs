@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
-using Autostop.Client.Core.Enums;
-using Autostop.Client.Core.Extensions;
-using Autostop.Client.Core.Models;
+using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Autostop.Common.Shared.Models;
 using Conditions;
@@ -19,154 +18,155 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-	public class MainViewModel : BaseViewModel, IMainViewModel
-	{
-		public PickupSearchPlaceViewModel PickupSearchPlaceViewModel { get; }
-		public DestinationSearchPlaceViewModel DestinationSearchPlaceViewModel { get; }
-		public IRideViewModel RideViewModel { get; }
-		private readonly IGeocodingProvider _geocodingProvider;
-		private readonly ILocationManager _locationManager;
-		private readonly INavigationService _navigationService;
-		
-		private IDisposable _cameraPositionSubscriber;
-		private IDisposable _camerStartMovingSubscriber;
-		private IDisposable _myLocationSubscriber;
+    public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
+    {
+        public IRideViewModel RideViewModel { get; }
 
-		private ObservableCollection<DriverLocation> _onlineDrivers;
-		private Location _cameraTarget;
+        private readonly IGeocodingProvider _geocodingProvider;
+        private readonly ILocationManager _locationManager;
+        private readonly INavigationService _navigationService;
+        private readonly IBaseSearchPlaceViewModel _pickupSearchPlaceViewModel;
+        private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
 
-		public MainViewModel(
-			PickupSearchPlaceViewModel pickupSearchPlaceViewModel,
-			DestinationSearchPlaceViewModel destinationSearchPlaceViewModel,
-			INavigationService navigationService,
-			IGeocodingProvider geocodingProvider,
-			ILocationManager locationManager,
-			IRideViewModel rideViewModel)
-		{
-			PickupSearchPlaceViewModel = pickupSearchPlaceViewModel;
-			DestinationSearchPlaceViewModel = destinationSearchPlaceViewModel;
-			RideViewModel = rideViewModel;
-			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
-			locationManager.Requires(nameof(locationManager)).IsNotNull();
+        private ObservableCollection<DriverLocation> _onlineDrivers;
+        private Location _cameraTarget;
+        private List<IDisposable> _subscribers;
+        private IDisposable _myLocationObservable;
 
-			_navigationService = navigationService;
-			_geocodingProvider = geocodingProvider;
-			_locationManager = locationManager;
-			locationManager.StartUpdatingLocation();
+        public MainViewModel(
+            ISearchPlaceViewModelFactory searchPlaceViewModelFactory,
+            INavigationService navigationService,
+            IGeocodingProvider geocodingProvider,
+            ILocationManager locationManager,
+            IRideViewModel rideViewModel)
+        {
 
-			MyLocationObservable = locationManager.LocationChanged;
-			NavigateToDestinationSearch = new RelayCommand(NavigateToDistinationSearchViewModel);
-			NavigateToPickupSearch = new RelayCommand(NavigateToPickupSearchViewModel);
-			GoToMyLocation = new RelayCommand(GoToMyLocationAction);
-		}
+            RideViewModel = rideViewModel;
+            geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
+            locationManager.Requires(nameof(locationManager)).IsNotNull();
 
-		private void GoToMyLocationAction()
-		{
-			CameraTarget = _locationManager.Location;
-		}
+            _navigationService = navigationService;
+            _geocodingProvider = geocodingProvider;
+            _locationManager = locationManager;
+            locationManager.StartUpdatingLocation();
 
-		public IObservable<Location> MyLocationObservable { get; }
+            MyLocationObservable = locationManager.LocationChanged;
+            NavigateToDestinationSearch = new RelayCommand(NavigateToDistinationSearchViewModel);
+            NavigateToPickupSearch = new RelayCommand(NavigateToPickupSearchViewModel);
+            GoToMyLocation = new RelayCommand(GoToMyLocationAction);
 
-		public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
+            _pickupSearchPlaceViewModel = searchPlaceViewModelFactory.GetPickupSearchPlaceViewModel();
+            _destinationSearchPlaceViewModel = searchPlaceViewModelFactory.DestinationSearchPlaceViewModel(RideViewModel);
+        }
 
-		public IObservable<bool> CameraStartMoving { get; set; }
+        private void GoToMyLocationAction()
+        {
+            CameraTarget = _locationManager.Location;
+        }
 
-		public Location CameraTarget
-		{
-			get => _cameraTarget;
-			set
-			{
-				_cameraTarget = value;
-				RaisePropertyChanged();
-			}
-		}
-		
-		public ObservableCollection<DriverLocation> OnlineDrivers
-		{
-			get => _onlineDrivers;
-			set => RaiseAndSetIfChanged(ref _onlineDrivers, value);
-		}
+        public IObservable<Location> MyLocationObservable { get; }
 
-		public ICommand GoToMyLocation { get; }
+        public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
 
-		public ICommand NavigateToPickupSearch { get; }
+        public IObservable<bool> CameraStartMoving { get; set; }
 
-		public ICommand NavigateToDestinationSearch { get; }
+        public Location CameraTarget
+        {
+            get => _cameraTarget;
+            set
+            {
+                _cameraTarget = value;
+                RaisePropertyChanged();
+            }
+        }
 
-		public override Task Load()
-		{
-			_myLocationSubscriber = MyLocationObservable
-				.Subscribe(async location =>
-				{
-					CameraTarget = _locationManager.Location;
-					await CameraLocationChanged(location);
-					_myLocationSubscriber.Dispose();
-				});
+        public ObservableCollection<DriverLocation> OnlineDrivers
+        {
+            get => _onlineDrivers;
+            set => RaiseAndSetIfChanged(ref _onlineDrivers, value);
+        }
 
-			_camerStartMovingSubscriber = CameraStartMoving
-				.Subscribe(moving =>
-				{
-					RideViewModel.IsPickupAddressLoading = true;
-				});
+        public ICommand GoToMyLocation { get; }
 
-			_cameraPositionSubscriber = CameraPositionObservable
-				.Subscribe(async location =>
-				{
-					await CameraLocationChanged(location);
-				});
-			
-			DestinationSearchPlaceViewModel.SelectedAddress
-				.Subscribe(address =>
-				{
-					RideViewModel.DestinationAddress.SetAddress(address);
-					_navigationService.GoBack();
-				});
+        public ICommand NavigateToPickupSearch { get; }
 
-			PickupSearchPlaceViewModel.SelectedAddress
-				.Subscribe(address =>
-				{
-					RideViewModel.PickupAddress.SetAddress(address);
-					CameraTarget = address.Location;
-					_navigationService.GoBack();
-				});
+        public ICommand NavigateToDestinationSearch { get; }
 
-			OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
-			return base.Load();
-		}
+        public override Task Load()
+        {
+            _myLocationObservable = MyLocationObservable
+                .Subscribe(async location =>
+                {
+                    CameraTarget = _locationManager.Location;
+                    await CameraLocationChanged(location);
+                    _myLocationObservable.Dispose();
+                });
 
-		private async Task CameraLocationChanged(Location location)
-		{
-			var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-			if (address != null)
-			{
-				RideViewModel.PickupAddress.SetAddress(address);
-				RideViewModel.IsPickupAddressLoading = false;
-			}
-		}
-		
-		private void NavigateToPickupSearchViewModel()
-		{
-			_navigationService.NavigateToSearchView(PickupSearchPlaceViewModel);
-			PickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
-		}
+            _subscribers = new List<IDisposable>
+            {
+                CameraStartMoving
+                    .Subscribe(moving =>
+                    {
+                        RideViewModel.IsPickupAddressLoading = true;
+                    }),
 
-		private void NavigateToDistinationSearchViewModel()
-		{
-			_navigationService.NavigateToSearchView(DestinationSearchPlaceViewModel);
-			DestinationSearchPlaceViewModel.SearchText = RideViewModel.DestinationAddress.FormattedAddress;
-		}
+                CameraPositionObservable
+                    .Subscribe(async location =>
+                    {
+                        await CameraLocationChanged(location);
+                    }),
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
+                _destinationSearchPlaceViewModel.SelectedAddress
+                    .Subscribe(address =>
+                    {
+                        RideViewModel.DestinationAddress.SetAddress(address);
+                        _navigationService.GoBack();
+                    }),
 
-			if (disposing)
-			{
-				//_locationManager.StopUpdatingLocation();
-				_cameraPositionSubscriber.Dispose();
-				_myLocationSubscriber.Dispose();
-				_camerStartMovingSubscriber.Dispose();
-			}
-		}
-	}
+                _pickupSearchPlaceViewModel.SelectedAddress
+                    .Subscribe(address =>
+                    {
+                        RideViewModel.PickupAddress.SetAddress(address);
+                        CameraTarget = address.Location;
+                        _navigationService.GoBack();
+                    }),
+            };
+
+            OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
+            return base.Load();
+        }
+
+        private async Task CameraLocationChanged(Location location)
+        {
+            var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
+            if (address != null)
+            {
+                RideViewModel.PickupAddress.SetAddress(address);
+                RideViewModel.IsPickupAddressLoading = false;
+            }
+        }
+
+        private void NavigateToPickupSearchViewModel()
+        {
+            _navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupSearchPlaceViewModel);
+            _pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
+        }
+
+        private void NavigateToDistinationSearchViewModel()
+        {
+            _navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);
+            _destinationSearchPlaceViewModel.SearchText = RideViewModel.DestinationAddress.FormattedAddress;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                _locationManager.StopUpdatingLocation();
+                _subscribers.ForEach(d => d.Dispose());
+            }
+        }
+    }
 }

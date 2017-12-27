@@ -2,12 +2,13 @@
 using Autofac;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Factories;
+using Autostop.Client.Core.IoC;
 
 namespace Autostop.Client.Core.Factories
 {
     public class ViewFactory : IViewFactory
     {
-        private readonly IContainer _container = BootstrapperBase.Container;
+        private readonly IContainer _container = Locator.Container;
 
         public virtual IScreenFor<TViewModel> CreateView<TViewModel>(TViewModel vm)
         {
