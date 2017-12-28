@@ -19,125 +19,145 @@ using GalaSoft.MvvmLight.Command;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
-	public abstract class BaseSearchPlaceViewModel : BaseViewModel, IBaseSearchPlaceViewModel
-	{
-		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
-		private readonly IPlacesProvider _placesProvider;
-		private readonly IGeocodingProvider _geocodingProvider;
-		private readonly INavigationService _navigationService;
-		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
-		private IAutoCompleteResultModel _selectedSearchResult;
-		private bool _isLoading;
-		private string _searchText;
+    public abstract class BaseSearchPlaceViewModel : BaseViewModel, IBaseSearchPlaceViewModel
+    {
+        private readonly IPlacesProvider _placesProvider;
+        private readonly IGeocodingProvider _geocodingProvider;
+        private readonly INavigationService _navigationService;
+        private ObservableCollection<IAutoCompleteResultModel> _searchResults;
+        private IAutoCompleteResultModel _selectedSearchResult;
+        private bool _isLoading;
+        private string _searchText;
 
-		protected BaseSearchPlaceViewModel(
-			IScheduler scheduler,
-			IPlacesProvider placesProvider,
-			IGeocodingProvider geocodingProvider,
-			INavigationService navigationService)
-		{
-			placesProvider.Requires(nameof(placesProvider)).IsNotNull();
-			navigationService.Requires(nameof(navigationService)).IsNotNull();
+        protected BaseSearchPlaceViewModel(
+            IScheduler scheduler,
+            IPlacesProvider placesProvider,
+            IGeocodingProvider geocodingProvider,
+            INavigationService navigationService)
+        {
+            placesProvider.Requires(nameof(placesProvider)).IsNotNull();
+            navigationService.Requires(nameof(navigationService)).IsNotNull();
 
-			_placesProvider = placesProvider;
-			_geocodingProvider = geocodingProvider;
-			_navigationService = navigationService;
-			SelectedAddress = _selectedAddress;
+            _placesProvider = placesProvider;
+            _geocodingProvider = geocodingProvider;
+            _navigationService = navigationService;
 
+            this.ObservablePropertyChanged(() => SearchText)
+                .Throttle(TimeSpan.FromMilliseconds(300), scheduler)
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(async searchText =>
+                {
+                    await Search(searchText);
+                });
 
-			this.ObservablePropertyChanged(() => SearchText)
-				.Throttle(TimeSpan.FromMilliseconds(300), scheduler)
-				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(async searchText =>
-				{
-					await Search(searchText);
-				});
+            //this.ObservablePropertyChanged(() => SelectedSearchResult)
+            //    .Where(r => r is EmptyAutocompleteResultModel)
+            //    .Subscribe(SelectedEmptyAutocompleteResultModel);
 
-			this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Where(r => r is EmptyAutocompleteResultModel)
-				.Subscribe(SelectedEmptyAutocompleteResultModel);
+            var selectedEmptyAddress = this.ObservablePropertyChanged(() => SelectedSearchResult)
+                .Where(r => r is EmptyAutocompleteResultModel)
+                .Cast<EmptyAutocompleteResultModel>();
 
-			this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Where(r => r is AutoCompleteResultModel)
-				.Select(async result => await SelectedAutocompleteResultModel(result))
-				.Subscribe();
+            selectedEmptyAddress.Subscribe(SelectedEmptyAutocompleteResultModel);
 
-			GoBack = new RelayCommand(() => navigationService.GoBack());
-		}
+            var selectedAutoCompleteResult = this.ObservablePropertyChanged(() => SelectedSearchResult)
+                .Where(r => r is AutoCompleteResultModel)
+                .SelectMany(result => Observable
+                    .FromAsync(() => geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId)));
 
-		public async Task Search(string searchText)
-		{
-			IsSearching = true;
+            var a = selectedEmptyAddress.Where(r => r.Address != null).Select(r => r.Address);
+            
 
-			if (string.IsNullOrEmpty(searchText))
-				SearchResults = GetEmptyAutocompleteResult();
-			else
-				SearchResults = await _placesProvider.GetAutoCompleteResponse(searchText);
+            GoBack = new RelayCommand(() => navigationService.GoBack());
+        }
 
-			IsSearching = false;
-		}
+        public async Task Search(string searchText)
+        {
+            IsSearching = true;
 
-		private async Task SelectedAutocompleteResultModel(IAutoCompleteResultModel result)
-		{
-			var address = await _geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
-			_selectedAddress.OnNext(address);
-		}
+            if (string.IsNullOrEmpty(searchText))
+                SearchResults = GetEmptyAutocompleteResult();
+            else
+                SearchResults = await _placesProvider.GetAutoCompleteResponse(searchText);
 
-		private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
-		{
-			if (selectedResult is HomeResultModel homeResultModel)
-			{
-				if (homeResultModel.Address == null)
-					_navigationService.NavigateToSearchView<SearchHomeAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-				else
-					_selectedAddress.OnNext(homeResultModel.Address);
-			}
-			else if (selectedResult is WorkResultModel workResultModel)
-			{
-				if (workResultModel.Address == null)
-					_navigationService.NavigateToSearchView<SearchWorkAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-				else
-					_selectedAddress.OnNext(workResultModel.Address);
-			}
-		}
+            IsSearching = false;
+        }
 
-		private void GoBackCallback()
-		{
-			_navigationService.GoBack();
-			SearchResults = GetEmptyAutocompleteResult();
-		}
+        //private async Task SelectedAutocompleteResultModel(IAutoCompleteResultModel result)
+        //{
+        //    var address = await _;
+        //    _selectedAddress.OnNext(address);
+        //}
 
-		public bool IsSearching
-		{
-			get => _isLoading;
-			set => RaiseAndSetIfChanged(ref _isLoading, value);
-		}
+        //private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
+        //{
+        //    if (selectedResult is HomeResultModel homeResultModel)
+        //    {
+        //        if (homeResultModel.Address == null)
+        //            _navigationService.NavigateToSearchView<SearchHomeAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+        //        else
+        //            _selectedAddress.OnNext(homeResultModel.Address);
+        //    }
+        //    else if (selectedResult is WorkResultModel workResultModel)
+        //    {
+        //        if (workResultModel.Address == null)
+        //            _navigationService.NavigateToSearchView<SearchWorkAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+        //        else
+        //            _selectedAddress.OnNext(workResultModel.Address);
+        //    }
+        //}
 
-		public virtual string SearchText
-		{
-			get => _searchText;
-			set => RaiseAndSetIfChanged(ref _searchText, value);
-		}
-        
-		public ObservableCollection<IAutoCompleteResultModel> SearchResults
-		{
-			get => _searchResults;
-			set => RaiseAndSetIfChanged(ref _searchResults, value);
-		}
+        private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
+        {
+            if (selectedResult is HomeResultModel homeResultModel)
+            {
+                if (homeResultModel.Address == null)
+                    _navigationService.NavigateToSearchView<SearchHomeAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+            }
+            else if (selectedResult is WorkResultModel workResultModel)
+            {
+                if (workResultModel.Address == null)
+                    _navigationService.NavigateToSearchView<SearchWorkAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+            }
+        }
 
-		public IAutoCompleteResultModel SelectedSearchResult
-		{
-			get => _selectedSearchResult;
-			set => RaiseAndSetIfChanged(ref _selectedSearchResult, value);
-		}
+        private void GoBackCallback()
+        {
+            _navigationService.GoBack();
+            SearchResults = GetEmptyAutocompleteResult();
+        }
 
-		public IObservable<Address> SelectedAddress { get; }
+        public bool IsSearching
+        {
+            get => _isLoading;
+            set => RaiseAndSetIfChanged(ref _isLoading, value);
+        }
+
+        public virtual string SearchText
+        {
+            get => _searchText;
+            set => RaiseAndSetIfChanged(ref _searchText, value);
+        }
+
+        public ObservableCollection<IAutoCompleteResultModel> SearchResults
+        {
+            get => _searchResults;
+            set => RaiseAndSetIfChanged(ref _searchResults, value);
+        }
+
+        public IAutoCompleteResultModel SelectedSearchResult
+        {
+            get => _selectedSearchResult;
+            set => RaiseAndSetIfChanged(ref _selectedSearchResult, value);
+        }
+
+        public IObservable<Address> SelectedAddress { get; }
 
         [ExcludeFromCodeCoverage]
-	    public virtual string PlaceholderText => "Search";
+        public virtual string PlaceholderText => "Search";
 
         public virtual ICommand GoBack { get; }
 
-		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
-	}
+        protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
+    }
 }
