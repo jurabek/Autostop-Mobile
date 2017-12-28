@@ -7,7 +7,6 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
-using Autostop.Common.Shared.Models;
 using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places

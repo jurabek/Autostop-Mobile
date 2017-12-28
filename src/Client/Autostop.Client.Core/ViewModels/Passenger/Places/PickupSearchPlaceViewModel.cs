@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Core.Extensions;
-using Autostop.Client.Core.Models;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
@@ -34,6 +30,5 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		}
 
 	    public override string PlaceholderText => "Set pickup location";
-
 	}
 }

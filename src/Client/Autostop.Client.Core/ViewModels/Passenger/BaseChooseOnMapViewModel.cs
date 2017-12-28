@@ -9,22 +9,34 @@ namespace Autostop.Client.Core.ViewModels.Passenger
     public abstract class BaseChooseOnMapViewModel : BaseViewModel, ISearchableViewModel, IMapViewModel
     {
         private bool _isSearching;
-		public bool IsSearching
+        private Location _camerTarget;
+        private string _searchText;
+
+        public bool IsSearching
 		{
 		    get => _isSearching;
 		    set => RaiseAndSetIfChanged(ref _isSearching, value);
 		}
 
-        public virtual string PlaceholderText => "Search";
-
-        private string _searchText;
 		public string SearchText
 		{
 		    get => _searchText;
 		    set => RaiseAndSetIfChanged(ref _searchText, value);
 		}
 
-		public ICommand GoBack { get; protected set; }
+        public Location CameraTarget
+        {
+            get => _camerTarget;
+            set
+            {
+                _camerTarget = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public virtual string PlaceholderText => "Search";
+
+        public ICommand GoBack { get; protected set; }
 
         public ICommand Done { get; protected set; }
 
@@ -33,16 +45,5 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 	    public IObservable<Location> CameraPositionObservable { get; set; }
 
 	    public IObservable<bool> CameraStartMoving { get; set; }
-
-	    private Location _camerTarget;
-	    public Location CameraTarget
-	    {
-	        get => _camerTarget;
-	        set
-	        {
-	            _camerTarget = value;
-	            RaisePropertyChanged();
-	        }
-	    }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -49,11 +50,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe(async searchText =>
 				{
-#if UNIT_TEST
-
 					await Search(searchText);
-#endif
-
 				});
 
 			this.ObservablePropertyChanged(() => SelectedSearchResult)
@@ -121,9 +118,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			get => _searchText;
 			set => RaiseAndSetIfChanged(ref _searchText, value);
 		}
-
-		public virtual string PlaceholderText => "Search";
-
+        
 		public ObservableCollection<IAutoCompleteResultModel> SearchResults
 		{
 			get => _searchResults;
@@ -138,7 +133,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 
 		public IObservable<Address> SelectedAddress { get; }
 
-		public virtual ICommand GoBack { get; }
+        [ExcludeFromCodeCoverage]
+	    public virtual string PlaceholderText => "Search";
+
+        public virtual ICommand GoBack { get; }
 
 		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
 	}
