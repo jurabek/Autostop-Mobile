@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
+using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Abstraction.ViewModels.Passenger;
+using Autostop.Client.Core.Models;
 using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
@@ -22,9 +23,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			HasPickupLocation = true;
 		}
 
-		public IAddressViewModel PickupAddress { get; } = new AddressViewModel();
+		public IAddressModel PickupAddress { get; } = new AddressModel();
 
-	    public IAddressViewModel DestinationAddress { get; } = new AddressViewModel();
+	    public IAddressModel DestinationAddress { get; } = new AddressModel();
 
 	    public ICommand SetPickupLocation { get; }
 

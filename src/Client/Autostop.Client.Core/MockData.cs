@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core

@@ -1,8 +1,8 @@
 ﻿using Autostop.Common.Shared.Models;
 
-namespace Autostop.Client.Abstraction.ViewModels.Passenger
+namespace Autostop.Client.Abstraction.Models
 {
-    public interface IAddressViewModel
+    public interface IAddressModel
     {
         string FormattedAddress { get; set; }
 

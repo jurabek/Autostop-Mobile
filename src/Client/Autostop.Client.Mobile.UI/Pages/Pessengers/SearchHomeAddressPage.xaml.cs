@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autostop.Client.Abstraction;
+﻿using Autostop.Client.Abstraction;
 using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

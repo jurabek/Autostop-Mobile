@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Autostop.Client.Abstraction.Managers;
+using Autostop.Client.Abstraction.Providers;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    class ChooseHomeAddressOnMapViewModel
+    [UsedImplicitly]
+    public class ChooseHomeAddressOnMapViewModel : BaseChooseAddressOnMapViewModel
     {
+        public ChooseHomeAddressOnMapViewModel(
+            ILocationManager locationManager,
+            IGeocodingProvider geocodingProvider) : base(locationManager, geocodingProvider)
+        {
+        }
     }
 }

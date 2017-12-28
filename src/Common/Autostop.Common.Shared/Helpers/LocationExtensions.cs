@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Autostop.Common.Shared.Models;
 using static System.Math;
 

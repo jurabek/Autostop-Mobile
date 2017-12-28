@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.ViewModels.Passenger;

@@ -1,7 +1,4 @@
-﻿using System;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
-using Autostop.Client.Core.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
+﻿using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.iOS.Extensions;
 using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;

@@ -1,9 +1,10 @@
-﻿using Autostop.Client.Abstraction.ViewModels.Passenger;
+﻿using Autostop.Client.Abstraction.Models;
+using Autostop.Client.Core.ViewModels;
 using Autostop.Common.Shared.Models;
 
-namespace Autostop.Client.Core.ViewModels.Passenger
+namespace Autostop.Client.Core.Models
 {
-    public class AddressViewModel : BaseViewModel, IAddressViewModel
+    public class AddressModel : BaseViewModel, IAddressModel
     {
         private string _formattedAddress;
         private Location _location;

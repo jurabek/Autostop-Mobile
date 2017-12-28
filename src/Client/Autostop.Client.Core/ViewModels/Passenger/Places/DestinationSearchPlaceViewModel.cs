@@ -16,39 +16,38 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
     [UsedImplicitly]
     public sealed class DestinationSearchPlaceViewModel : BaseSearchPlaceViewModel
     {
-	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
+        private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
         public DestinationSearchPlaceViewModel(
-			IScheduler scheduler,
+            IScheduler scheduler,
             IRideViewModel rideViewModel,
-			INavigationService navigationService,
-			IPlacesProvider placesProvider,
-			IGeocodingProvider geocodingProvider,
+            INavigationService navigationService,
+            IPlacesProvider placesProvider,
+            IGeocodingProvider geocodingProvider,
             IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
-			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
-	    {
-	        _autocompleteResultProvider = autocompleteResultProvider;
-			
-		    this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Where(r => r is SetLocationOnMapResultModel)
-			    .Subscribe(r =>
-			    {
-				    var chooseDestinationOnMapViewModel =
-					    chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(rideViewModel) as
-						    ChooseDestinationOnMapViewModel;
-					navigationService.NavigateTo(chooseDestinationOnMapViewModel);
-			    });
-	    }
+            IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
+        {
+            _autocompleteResultProvider = autocompleteResultProvider;
 
-	    protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
-	    {
-		    return new ObservableCollection<IAutoCompleteResultModel>
-		    {
-				_autocompleteResultProvider.GetHomeResultModel(),
-				_autocompleteResultProvider.GetWorkResultModel(),
-				_autocompleteResultProvider.GetSetLocationOnMapResultModel()
-		    };
-		}
+            this.ObservablePropertyChanged(() => SelectedSearchResult)
+                .Where(r => r is SetLocationOnMapResultModel)
+                .Subscribe(r =>
+                {
+                    var chooseDestinationOnMapViewModel =
+                        chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(rideViewModel) as ChooseDestinationOnMapViewModel;
+                    navigationService.NavigateTo(chooseDestinationOnMapViewModel);
+                });
+        }
+
+        protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
+        {
+            return new ObservableCollection<IAutoCompleteResultModel>
+            {
+                _autocompleteResultProvider.GetHomeResultModel(),
+                _autocompleteResultProvider.GetWorkResultModel(),
+                _autocompleteResultProvider.GetSetLocationOnMapResultModel()
+            };
+        }
 
         public override string PlaceholderText => "Set destination location";
     }

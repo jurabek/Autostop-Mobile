@@ -137,6 +137,8 @@
     <Compile Include="UI\ConfirmitionView.cs" />
     <Compile Include="Views\Passenger\BaseChooseOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseDestinationOnMapViewController.cs" />
+    <Compile Include="Views\Passenger\ChooseHomeAddressOnMapViewController.cs" />
+    <Compile Include="Views\Passenger\ChooseWorkAddressOnMapViewController.cs" />
     <Compile Include="Views\Passenger\MainViewController.cs" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>

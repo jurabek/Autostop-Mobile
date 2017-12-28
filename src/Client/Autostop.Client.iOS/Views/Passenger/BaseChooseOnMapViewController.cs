@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Reactive.Linq;
 using Autostop.Client.Abstraction;
+using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
-using Autostop.Client.iOS.UI;
+using GalaSoft.MvvmLight.Helpers;
+using Google.Maps;
 using JetBrains.Annotations;
 using UIKit;
+using Location = Autostop.Common.Shared.Models.Location;
+using MapView = Autostop.Client.iOS.UI.MapView;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
 	public abstract class BaseChooseOnMapViewController<TViewModel> : UIViewController, IScreenFor<TViewModel>
-		where TViewModel : class, ISearchableViewModel
-	{
+		where TViewModel : class, ISearchableViewModel, IMapViewModel
+    {
 		[UsedImplicitly] protected MapView MapView;
 	    [UsedImplicitly] protected UIButton DoneButton;
 		[UsedImplicitly] protected UIImageView CenterPinImageView;
@@ -37,7 +42,26 @@ namespace Autostop.Client.iOS.Views.Passenger
 			var searchTextField = this.CreateSearchViewOnNavigationBar(ViewModel);
 		    searchTextField.ClearButtonMode = UITextFieldViewMode.Never;
 		    searchTextField.ShouldBeginEditing = _ => false;
-		}
+            
+		    this.SetBinding(
+		            () => MapView.Camera,
+		            () => ViewModel.CameraTarget, BindingMode.TwoWay)
+		        .ConvertTargetToSource(location =>
+		            CameraPosition.FromCamera(location.Latitude, location.Longitude, 16));
+
+		    ViewModel.CameraPositionObservable = Observable
+		        .FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
+		            e => MapView.CameraPositionIdle += e,
+		            e => MapView.CameraPositionIdle -= e)
+		        .Select(e => e.EventArgs.Position.Target)
+		        .Select(c => new Location(c.Latitude, c.Longitude));
+
+		    ViewModel.CameraStartMoving = Observable
+		        .FromEventPattern<EventHandler<GMSWillMoveEventArgs>, GMSWillMoveEventArgs>(
+		            e => MapView.WillMove += e,
+		            e => MapView.WillMove -= e)
+		        .Select(e => e.EventArgs.Gesture);
+        }
 
 		public override void ViewWillAppear(bool animated)
 		{

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autostop.Common.Shared.Helpers;
+﻿using Autostop.Common.Shared.Helpers;
 
 namespace Autostop.Common.Shared.Models
 {

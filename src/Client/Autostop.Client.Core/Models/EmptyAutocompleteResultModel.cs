@@ -1,5 +1,4 @@
 ﻿using Autostop.Client.Abstraction.Models;
-using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core.Models

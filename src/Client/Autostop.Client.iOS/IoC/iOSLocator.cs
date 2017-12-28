@@ -24,6 +24,8 @@ namespace Autostop.Client.iOS.IoC
             builder.RegisterType<NavigationService>().As<INavigationService>();
             builder.RegisterType<MainViewController>().As<IScreenFor<MainViewModel>>();
 	        builder.RegisterType<ChooseDestinationOnMapViewController>().As<IScreenFor<ChooseDestinationOnMapViewModel>>();
+	        builder.RegisterType<ChooseHomeAddressOnMapViewController>().As<IScreenFor<ChooseHomeAddressOnMapViewModel>>();
+	        builder.RegisterType<ChooseWorkAddressOnMapViewController>().As<IScreenFor<ChooseWorkAddressOnMapViewModel>>();
 
             builder.ClientTypesRegistry();
         }

@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Common.Shared.Models;
 using CoreLocation;
-using UIKit;
 
 namespace Autostop.Client.iOS.Managers
 {

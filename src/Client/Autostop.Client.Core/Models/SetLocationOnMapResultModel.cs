@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Autostop.Client.Core.Models
+﻿namespace Autostop.Client.Core.Models
 {
     public class SetLocationOnMapResultModel : EmptyAutocompleteResultModel
     {

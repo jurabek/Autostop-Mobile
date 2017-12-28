@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autostop.Client.iOS.Constants;
-using CoreAnimation;
-using CoreGraphics;
+﻿using Autostop.Client.iOS.Constants;
 using UIKit;
 
 namespace Autostop.Client.iOS.UI
