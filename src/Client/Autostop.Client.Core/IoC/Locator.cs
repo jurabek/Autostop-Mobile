@@ -1,5 +1,7 @@
-﻿using System.Reactive.Concurrency;
+﻿using System;
+using System.Reactive.Concurrency;
 using Autofac;
+using Autofac.Core;
 using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Providers;
@@ -14,13 +16,13 @@ using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Google.Maps;
 using Google.Maps.Geocoding;
 using Google.Maps.Places;
-using Const = Autostop.Common.Shared.Constants.IoC;
+using ViewModelKeys = Autostop.Common.Shared.Constants.IoC.ViewModelKeys;
 
 namespace Autostop.Client.Core.IoC
 {
     public abstract class Locator
     {
-        public static IContainer Container;
+        private static IContainer _container;
 
         public IContainer Build()
         {
@@ -29,9 +31,9 @@ namespace Autostop.Client.Core.IoC
 
 	        builder.RegisterType<RideViewModel>().As<IRideViewModel>();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<PickupSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(Const.ViewModelKeys.PickupSearch);
-            builder.RegisterType<DestinationSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(Const.ViewModelKeys.DestinationSearch);
-            builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(Const.ViewModelKeys.ChooseDestinationOnMap);
+            builder.RegisterType<PickupSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.PickupSearch);
+            builder.RegisterType<DestinationSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.DestinationSearch);
+            builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap);
 
             builder.RegisterType<SearchHomeAddressViewModel>().AsSelf();
 	        builder.RegisterType<SearchWorkAddressViewModel>().AsSelf();
@@ -41,6 +43,7 @@ namespace Autostop.Client.Core.IoC
 			builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
             builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();
 	        builder.RegisterType<EmptyAutocompleteResultProvider>().As<IEmptyAutocompleteResultProvider>();
+	        builder.RegisterType<SchedulerProvider>().As<ISchedulerProvider>();
             builder.RegisterInstance(new PlacesService(googleSigned)).As<IPlacesService>();
             builder.RegisterInstance(new GeocodingService(googleSigned)).As<IGeocodingService>();
 
@@ -51,11 +54,31 @@ namespace Autostop.Client.Core.IoC
 	        builder.RegisterInstance(Scheduler.Default).As<IScheduler>();
 
             ContainerRegistery(builder);
-            Container = builder.Build();
+            _container = builder.Build();
 
-            return Container;
+            return _container;
         }
 
-        protected abstract void ContainerRegistery(ContainerBuilder builder);
+	    public static TService ResolveNamed<TService>(string serviceName)
+	    {
+		    return _container.ResolveNamed<TService>(serviceName);
+	    }
+
+		public static TService ResolveNamed<TService>(string serviceName, params Parameter[] parameters)
+	    {
+		    return _container.ResolveNamed<TService>(serviceName, parameters);
+	    }
+
+	    public static TService Resolve<TService>()
+	    {
+		    return _container.Resolve<TService>();
+	    }
+
+	    public static object Resolve(Type serviceType)
+	    {
+		    return _container.Resolve(serviceType);
+		}
+
+		protected abstract void ContainerRegistery(ContainerBuilder builder);
     }
 }

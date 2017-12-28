@@ -17,18 +17,17 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
 		public SearchWorkAddressViewModel(
-			IScheduler scheduler,
+			ISchedulerProvider schedulerProvider,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 			IEmptyAutocompleteResultProvider autocompleteResultProvider,
 			ISettingsProvider settingsProvider,
-			IGeocodingProvider geocodingProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
+			IGeocodingProvider geocodingProvider) : base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 
 			this.ObservablePropertyChanged(() => SelectedSearchResult)
 				.Where(sr => sr is AutoCompleteResultModel)
-				.SubscribeOn(scheduler)
 				.Subscribe(async result =>
 				{
 					var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);

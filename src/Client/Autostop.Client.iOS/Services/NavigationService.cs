@@ -13,7 +13,6 @@ namespace Autostop.Client.iOS.Services
 	[UsedImplicitly]
 	public class NavigationService : INavigationService
 	{
-		private readonly IContainer _container = Locator.Container;
 		private readonly UINavigationController _navigationController;
 		private readonly IViewAdapter<UIViewController> _viewAdapter;
 		private readonly IViewFactory _viewFactory;
@@ -42,7 +41,7 @@ namespace Autostop.Client.iOS.Services
 
 		public void NavigateTo<TViewModel>()
 		{
-			var viewModel = _container.Resolve<TViewModel>();
+			var viewModel = Locator.Resolve<TViewModel>();
 			var viewController = GetViewController(viewModel);
 			_navigationController.PushViewController(viewController, false);
 		}
@@ -55,14 +54,14 @@ namespace Autostop.Client.iOS.Services
 
 		public void NavigateToModal<TViewModel>()
 		{
-			var viewModel = _container.Resolve<TViewModel>();
+			var viewModel = Locator.Resolve<TViewModel>();
 			var viewController = GetViewController(viewModel);
 			_navigationController.PopToViewController(viewController, false);
 		}
 
 		public void NavigateTo<TViewModel>(Action<object, TViewModel> configure)
 		{
-			var viewModel = _container.Resolve<TViewModel>();
+			var viewModel = Locator.Resolve<TViewModel>();
 			var viewController = GetViewController(viewModel);
 			configure(viewController, viewModel);
 			_navigationController.PushViewController(viewController, false);
@@ -70,7 +69,7 @@ namespace Autostop.Client.iOS.Services
 
 		public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel
 		{
-			var viewModel = _container.Resolve<TViewModel>();
+			var viewModel = Locator.Resolve<TViewModel>();
 			var view = _viewFactory.CreateView(viewModel);
 			var viewController = _viewAdapter.GetSearchView(view);
 			callBack(viewModel);
@@ -103,7 +102,7 @@ namespace Autostop.Client.iOS.Services
 
 		private object GetViewController(Type viewModelType)
 		{
-			var viewModel = _container.Resolve(viewModelType);
+			var viewModel = Locator.Resolve(viewModelType);
 			var createView = typeof(IViewFactory).GetMethod(nameof(IViewFactory.CreateView))
 				?.MakeGenericMethod(viewModelType);
 			var view = createView?.Invoke(this, new[] { viewModel });

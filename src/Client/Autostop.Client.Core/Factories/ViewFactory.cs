@@ -11,14 +11,12 @@ namespace Autostop.Client.Core.Factories
     [UsedImplicitly]
     public sealed class ViewFactory : IViewFactory
     {
-        private readonly IContainer _container = Locator.Container;
-
         public IScreenFor<TViewModel> CreateView<TViewModel>(TViewModel vm)
         {
 	        try
 	        {
 		        var viewType = typeof(IScreenFor<>).MakeGenericType(vm.GetType());
-		        if (!(_container.Resolve(viewType) is IScreenFor<TViewModel> view))
+		        if (!(Locator.Resolve(viewType) is IScreenFor<TViewModel> view))
 			        throw new ArgumentException($"Resolve type {typeof(TViewModel).Name} does not implement IScreen");
 
 		        view.ViewModel = vm;

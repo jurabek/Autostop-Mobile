@@ -17,12 +17,12 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
 	    public SearchHomeAddressViewModel(
-			IScheduler scheduler,
+			ISchedulerProvider schedulerProvider,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
 		    IEmptyAutocompleteResultProvider autocompleteResultProvider,
 			ISettingsProvider settingsProvider,
-			IGeocodingProvider geocodingProvider) : base(scheduler, placesProvider, geocodingProvider, navigationService)
+			IGeocodingProvider geocodingProvider) : base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
 	    {
 		    _autocompleteResultProvider = autocompleteResultProvider;
 

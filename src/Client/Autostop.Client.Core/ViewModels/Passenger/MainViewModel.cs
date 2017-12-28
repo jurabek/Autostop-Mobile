@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Factories;
@@ -124,7 +127,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
                     }),
 
                 _pickupSearchPlaceViewModel.SelectedAddress
-                    .Subscribe(address =>
+					.ObserveOn(SynchronizationContext.Current)
+					.Subscribe(address =>
                     {
                         RideViewModel.PickupAddress.SetAddress(address);
                         CameraTarget = address.Location;

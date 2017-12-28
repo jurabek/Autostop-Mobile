@@ -3,17 +3,18 @@ using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core.IoC;
+using Autostop.Client.Core.ViewModels.Passenger;
+using JetBrains.Annotations;
+using ViewModelKeys = Autostop.Common.Shared.Constants.IoC.ViewModelKeys;
 
 namespace Autostop.Client.Core.Factories
 {
+    [UsedImplicitly]
     public class ChooseOnMapViewModelFactory : IChooseOnMapViewModelFactory
     {
         public ISearchableViewModel GetChooseDestinationOnMapViewModel(IRideViewModel rideViewModel)
         {
-            return Locator.Container.
-                ResolveNamed<ISearchableViewModel>(
-                    Common.Shared.Constants.IoC.ViewModelKeys.ChooseDestinationOnMap,
-                    new NamedParameter(nameof(rideViewModel), rideViewModel));
+	        return Locator.ResolveNamed<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap, new NamedParameter(nameof(rideViewModel), rideViewModel));
         }
     }
 }
