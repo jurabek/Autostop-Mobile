@@ -18,7 +18,7 @@ namespace Autostop.Client.Mobile.UI.IoC
 	        builder.RegisterType<SearchHomeAddressPage>().As<IScreenFor<SearchHomeAddressViewModel>>();
 	        builder.RegisterType<SearchWorkAddressPage>().As<IScreenFor<SearchWorkAddressViewModel>>();
 			builder.RegisterType<SettingsProvider>().As<ISettingsProvider>();
-            builder.RegisterInstance(CrossSettings.Current).As<ISettings>().SingleInstance();
+	        builder.RegisterInstance(CrossSettings.Current).As<ISettings>();
         }
     }
 }

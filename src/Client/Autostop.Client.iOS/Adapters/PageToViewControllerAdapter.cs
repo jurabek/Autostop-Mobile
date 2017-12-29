@@ -37,11 +37,14 @@ namespace Autostop.Client.iOS.Adapters
 		{
 			try
 			{
-				if (view is Page page)
+				switch (view)
 				{
-					var uiViewController = page.CreateViewController();
-					uiViewController.CreateSearchViewOnNavigationBar(view.ViewModel);
-					return uiViewController;
+					case Page page:
+						var uiViewController = page.CreateViewController();
+						uiViewController.CreateSearchViewOnNavigationBar(view.ViewModel);
+						return uiViewController;
+					case UIViewController resultView:
+						return resultView;
 				}
 			}
 			catch (Exception e)
