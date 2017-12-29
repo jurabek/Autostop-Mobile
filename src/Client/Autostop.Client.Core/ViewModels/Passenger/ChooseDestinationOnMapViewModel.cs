@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
 	[UsedImplicitly]
-	public sealed class ChooseDestinationOnMapViewModel : BaseChooseOnMapViewModel
+	public sealed class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
 	{
 		public IRideViewModel RideViewModel { get; }
 

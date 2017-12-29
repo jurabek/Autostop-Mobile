@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Models;
@@ -12,6 +11,7 @@ using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
 using Conditions;
 using GalaSoft.MvvmLight.Command;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Places
 {
@@ -28,44 +28,51 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,
 			INavigationService navigationService)
+        {
+            placesProvider.Requires(nameof(placesProvider)).IsNotNull();
+            navigationService.Requires(nameof(navigationService)).IsNotNull();
+
+            _navigationService = navigationService;
+
+            this.Changed(() => SearchText)
+                .Throttle(TimeSpan.FromMilliseconds(300), schedulerProvider.DefaultScheduler)
+                .ObserveOn(schedulerProvider.SynchronizationContextScheduler)
+                .Subscribe(async searchText =>
+                {
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        SearchResults = GetEmptyAutocompleteResult();
+                    }
+                    else
+                    {
+                        IsSearching = true;
+                        SearchResults = await placesProvider.GetAutoCompleteResponse(searchText);
+                        IsSearching = false;
+                    }
+                });
+
+
+            var selectedEmptyAddress = SelectedEmptyAutocompleteResultModelObservable()
+                .Where(r => r.Address != null)
+                .Select(r => r.Address);
+
+            SelectedAddress = SelectedAutoCompleteResultModelObservable()
+                .Select(x => Observable.FromAsync(() => geocodingProvider.ReverseGeocodingFromPlaceId(x.PlaceId)))
+                .Concat()
+                .Merge(selectedEmptyAddress);
+
+            GoBack = new RelayCommand(GoBackAction);
+        }
+
+        protected IObservable<IAutoCompleteResultModel> SelectedAutoCompleteResultModelObservable()
+        {
+            return this.Changed(() => SelectedSearchResult)
+                            .Where(r => r is AutoCompleteResultModel);
+        }
+
+        protected IObservable<EmptyAutocompleteResultModel> SelectedEmptyAutocompleteResultModelObservable()
 		{
-			placesProvider.Requires(nameof(placesProvider)).IsNotNull();
-			navigationService.Requires(nameof(navigationService)).IsNotNull();
-
-			_navigationService = navigationService;
-
-			this.ObservablePropertyChanged(() => SearchText)
-				.Throttle(TimeSpan.FromMilliseconds(300), schedulerProvider.DefaultScheduler)
-				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
-				.Subscribe(async searchText =>
-				{
-					IsSearching = true;
-
-					if (string.IsNullOrEmpty(searchText))
-						SearchResults = GetEmptyAutocompleteResult();
-					else
-						SearchResults = await placesProvider.GetAutoCompleteResponse(searchText);
-
-					IsSearching = false;
-				});
-			
-
-			var selectedEmptyAddress = SelectedEmptyAutocompleteResultModel()
-				.Where(r => r.Address != null)
-				.Select(r => r.Address);
-			
-			SelectedAddress = this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Where(r => r is AutoCompleteResultModel)
-				.Select(x => Observable.FromAsync(() => geocodingProvider.ReverseGeocodingFromPlaceId(x.PlaceId)))
-				.Concat()
-				.Merge(selectedEmptyAddress);
-			
-			GoBack = new RelayCommand(GoBackAction);
-		}
-
-		protected IObservable<EmptyAutocompleteResultModel> SelectedEmptyAutocompleteResultModel()
-		{
-			return this.ObservablePropertyChanged(() => SelectedSearchResult)
+			return this.Changed(() => SelectedSearchResult)
 				.Where(r => r is EmptyAutocompleteResultModel)
 				.Cast<EmptyAutocompleteResultModel>();
 		}
@@ -101,7 +108,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 
 		public IObservable<Address> SelectedAddress { get; }
 		
-		public virtual string PlaceholderText => "Search";
+		[UsedImplicitly]
+		public virtual string PlaceholderText { get; }
 
 		public virtual ICommand GoBack { get; }
 

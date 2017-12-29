@@ -1,5 +1,6 @@
 ﻿using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
+using Autostop.Client.iOS.Extensions;
 using JetBrains.Annotations;
 using UIKit;
 
@@ -15,6 +16,7 @@ namespace Autostop.Client.iOS.Views.Passenger
         public override async void ViewDidLoad()
         {
             base.ViewDidLoad();
+            this.BindCommand(DoneButton, ViewModel.Done);
             await ViewModel.Load();
         }
     }

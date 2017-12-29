@@ -6,7 +6,7 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    public abstract class BaseChooseOnMapViewModel : BaseViewModel, ISearchableViewModel, IMapViewModel
+    public abstract class ChooseOnMapViewModelBase : BaseViewModel, ISearchableViewModel, IMapViewModel
     {
         private bool _isSearching;
         private Location _camerTarget;

@@ -25,7 +25,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			_navigationService = navigationService;
 			_autocompleteResultProvider = autocompleteResultProvider;
 
-			SelectedEmptyAutocompleteResultModel()
+			SelectedEmptyAutocompleteResultModelObservable()
 				.Where(r => r.Address == null)
 				.Subscribe(SelectedEmptyAutocompleteResultModel);
 		}

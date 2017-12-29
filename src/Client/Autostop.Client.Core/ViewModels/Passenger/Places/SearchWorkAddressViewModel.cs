@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
@@ -26,15 +25,21 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 
-			this.ObservablePropertyChanged(() => SelectedSearchResult)
-				.Where(sr => sr is AutoCompleteResultModel)
+			this.SelectedAutoCompleteResultModelObservable()
 				.Subscribe(async result =>
 				{
 					var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
 					settingsProvider.WorkAddress = address;
 					GoBackCallback?.Invoke();
 				});
-		}
+
+		    this.Changed(() => SelectedSearchResult)
+		        .Where(r => r is SetLocationOnMapResultModel)
+		        .Subscribe(result =>
+		        {
+		            navigationService.NavigateTo<ChooseWorkAddressOnMapViewModel>();
+		        });
+        }
 
 		public Action GoBackCallback { get; set; }
 

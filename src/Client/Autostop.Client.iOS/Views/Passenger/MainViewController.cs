@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using Autostop.Client.Abstraction;
+﻿using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
@@ -12,14 +9,17 @@ using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Reactive.Linq;
 using UIKit;
-using MapView = Autostop.Client.iOS.UI.MapView;
 using Location = Autostop.Common.Shared.Models.Location;
+using MapView = Autostop.Client.iOS.UI.MapView;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
     [UsedImplicitly]
-    public class MainViewController : UIViewController, IScreenFor<MainViewModel>
+    public sealed class MainViewController : UIViewController, IScreenFor<MainViewModel>
     {
         private readonly MapView _mapView;
         private readonly DestinationAddressTextField _destinationAddressTextField;
@@ -38,6 +38,7 @@ namespace Autostop.Client.iOS.Views.Passenger
         {
             _mapView = new MapView();
             _myLocationButton = new MyLocationButton();
+            _confirmitionView = new ConfirmitionView();
 
             _destinationAddressTextField = new DestinationAddressTextField
             {
@@ -60,12 +61,7 @@ namespace Autostop.Client.iOS.Views.Passenger
                 BackgroundColor = Colors.PickupButtonColor,
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-
-            _confirmitionView = new ConfirmitionView
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-
+            
             _addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
             {
                 Axis = UILayoutConstraintAxis.Vertical,
@@ -83,6 +79,7 @@ namespace Autostop.Client.iOS.Views.Passenger
             base.ViewWillAppear(animated);
             NavigationController.NavigationBar.BarTintColor = UIColor.White;
             NavigationController.NavigationBar.Translucent = false;
+            NavigationItem.Title = "Set pickup location";
         }
 
         public override async void ViewDidLoad()
@@ -103,6 +100,7 @@ namespace Autostop.Client.iOS.Views.Passenger
             UIView.Animate(0.1, 0, UIViewAnimationOptions.CurveEaseIn, () =>
             {
                 _confirmationViewHeightConstraint.Active = _hidden;
+                _setPickupButton.Hidden = true;
                 View.SetNeedsLayout();
                 View.LayoutIfNeeded();
             }, null);
@@ -142,7 +140,8 @@ namespace Autostop.Client.iOS.Views.Passenger
                     e => _mapView.WillMove -= e)
                 .Select(e => e.EventArgs.Gesture);
 
-            ViewModel.RideViewModel.ObservablePropertyChanged(() => ViewModel.RideViewModel.HasPickupLocation)
+            ViewModel.RideViewModel
+                .Changed(() => ViewModel.RideViewModel.HasPickupLocation)
                 .Subscribe(_ => ViewDidLayoutSubviews());
 
             ViewModel.CameraStartMoving
@@ -227,8 +226,8 @@ namespace Autostop.Client.iOS.Views.Passenger
                 _centerPinImageView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
                 NSLayoutConstraint.Create(_centerPinImageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
                     NSLayoutAttribute.CenterY, (nfloat) 0.93, 0),
-                _centerPinImageView.WidthAnchor.ConstraintEqualTo(46),
-                _centerPinImageView.HeightAnchor.ConstraintEqualTo(60)
+                _centerPinImageView.WidthAnchor.ConstraintEqualTo(40),
+                _centerPinImageView.HeightAnchor.ConstraintEqualTo(40)
             });
 
             NSLayoutConstraint.ActivateConstraints(new[]
@@ -249,7 +248,7 @@ namespace Autostop.Client.iOS.Views.Passenger
             });
         }
 
-        private void CamerPostionIdle(Common.Shared.Models.Location location)
+        private void CamerPostionIdle(Location location)
         {
             UIView.Animate(0.3, () =>
             {

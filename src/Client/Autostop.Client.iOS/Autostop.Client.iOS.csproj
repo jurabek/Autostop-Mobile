@@ -140,6 +140,9 @@
     <Compile Include="Views\Passenger\ChooseHomeAddressOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseWorkAddressOnMapViewController.cs" />
     <Compile Include="Views\Passenger\MainViewController.cs" />
+    <BundleResource Include="Resources\wallet.png" />
+    <BundleResource Include="Resources\master_card.png" />
+    <BundleResource Include="Resources\auto_stop_car.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

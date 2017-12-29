@@ -6,13 +6,10 @@ using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.Places;
 using NUnit.Framework;
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Core.Extensions;
 using Autostop.Common.Shared.Models;
 using Moq;
 

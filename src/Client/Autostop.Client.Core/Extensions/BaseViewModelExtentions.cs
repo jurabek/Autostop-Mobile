@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
@@ -8,9 +9,10 @@ using Autostop.Client.Core.ViewModels;
 
 namespace Autostop.Client.Core.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class BaseViewModelExtentions
     {
-        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this BaseViewModel vm,
+        public static IObservable<TProperty> Changed<TProperty>(this BaseViewModel vm,
             string propertyName)
         {
             return vm.Changed
@@ -22,7 +24,7 @@ namespace Autostop.Client.Core.Extensions
                     .GetValue(c.Sender));
         }
 
-        public static IObservable<TProperty> ObservablePropertyChanged<TProperty>(this IObservableViewModel vm,
+        public static IObservable<TProperty> Changed<TProperty>(this IObservableViewModel vm,
             Expression<Func<TProperty>> propertyExpression)
         {
             if (!(propertyExpression.Body is MemberExpression member))

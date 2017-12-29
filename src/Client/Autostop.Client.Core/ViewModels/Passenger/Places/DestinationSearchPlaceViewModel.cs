@@ -34,11 +34,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 	        _chooseOnMapViewModelFactory = chooseOnMapViewModelFactory;
 	        _autocompleteResultProvider = autocompleteResultProvider;
 
-			this.ObservablePropertyChanged(() => SelectedSearchResult)
+			this.Changed(() => SelectedSearchResult)
                 .Where(r => r is SetLocationOnMapResultModel)
                 .Subscribe(NavigateToChooseDestinationOnMapViewModel);
 
-	        SelectedEmptyAutocompleteResultModel()
+	        SelectedEmptyAutocompleteResultModelObservable()
 				.Where(r => r.Address == null)
 				.Subscribe(SelectedEmptyAutocompleteResultModel); 
 		}
