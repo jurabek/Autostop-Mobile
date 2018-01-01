@@ -43,7 +43,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
             ILocationManager locationManager,
             IRideViewModel rideViewModel)
         {
-
             RideViewModel = rideViewModel;
             geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
             locationManager.Requires(nameof(locationManager)).IsNotNull();
@@ -69,9 +68,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public IObservable<Location> MyLocationObservable { get; }
 
-        public IObservable<Location> CameraPositionObservable { [UsedImplicitly] get; set; }
+        public IObservable<Location> CameraPositionObservable { get; set; }
 
         public IObservable<bool> CameraStartMoving { get; set; }
+
+		public IObservable<VisibleRegion> VisibleRegionChanged { get; set; }
 
         public Location CameraTarget
         {

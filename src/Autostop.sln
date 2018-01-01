@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{C532A7C7-E809-49AA-8934-9345A77E5FEA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{B90CC010-E7DB-41E9-9949-7A128BD1BAD3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{90E345F6-AF18-4B49-8BBD-1BD1A35D575F}"
 EndProject
@@ -25,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostop.Shared.Google.Maps
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D937D0E6-1D2E-4E8B-B8A9-25984353AE33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autostop.Client.Core.UnitTests", "Tests\Autostop.Client.Core.UnitTests\Autostop.Client.Core.UnitTests.csproj", "{C5E898D5-BB66-4882-B4C3-5FF4A6993FFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostop.Client.Core.UnitTests", "Tests\Autostop.Client.Core.UnitTests\Autostop.Client.Core.UnitTests.csproj", "{C5E898D5-BB66-4882-B4C3-5FF4A6993FFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,8 +100,8 @@ Global
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|Any CPU.ActiveCfg = Debug|iPhone
-		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhone.Build.0 = Debug|iPhone
+		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhone.ActiveCfg = Debug|iPhoneSimulator
+		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhone.Build.0 = Debug|iPhoneSimulator
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{5610D313-0E74-4FC1-AD27-9D16C7A5DF71}.Release|Any CPU.ActiveCfg = Release|iPhone

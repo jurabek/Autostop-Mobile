@@ -44,6 +44,7 @@ namespace Autostop.Client.Core.IoC
             builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();
 	        builder.RegisterType<EmptyAutocompleteResultProvider>().As<IEmptyAutocompleteResultProvider>();
 	        builder.RegisterType<SchedulerProvider>().As<ISchedulerProvider>();
+	        builder.RegisterType<VisibleRegionProvider>().As<IVisibleRegionProvider>();
             builder.RegisterInstance(new PlacesService(googleSigned)).As<IPlacesService>();
             builder.RegisterInstance(new GeocodingService(googleSigned)).As<IGeocodingService>();
 

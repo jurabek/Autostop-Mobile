@@ -14,6 +14,8 @@ namespace Autostop.Common.Shared.Models
 
 		public Location CurrentLocation { get; set; }
 
+		public double Bearing => GetBearing();
+
 		public double GetBearing()
 		{
 			//var lat1 = PreviusLocation.Latitude.ToRadians();
