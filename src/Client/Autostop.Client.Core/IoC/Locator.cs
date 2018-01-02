@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using Autofac;
 using Autofac.Core;
 using Autostop.Client.Abstraction.Facades;
@@ -52,7 +51,6 @@ namespace Autostop.Client.Core.IoC
             builder.RegisterType<SearchPlaceViewModelFactory>().As<ISearchPlaceViewModelFactory>();
             builder.RegisterType<ChooseOnMapViewModelFactory>().As<IChooseOnMapViewModelFactory>();
             builder.RegisterType<AutoMapperFacade>().As<IAutoMapperFacade>();
-	        builder.RegisterInstance(Scheduler.Default).As<IScheduler>();
 
             ContainerRegistery(builder);
             _container = builder.Build();

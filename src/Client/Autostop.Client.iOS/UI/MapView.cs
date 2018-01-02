@@ -33,7 +33,7 @@ namespace Autostop.Client.iOS.UI
 						Map = this,
 						Flat = true,
 						GroundAnchor = new CGPoint(0.5, 0.5),
-						Rotation = driverLocation.GetBearing()
+						Rotation = driverLocation.Bearing
 					};
 				}
 			}

@@ -148,7 +148,7 @@ namespace Autostop.Client.iOS.UI
         {
             base.LayoutSubviews();
 
-            _infoButton.ToCircleButton();
+            _infoButton.ToCircleView();
         }
     }
 }

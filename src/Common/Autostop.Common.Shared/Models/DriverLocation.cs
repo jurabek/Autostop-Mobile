@@ -16,7 +16,7 @@ namespace Autostop.Common.Shared.Models
 
 		public double Bearing => GetBearing();
 
-		public double GetBearing()
+		private double GetBearing()
 		{
 			//var lat1 = PreviusLocation.Latitude.ToRadians();
 			//var lon1 = PreviusLocation.Longitude.ToRadians();

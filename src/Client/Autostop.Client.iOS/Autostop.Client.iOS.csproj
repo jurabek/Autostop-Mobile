@@ -136,6 +136,7 @@
     <BundleResource Include="Resources\work.png" />
     <BundleResource Include="Resources\car.png" />
     <Compile Include="UI\ConfirmitionView.cs" />
+    <Compile Include="UI\SetPickupLocationView.cs" />
     <Compile Include="Views\Passenger\BaseChooseOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseDestinationOnMapViewController.cs" />
     <Compile Include="Views\Passenger\ChooseHomeAddressOnMapViewController.cs" />
@@ -152,7 +153,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <Compile Include="Extensions\UIButtonExtenstions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
