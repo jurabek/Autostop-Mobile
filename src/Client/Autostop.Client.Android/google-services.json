@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "969201508359",
+    "firebase_url": "https://autostop-firebase.firebaseio.com",
+    "project_id": "autostop-firebase",
+    "storage_bucket": "autostop-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969201508359:android:3f82023a0ab9ec23",
+        "android_client_info": {
+          "package_name": "com.autostop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969201508359-p6vokq7sebesuue12unsrni6ehkcuedb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk0mk44X0CRy4YGGIy5oXMLU9G5GUrfkE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

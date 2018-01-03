@@ -14,15 +14,13 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Android.Managers
 {
-	class LocationManager : ILocationManager
-	{
-		public void Dispose()
-		{
-			throw new NotImplementedException();
-		}
+	public class LocationManager : ILocationManager
+	{	
 
 		public IObservable<Location> LocationChanged { get; }
+
 		public Location Location { get; }
+
 		public void StartUpdatingLocation()
 		{
 			throw new NotImplementedException();
@@ -32,5 +30,9 @@ namespace Autostop.Client.Android.Managers
 		{
 			throw new NotImplementedException();
 		}
-	}
+	    public void Dispose()
+	    {
+	        throw new NotImplementedException();
+	    }
+    }
 }

@@ -4409,6 +4409,9 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0c0178
 			public const int Animation_Design_BottomSheetDialog = 2131493240;
 			
+			// aapt resource value: 0x7f0c019b
+			public const int AppCompatDialogStyle = 2131493275;
+			
 			// aapt resource value: 0x7f0c00b1
 			public const int Base_AlertDialog_AppCompat = 2131493041;
 			
@@ -4909,6 +4912,12 @@ namespace Autostop.Client.Android
 			
 			// aapt resource value: 0x7f0c000e
 			public const int CardView_Light = 2131492878;
+			
+			// aapt resource value: 0x7f0c0199
+			public const int MainTheme = 2131493273;
+			
+			// aapt resource value: 0x7f0c019a
+			public const int MainTheme_Base = 2131493274;
 			
 			// aapt resource value: 0x7f0c002d
 			public const int Platform_AppCompat = 2131492909;

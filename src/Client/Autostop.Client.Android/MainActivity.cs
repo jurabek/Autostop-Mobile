@@ -1,17 +1,24 @@
 ﻿using Android.App;
 using Android.OS;
-using Resource = Autostop.Client.Android.Resources.Resource;
+using Android.Support.V7.App;
+using Autostop.Client.Mobile.UI.Pages.Pessengers;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 
 namespace Autostop.Client.Android
 {
     [Activity(Label = "Autostop.Client.Android", MainLauncher = true)]
-    public class MainActivity : Activity
+    public class MainActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
+            Forms.Init(this, savedInstanceState);
+
+            FragmentManager.BeginTransaction()
+               .Replace(Resource.Id.container, new PhoneVerificationPage().CreateFragment(this), "main").Commit();
         }
     }
 }
