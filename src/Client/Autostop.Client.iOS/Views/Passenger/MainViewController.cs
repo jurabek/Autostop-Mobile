@@ -239,7 +239,7 @@ namespace Autostop.Client.iOS.Views.Passenger
                 NSLayoutConstraint.Create(_setPickupLocationView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
                     NSLayoutAttribute.CenterY, (nfloat) 0.88, 0),
 		        _setPickupLocationView.WidthAnchor.ConstraintEqualTo(305),
-		        _setPickupLocationView.HeightAnchor.ConstraintEqualTo(35)
+		        _setPickupLocationView.HeightAnchor.ConstraintEqualTo(40)
             });
 
             _confirmationViewHeightConstraint = _confirmitionView.HeightAnchor.ConstraintEqualTo(View.HeightAnchor, (nfloat)0.35);

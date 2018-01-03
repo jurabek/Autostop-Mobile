@@ -2,10 +2,10 @@
 
 namespace Autostop.Client.Abstraction.Adapters
 {
-    public interface IViewAdapter<out TView> where TView : class
+    public interface IViewAdapter<out TNativeView> where TNativeView : class
     {
-        TView GetView<TViewModel>(IScreenFor<TViewModel> view);
+        TNativeView GetView<TViewModel>(IScreenFor<TViewModel> view);
 
-	    TView GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : ISearchableViewModel;
+	    TNativeView GetSearchView<TViewModel>(IScreenFor<TViewModel> view) where TViewModel : ISearchableViewModel;
     }
 }

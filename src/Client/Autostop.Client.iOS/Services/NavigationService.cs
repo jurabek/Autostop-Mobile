@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;

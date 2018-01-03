@@ -1,6 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
-using Autostop.Client.Android.Resources;
+using Resource = Autostop.Client.Android.Resources.Resource;
 
 namespace Autostop.Client.Android
 {
@@ -10,10 +10,8 @@ namespace Autostop.Client.Android
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-			
         }
     }
 }
