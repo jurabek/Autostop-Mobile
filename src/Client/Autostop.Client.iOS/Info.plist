@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Autostop.Client.iOS</string>
+	<string>Autostop iOS</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.jurabek.MyCab.iOS</string>
+	<string>com.autostop.ios</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
