@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Adapters;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
+using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.iOS.Extensions;
 using JetBrains.Annotations;
 using UIKit;

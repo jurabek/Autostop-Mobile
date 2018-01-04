@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.ViewModels.Passenger.Places;
 using JetBrains.Annotations;

@@ -5,7 +5,6 @@ using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.Facades;
 using Autostop.Client.Core.Factories;
@@ -38,6 +37,7 @@ namespace Autostop.Client.Core.IoC
 	        builder.RegisterType<SearchWorkAddressViewModel>().AsSelf();
 	        builder.RegisterType<ChooseHomeAddressOnMapViewModel>().AsSelf();
 	        builder.RegisterType<ChooseWorkAddressOnMapViewModel>().AsSelf();
+            builder.RegisterType<PhoneVerificationViewModel>().AsSelf();
 
 			builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
             builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();

@@ -1,5 +1,5 @@
 ﻿using System;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
+using Autostop.Client.Abstraction.ViewModels;
 
 namespace Autostop.Client.Abstraction.Services
 {

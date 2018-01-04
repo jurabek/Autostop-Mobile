@@ -25,7 +25,12 @@ namespace Autostop.Client.iOS.Providers
 			return tcs.Task;
 		}
 
-		public Task<AuthorizedUser> SignIn(string verificationId, string verificationCode)
+        public Task<VerifyNumberResult> ResendVerificationCode(string phoneNumber)
+        {
+            return null;
+        }
+
+        public Task<AuthorizedUser> SignIn(string verificationId, string verificationCode)
 		{
 			var tcs = new TaskCompletionSource<AuthorizedUser>();
 			var credentional = PhoneAuthProvider.DefaultInstance.GetCredential(verificationId, verificationCode);
@@ -40,7 +45,6 @@ namespace Autostop.Client.iOS.Providers
 					tcs.SetResult(new AuthorizedUser
 					{
 						PhoneNumber = user.PhoneNumber,
-						RefreshToken = user.RefreshToken,
 						Uid = user.Uid
 					});
 				}

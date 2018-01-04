@@ -263,9 +263,9 @@
       <Project>{42cedb74-2972-4130-b9a9-c3ff8940079d}</Project>
       <Name>Autostop.Client.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Autostop.Client.Mobile.UI\Autostop.Client.Mobile.UI.csproj">
-      <Project>{fd098a67-2387-4efb-a9f6-0f0934ed4f06}</Project>
-      <Name>Autostop.Client.Mobile.UI</Name>
+    <ProjectReference Include="..\Autostop.Client.Shared.UI\Autostop.Client.Shared.UI.csproj">
+      <Project>{60eb4238-7409-44e0-a3b8-bb863411e225}</Project>
+      <Name>Autostop.Client.Shared.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -67,14 +67,14 @@
     <Reference Include="FormsViewGroup, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.5.0.121934\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\monoandroid1\GalaSoft.MvvmLight.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.0.1, Culture=neutral, PublicKeyToken=d9452de2c18e9148, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MvvmLightLibsStd10.5.4.0.1-alpha\lib\monoandroid1\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\monoandroid1\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.0.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MvvmLightLibs.5.4.0-alpha\lib\monoandroid1\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19037, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\monoandroid1\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MvvmLightLibsStd10.5.4.0.1-alpha\lib\monoandroid1\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -201,15 +201,16 @@
     <Compile Include="Adapters\PageToFragmentAdapter.cs" />
     <Compile Include="IoC\AndroidLocator.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="RootActivity.cs" />
+    <Compile Include="Views\RootActivity.cs" />
     <Compile Include="Managers\LocationManager.cs" />
-    <Compile Include="FirebasePhoneAuthenticationProvider.cs" />
+    <Compile Include="Providers\FirebasePhoneAuthenticationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Views\MainFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <GoogleServicesJson Include="google-services.json" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -245,9 +246,9 @@
       <Project>{42cedb74-2972-4130-b9a9-c3ff8940079d}</Project>
       <Name>Autostop.Client.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Autostop.Client.Mobile.UI\Autostop.Client.Mobile.UI.csproj">
-      <Project>{fd098a67-2387-4efb-a9f6-0f0934ed4f06}</Project>
-      <Name>Autostop.Client.Mobile.UI</Name>
+    <ProjectReference Include="..\Autostop.Client.Shared.UI\Autostop.Client.Shared.UI.csproj">
+      <Project>{60eb4238-7409-44e0-a3b8-bb863411e225}</Project>
+      <Name>Autostop.Client.Shared.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

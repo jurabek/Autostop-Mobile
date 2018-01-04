@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Autostop.Client.Shared.UI.Pages.Pessengers.PhoneVerificationPage">
+    <ContentPage.Content>
+        <Grid Margin="20">
+            <StackLayout VerticalOptions="Center">
+                <StackLayout Margin="5">
+                    <Label FontSize="Large" TextColor="CornflowerBlue">Verify your number</Label>
+                    <Label FontSize="Medium">Enter your country code and phone number for verification</Label>
+                </StackLayout>
+                <StackLayout Margin="5">
+                    <Picker Title="Select country code"
+                            ItemsSource="{Binding Countries}" 
+                            SelectedItem="{Binding SelectedCountry, Mode=TwoWay}" 
+                            ItemDisplayBinding="{Binding Title}" Margin="0, 5">
+                    </Picker>
+                    <Entry Text="{Binding PhoneNumber}" Placeholder="Enter number without code!" Margin="0, 5"/>
+                </StackLayout>
+                <Label FontSize="Small" Margin="5" TextColor="#F25375">We will send you on of SMS. Carrier charges may apply.</Label>
+                <StackLayout Margin="5">
+                    <Button Text="Verify phone number" Command="{Binding VerifyCommand}"/>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

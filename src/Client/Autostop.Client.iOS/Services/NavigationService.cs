@@ -2,7 +2,7 @@
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
+using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.IoC;
 using JetBrains.Annotations;
 using UIKit;

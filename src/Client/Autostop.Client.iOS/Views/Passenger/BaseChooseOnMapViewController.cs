@@ -2,7 +2,6 @@
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
 using GalaSoft.MvvmLight.Helpers;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core.ViewModels.Passenger

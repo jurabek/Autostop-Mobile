@@ -12,7 +12,6 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
-using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Autostop.Common.Shared.Models;
 using Conditions;

@@ -9,7 +9,6 @@
         android:layout_height="match_parent"
         android:clickable="true"
         map:uiCompass="true"
-        map:zOrderOnTop="true"
         map:uiZoomControls="true"
         android:background="#00000000"
         android:minWidth="25px"
@@ -19,10 +18,4 @@
         android:layout_height="40dp"
         android:layout_centerInParent="true"
         android:src="@drawable/pin_pickup" />
-    <Button
-        android:text="SET PICKUP LOCATION"
-        android:layout_width="match_parent"
-        android:layout_height="40"
-        android:layout_centerInParent="true"
-        android:id="@+id/setPickupLocationButton" />
 </RelativeLayout>

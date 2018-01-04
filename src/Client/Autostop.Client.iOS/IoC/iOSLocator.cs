@@ -9,7 +9,7 @@ using Autostop.Client.iOS.Adapters;
 using Autostop.Client.iOS.Managers;
 using Autostop.Client.iOS.Services;
 using Autostop.Client.iOS.Views.Passenger;
-using Autostop.Client.Mobile.UI.IoC;
+using Autostop.Client.Shared.UI.IoC;
 using UIKit;
 
 namespace Autostop.Client.iOS.IoC

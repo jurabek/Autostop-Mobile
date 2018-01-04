@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Windows.Input;
+using Autostop.Client.Abstraction.Providers;
+using Autostop.Common.Shared.Models;
+using GalaSoft.MvvmLight.Command;
+using JetBrains.Annotations;
+
+namespace Autostop.Client.Core.ViewModels.Passenger
+{
+    [UsedImplicitly]
+    public class PhoneVerificationViewModel : BaseViewModel
+    {
+        private readonly IPhoneAuthenticationProvider _phoneAuthenticationProvider;
+
+        public PhoneVerificationViewModel(IPhoneAuthenticationProvider phoneAuthenticationProvider)
+        {
+            _phoneAuthenticationProvider = phoneAuthenticationProvider;
+            Countries = new ObservableCollection<VerificationCountryCode>
+            {
+                new VerificationCountryCode
+                {
+                    CountryCodeFormatted = "(+992)",
+                    CountryCode = "+992",
+                    CountryName = "Tajikistan"
+                },
+                new VerificationCountryCode
+                {
+                    CountryCodeFormatted = "(+998)",
+                    CountryCode = "+998",
+                    CountryName = "Uzbekistan"
+                },
+                new VerificationCountryCode
+                {
+                    CountryCodeFormatted = "(+371)",
+                    CountryCode = "+371",
+                    CountryName = "Latvia"
+                }
+            };
+
+            VerifyCommand = new RelayCommand(async () =>
+                {
+                    var result = await _phoneAuthenticationProvider.VerifyPhoneNumber(SelectedCountry.CountryCode + PhoneNumber);
+                });
+        }
+
+        public ObservableCollection<VerificationCountryCode> Countries { get; set; }
+
+        private VerificationCountryCode _selectedCountry;
+
+        public VerificationCountryCode SelectedCountry
+        {
+            get { return _selectedCountry; }
+            set { RaiseAndSetIfChanged(ref _selectedCountry, value); }
+        }
+
+        private string _phoneNumber;
+
+        public string PhoneNumber
+        {
+            get => _phoneNumber;
+            set => RaiseAndSetIfChanged(ref _phoneNumber, value);
+        }
+        
+        public ICommand VerifyCommand { get; }
+    }
+}

@@ -1,5 +1,5 @@
 ﻿using Autostop.Client.iOS.Renderers;
-using Autostop.Client.Mobile.UI.Helpers;
+using Autostop.Client.Shared.UI.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
