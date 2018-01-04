@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Autostop.Client.Abstraction.Providers;
 using Autostop.Common.Shared.Models;
 using Firebase.Auth;
 
-namespace Autostop.Client.iOS
+namespace Autostop.Client.iOS.Providers
 {
-	class PhoneAuthenticationProvider
-	{
+	public class FirebasePhoneAuthenticationProvider : IPhoneAuthenticationProvider
+    {
 		public Task<VerifyNumberResult> VerifyPhoneNumber(string phoneNumber)
 		{
 			var tcs = new TaskCompletionSource<VerifyNumberResult>();
-			PhoneAuthProvider.DefaultInstance.VerifyPhoneNumber(phoneNumber, null, (id, error) =>
+		    PhoneAuthProvider.DefaultInstance.VerifyPhoneNumber(phoneNumber, null, (id, error) =>
 			{
 				if (error != null)
 				{

@@ -12,20 +12,24 @@ namespace Autostop.Client.Android
     [Activity(Label = "Autostop.Client.Android", MainLauncher = true)]
     public class RootActivity : AppCompatActivity
     {
+        public static RootActivity Instance { get; private set; } 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.root);
+            Instance = this;
 
-	        var toolbar = FindViewById<Toolbar>(Resource.Layout.toolbar);
+            var toolbar = FindViewById<Toolbar>(Resource.Layout.toolbar);
 			SetSupportActionBar(toolbar);
 
-            Forms.Init(this, savedInstanceState);
 
             FragmentManager
 	           .BeginTransaction()
                .Add(Resource.Id.container, new MainFragment())
 	           .Commit();
+
         }
     }
 }

@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
-    <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj" />
+    <Compile Remove="Providers\Driver\**" />
+    <EmbeddedResource Remove="Providers\Driver\**" />
+    <None Remove="Providers\Driver\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Providers\Driver\" />
+    <ProjectReference Include="..\..\Common\Autostop.Common.Shared\Autostop.Common.Shared.csproj" />
+    <ProjectReference Include="..\..\Common\Autostop.Shared.Google.Maps\Autostop.Shared.Google.Maps.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,8 +14,18 @@ using Autostop.Client.Abstraction.ViewModels.Passenger.Places;
 
 namespace Autostop.Client.Android.Services
 {
-	class NavigationService : INavigationService
+	public class NavigationService : INavigationService
 	{
+	    private readonly Activity _rootActivity;
+        private readonly FragmentManager _fragmentManager;
+	    private readonly int _containerId;
+
+        public NavigationService()
+        {
+            _rootActivity = RootActivity.Instance;
+            _fragmentManager = _rootActivity.FragmentManager;
+            _containerId = Resource.Id.container;
+        }
 		public void NavigateTo(Type viewModelType)
 		{
 			throw new NotImplementedException();
@@ -58,7 +68,7 @@ namespace Autostop.Client.Android.Services
 
 		public void GoBack()
 		{
-			throw new NotImplementedException();
+            _fragmentManager.PopBackStack();
 		}
 
 		public void NavigaeToRoot()

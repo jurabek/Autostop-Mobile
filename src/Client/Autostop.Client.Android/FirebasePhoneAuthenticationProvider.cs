@@ -15,7 +15,7 @@ using Java.Util.Concurrent;
 
 namespace Autostop.Client.Android
 {
-	class PhoneAuthenticationProvider
+	public class FirebasePhoneAuthenticationProvider
 	{
 		public void VerifyPhoneNumber()
 		{

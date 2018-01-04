@@ -26,7 +26,7 @@ namespace Autostop.Client.Android.Adapters
                 switch (view)
                 {
                     case ContentPage page:
-                        return page.CreateFragment(Forms.Context);
+                        return page.CreateFragment(RootActivity.Instance);
                     case Fragment resultView:
                         return resultView;
                 }

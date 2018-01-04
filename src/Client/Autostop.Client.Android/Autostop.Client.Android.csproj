@@ -203,7 +203,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="RootActivity.cs" />
     <Compile Include="Managers\LocationManager.cs" />
-    <Compile Include="PhoneAuthenticationProvider.cs" />
+    <Compile Include="FirebasePhoneAuthenticationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Views\MainFragment.cs" />
