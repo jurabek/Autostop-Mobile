@@ -15,22 +15,24 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Android.Views;
 using Autostop.Client.Core.IoC;
+using Plugin.CurrentActivity;
 
 namespace Autostop.Client.Android.Services
 {
 	public class NavigationService : INavigationService
 	{
-	    private readonly IViewAdapter<Fragment> _viewAdapter;
+		private readonly ICurrentActivity _currentActivity;
+		private readonly IViewAdapter<Fragment> _viewAdapter;
 	    private readonly IViewFactory _viewFactory;
-	    private readonly Activity _rootActivity;
 
         public NavigationService(
+			ICurrentActivity currentActivity,
             IViewAdapter<Fragment> viewAdapter, 
             IViewFactory viewFactory)
         {
-            _viewAdapter = viewAdapter;
+	        _currentActivity = currentActivity;
+	        _viewAdapter = viewAdapter;
             _viewFactory = viewFactory;
-            _rootActivity = RootActivity.Instance;
         }
 		public void NavigateTo(Type viewModelType)
 		{
@@ -83,7 +85,7 @@ namespace Autostop.Client.Android.Services
 
 		public void GoBack()
 		{
-            _rootActivity.FragmentManager.PopBackStack();
+			_currentActivity.Activity.FragmentManager.PopBackStack();
 		}
 
 		public void NavigaeToRoot()
@@ -114,7 +116,7 @@ namespace Autostop.Client.Android.Services
 
 	    private void ReplaceContent(Fragment fragment)
 	    {
-	        var fragmentManager = _rootActivity.FragmentManager;
+	        var fragmentManager = _currentActivity.Activity.FragmentManager;
 
 	        if (fragmentManager.BackStackEntryCount > 0)
 	        {

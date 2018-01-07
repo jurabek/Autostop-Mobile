@@ -6,13 +6,34 @@
     <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        map:uiCompass="true"
-        map:uiZoomControls="true"
-        android:background="#00000000"
-        android:minWidth="25px"
-        android:minHeight="25px" />
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:editable="false"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:padding="10dip"
+            android:drawableLeft="@drawable/pickup_location_dot"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Set pickup location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:editable="false"
+            android:padding="10dip"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:drawableLeft="@drawable/pickup_destination_dot"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Set destination location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"

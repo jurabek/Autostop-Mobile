@@ -39,21 +39,17 @@ namespace Autostop.Client.Core.ViewModels.Passenger
                     CountryName = "Latvia"
                 }
             };
-
-            VerifyCommand = new RelayCommand(async () =>
-                {
-                    var result = await _phoneAuthenticationProvider.VerifyPhoneNumber(SelectedCountry.CountryCode + PhoneNumber);
-                });
+			
         }
 
-        public ObservableCollection<VerificationCountryCode> Countries { get; set; }
+        public ObservableCollection<VerificationCountryCode> Countries { get; }
 
         private VerificationCountryCode _selectedCountry;
 
         public VerificationCountryCode SelectedCountry
         {
-            get { return _selectedCountry; }
-            set { RaiseAndSetIfChanged(ref _selectedCountry, value); }
+            get => _selectedCountry;
+	        set => RaiseAndSetIfChanged(ref _selectedCountry, value);
         }
 
         private string _phoneNumber;
@@ -63,7 +59,17 @@ namespace Autostop.Client.Core.ViewModels.Passenger
             get => _phoneNumber;
             set => RaiseAndSetIfChanged(ref _phoneNumber, value);
         }
-        
-        public ICommand VerifyCommand { get; }
-    }
+
+	    private ICommand _verifyCommand;
+        public ICommand VerifyCommand => _verifyCommand ?? new RelayCommand(async () =>
+        {
+	        try
+	        {
+		        var result = await _phoneAuthenticationProvider.VerifyPhoneNumber(SelectedCountry.CountryCode + PhoneNumber);
+	        }
+	        catch (Exception e)
+	        {
+	        }
+        });
+	}
 }
