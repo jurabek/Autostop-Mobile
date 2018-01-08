@@ -35,9 +35,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public virtual string PlaceholderText => "Search";
 
-        public ICommand GoBack { get; protected set; }
+        public virtual ICommand GoBack { get; }
 
-        public ICommand Done { get; protected set; }
+        public virtual ICommand Done { get; }
 
 	    public IObservable<Location> MyLocationObservable { get; protected set; }
 

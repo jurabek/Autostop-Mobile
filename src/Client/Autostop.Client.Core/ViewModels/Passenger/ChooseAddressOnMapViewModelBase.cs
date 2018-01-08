@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
@@ -15,6 +16,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
         private readonly ILocationManager _locationManager;
         private readonly IGeocodingProvider _geocodingProvider;
         private Address _currentAddress;
+        private ICommand _done;
+        private ICommand _goBack;
 
         protected ChooseAddressOnMapViewModelBase(
             INavigationService navigationService,
@@ -24,21 +27,18 @@ namespace Autostop.Client.Core.ViewModels.Passenger
             _navigationService = navigationService;
             _locationManager = locationManager;
             _geocodingProvider = geocodingProvider;
-            MyLocationObservable = locationManager.LocationChanged;
-            Done = new RelayCommand(DoneAction);
-            GoBack = new RelayCommand(GoBackAction);
+            MyLocationObservable = locationManager.LocationChanged;          
         }
 
-        private void GoBackAction()
-        {
-            _navigationService.GoBack();
-        }
+        public override ICommand  Done => _done ?? new RelayCommand(
+            () => 
+            {
+                _navigationService.GoBack();
+                _navigationService.GoBack();
+            });
 
-        private void DoneAction()
-        {
-            _navigationService.GoBack();
-            _navigationService.GoBack();
-        }
+        public override ICommand GoBack => _goBack ?? new RelayCommand(
+            () => _navigationService.GoBack());
 
         public override async Task Load()
         {
