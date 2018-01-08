@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
@@ -27,22 +28,22 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			RideViewModel = rideViewModel;
 			_navigationService = navigationService;
 			_geocodingProvider = geocodingProvider;
-
-			GoBack = new RelayCommand(GoBackAction);
-			Done = new RelayCommand(DoneAction);
 		}
 
-		private void DoneAction()
-		{
-			RideViewModel.DestinationAddress.SetAddress(_currentAddress);
-			_navigationService.NavigaeToRoot();
-		}
+	    [UsedImplicitly] private ICommand _done;
+	    public override ICommand Done => _done ?? 
+            new RelayCommand(
+                () =>
+	            {
+	                RideViewModel.DestinationAddress.SetAddress(_currentAddress);
+	                _navigationService.NavigaeToRoot();
+                });
 
-		private void GoBackAction()
-		{
-			_navigationService.GoBack();
-		}
-
+	    [UsedImplicitly] private ICommand _goBack;
+	    public override ICommand GoBack => _goBack ?? 
+            new RelayCommand(
+                () => _navigationService.GoBack());
+        
 		public override Task Load()
 		{
 			CameraTarget = RideViewModel.PickupAddress.Location;

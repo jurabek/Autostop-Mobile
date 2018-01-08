@@ -18,7 +18,7 @@
             android:layout_marginRight="15dp"
             android:padding="10dip"
             android:drawableLeft="@drawable/pickup_location_dot"
-            android:background="@drawable/rounded_edit_text"
+            android:background="@drawable/pickup_address_top_corners"
             android:hint="Set pickup location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -29,7 +29,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:drawableLeft="@drawable/pickup_destination_dot"
-            android:background="@drawable/rounded_edit_text"
+            android:background="@drawable/destination_address_bottom_corners"
             android:hint="Set destination location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

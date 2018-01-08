@@ -8,7 +8,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
     public abstract class ChooseOnMapViewModelBase : BaseViewModel, ISearchableViewModel, IMapViewModel
     {
         private bool _isSearching;
-        private Location _camerTarget;
+        private Location _cameraTarget;
         private string _searchText;
 
         public bool IsSearching
@@ -25,10 +25,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public Location CameraTarget
         {
-            get => _camerTarget;
+            get => _cameraTarget;
             set
             {
-                _camerTarget = value;
+                _cameraTarget = value;
                 RaisePropertyChanged();
             }
         }

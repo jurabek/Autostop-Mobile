@@ -11,45 +11,45 @@ using Autostop.Client.Abstraction.Managers;
 using JetBrains.Annotations;
 using Location = Autostop.Common.Shared.Models.Location;
 using ALocationManager = Android.Locations.LocationManager;
-using ALocationProvider = Android.Locations.LocationProvider;
 
 namespace Autostop.Client.Android.Managers
 {
-	[UsedImplicitly]
+    [UsedImplicitly]
 	[Preserve(AllMembers = true)]
 	public class LocationManager : Java.Lang.Object, ILocationManager, ILocationListener
 	{
-		private readonly HashSet<string> activeProviders = new HashSet<string>();
+        private readonly HashSet<string> _activeProviders = new HashSet<string>();
 		private readonly Subject<Location> _locationChanged = new Subject<Location>();
 		private readonly ALocationManager _locationManager;
 
-		private readonly string[] Providers;
-		private readonly string[] IgnoredProviders;
-		string activeProvider;
+		private readonly string[] _providers;
+		private readonly string[] _ignoredProviders;
+		private string _activeProvider;
 
 		public LocationManager()
 		{
 			_locationManager = (ALocationManager)Application.Context.GetSystemService(Context.LocationService);
-			Providers = _locationManager.GetProviders(false).ToArray();
-			IgnoredProviders = new[] { ALocationManager.PassiveProvider, "local_database" };
+			_providers = _locationManager.GetProviders(false).ToArray();
+			_ignoredProviders = new[] { ALocationManager.PassiveProvider, "local_database" };
 		}
 
 		public IObservable<Location> LocationChanged => _locationChanged;
 
 		public Location Location { get; private set; }
 
-		List<string> listeningProviders { get; } = new List<string>();
-
-		public void StartUpdatingLocation()
+	    private List<string> ListeningProviders => new List<string>();
+        public void StartUpdatingLocation()
 		{
-			var providers = Providers;
+			var providers = _providers;
 			var looper = Looper.MyLooper() ?? Looper.MainLooper;
-			listeningProviders.Clear();
-			for (var i = 0; i < providers.Length; ++i)
+			ListeningProviders.Clear();
+			foreach (var provider in providers)
 			{
-				var provider = providers[i];
-				listeningProviders.Add(provider);
-				_locationManager.RequestLocationUpdates(provider, 1000, 0, this, looper);
+			    if (_ignoredProviders.Contains(provider))
+			        continue;
+			    
+			    ListeningProviders.Add(provider);
+			    _locationManager.RequestLocationUpdates(provider, 1000, 0, this, looper);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace Autostop.Client.Android.Managers
 
 		public void OnLocationChanged(global::Android.Locations.Location location)
 		{
-			activeProvider = location.Provider;
+			_activeProvider = location.Provider;
 			var lastLocation = new Location(location.Latitude, location.Longitude);
 			Location = lastLocation;
 			_locationChanged.OnNext(lastLocation);
@@ -70,9 +70,9 @@ namespace Autostop.Client.Android.Managers
 			if (provider == ALocationManager.PassiveProvider)
 				return;
 
-			lock (activeProviders)
+			lock (_activeProviders)
 			{
-				activeProviders.Remove(provider);
+				_activeProviders.Remove(provider);
 			}
 		}
 
@@ -81,8 +81,8 @@ namespace Autostop.Client.Android.Managers
 			if (provider == ALocationManager.PassiveProvider)
 				return;
 
-			lock (activeProviders)
-				activeProviders.Add(provider);
+			lock (_activeProviders)
+				_activeProviders.Add(provider);
 		}
 
 		public void OnStatusChanged(string provider, Availability status, Bundle extras)
