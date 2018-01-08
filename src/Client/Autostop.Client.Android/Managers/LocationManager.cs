@@ -34,12 +34,16 @@ namespace Autostop.Client.Android.Managers
 		}
 
 		public IObservable<Location> LocationChanged => _locationChanged;
-
+		public bool IsGeolocationEnabled => _providers.Any(p => !_ignoredProviders.Contains(p) &&
+		                                                       _locationManager.IsProviderEnabled(p));
 		public Location Location { get; private set; }
 
 	    private List<string> ListeningProviders => new List<string>();
         public void StartUpdatingLocation()
 		{
+			if(!IsGeolocationEnabled)
+				return;
+			
 			var providers = _providers;
 			var looper = Looper.MyLooper() ?? Looper.MainLooper;
 			ListeningProviders.Clear();
@@ -55,6 +59,20 @@ namespace Autostop.Client.Android.Managers
 
 		public void StopUpdatingLocation()
 		{
+			var providers = ListeningProviders;
+
+			for (var i = 0; i < providers.Count; i++)
+			{
+				try
+				{
+					_locationManager.RemoveUpdates(this);
+				}
+				catch (Exception ex)
+				{
+					System.Diagnostics.Debug.WriteLine("Unable to remove updates: " + ex);
+				}
+			}
+
 		}
 
 		public void OnLocationChanged(global::Android.Locations.Location location)
