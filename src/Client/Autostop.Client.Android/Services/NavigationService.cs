@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Android.Views;
 using Autostop.Client.Core.IoC;
+using JetBrains.Annotations;
 using Plugin.CurrentActivity;
 
 namespace Autostop.Client.Android.Services
 {
+	[UsedImplicitly]
 	public class NavigationService : INavigationService
 	{
 		private readonly ICurrentActivity _currentActivity;

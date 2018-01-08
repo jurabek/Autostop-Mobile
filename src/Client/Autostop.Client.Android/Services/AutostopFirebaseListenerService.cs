@@ -23,7 +23,7 @@ namespace Autostop.Client.Android.Services
 
 		private void SendNotification(string title, string body)
 		{
-			var intent = new Intent(this, typeof(RootActivity));
+			var intent = new Intent(this, typeof(MainActivity));
 			intent.AddFlags(ActivityFlags.ClearTop);
 
 			var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);

@@ -1,6 +1,5 @@
 ﻿using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Facades;
-using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
@@ -13,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Providers;
-using CoreLocation;
 using UIKit;
 using Location = Autostop.Common.Shared.Models.Location;
 using MapView = Autostop.Client.iOS.UI.MapView;
@@ -99,7 +97,6 @@ namespace Autostop.Client.iOS.Views.Passenger
 			UIView.Animate(0.1, 0, UIViewAnimationOptions.CurveEaseIn, () =>
 			{
 				_confirmationViewHeightConstraint.Active = _hidden;
-				//_setPickupButton.Hidden = true;
 				View.SetNeedsLayout();
 				View.LayoutIfNeeded();
 			}, null);

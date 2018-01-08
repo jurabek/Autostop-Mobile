@@ -6,34 +6,50 @@
     <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:minWidth="25px"
+        android:minHeight="25px" />
     <LinearLayout
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:id="@+id/pickupLocationAddressEditText"
             android:editable="false"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:padding="10dip"
             android:drawableLeft="@drawable/pickup_location_dot"
             android:background="@drawable/pickup_address_top_corners"
             android:hint="Set pickup location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp" />
         <EditText
+            android:id="@+id/destinationAddressEditText"
             android:editable="false"
             android:padding="10dip"
-            android:layout_marginTop="3dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:drawableLeft="@drawable/pickup_destination_dot"
             android:background="@drawable/destination_address_bottom_corners"
             android:hint="Set destination location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp" />
     </LinearLayout>
+    <Button
+        android:textColor="#FFFFFF"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/pickup_location_background"
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:text="SET PICKUP LOCATION"
+        android:id="@+id/setPickupLocationButton" />
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"

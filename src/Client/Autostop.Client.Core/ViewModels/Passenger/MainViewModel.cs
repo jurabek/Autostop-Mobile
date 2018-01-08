@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Factories;
@@ -20,58 +18,54 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
+    [UsedImplicitly]
     public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
     {
         public IRideViewModel RideViewModel { get; }
-
         private readonly IGeocodingProvider _geocodingProvider;
         private readonly ILocationManager _locationManager;
-        private readonly INavigationService _navigationService;
+	    private readonly ISchedulerProvider _schedulerProvider;
+	    private readonly INavigationService _navigationService;
         private readonly IBaseSearchPlaceViewModel _pickupSearchPlaceViewModel;
         private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
-
         private ObservableCollection<DriverLocation> _onlineDrivers;
         private Location _cameraTarget;
-        private List<IDisposable> _subscribers;
         private IDisposable _myLocationObservable;
+	    private List<IDisposable> _subscribers;
 
-        public MainViewModel(
+		public MainViewModel(
+			ISchedulerProvider schedulerProvider,
             ISearchPlaceViewModelFactory searchPlaceViewModelFactory,
             INavigationService navigationService,
             IGeocodingProvider geocodingProvider,
             ILocationManager locationManager,
             IRideViewModel rideViewModel)
         {
-            RideViewModel = rideViewModel;
-            geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
+	        schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
+	        searchPlaceViewModelFactory.Requires(nameof(searchPlaceViewModelFactory)).IsNotNull();
+	        navigationService.Requires(nameof(navigationService)).IsNotNull();
+			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
             locationManager.Requires(nameof(locationManager)).IsNotNull();
+	        rideViewModel.Requires(nameof(rideViewModel)).IsNotNull();
 
-            _navigationService = navigationService;
+			_schedulerProvider = schedulerProvider;
+	        _navigationService = navigationService;
             _geocodingProvider = geocodingProvider;
             _locationManager = locationManager;
-            locationManager.StartUpdatingLocation();
+	        RideViewModel = rideViewModel;
 
             MyLocationObservable = locationManager.LocationChanged;
-            NavigateToDestinationSearch = new RelayCommand(NavigateToDistinationSearchViewModel);
-            NavigateToPickupSearch = new RelayCommand(NavigateToPickupSearchViewModel);
-            GoToMyLocation = new RelayCommand(GoToMyLocationAction);
-
             _pickupSearchPlaceViewModel = searchPlaceViewModelFactory.GetPickupSearchPlaceViewModel();
             _destinationSearchPlaceViewModel = searchPlaceViewModelFactory.DestinationSearchPlaceViewModel(RideViewModel);
         }
-
-        private void GoToMyLocationAction()
-        {
-            CameraTarget = _locationManager.Location;
-        }
-
+		
         public IObservable<Location> MyLocationObservable { get; }
 
         public IObservable<Location> CameraPositionObservable { get; set; }
 
         public IObservable<bool> CameraStartMoving { get; set; }
 
-		public IObservable<VisibleRegion> VisibleRegionChanged { get; set; }
+		public IObservable<VisibleRegion> VisibleRegionChanged { [UsedImplicitly] get; set; }
 
         public Location CameraTarget
         {
@@ -86,14 +80,25 @@ namespace Autostop.Client.Core.ViewModels.Passenger
         public ObservableCollection<DriverLocation> OnlineDrivers
         {
             get => _onlineDrivers;
-            set => RaiseAndSetIfChanged(ref _onlineDrivers, value);
+	        private set => RaiseAndSetIfChanged(ref _onlineDrivers, value);
         }
 
-        public ICommand GoToMyLocation { get; }
+        public ICommand GoToMyLocation => new RelayCommand(
+	        () => CameraTarget = _locationManager.Location);
 
-        public ICommand NavigateToPickupSearch { get; }
+        public ICommand NavigateToPickupSearch => new RelayCommand(
+	        () =>
+	        {
+		        _navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupSearchPlaceViewModel);
+		        _pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
+			});
 
-        public ICommand NavigateToDestinationSearch { get; }
+        public ICommand NavigateToDestinationSearch => new RelayCommand(
+	        () =>
+	        {
+		        _navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);
+		        _destinationSearchPlaceViewModel.SearchText = RideViewModel.DestinationAddress.FormattedAddress;
+			});
 
         public override Task Load()
         {
@@ -127,16 +132,17 @@ namespace Autostop.Client.Core.ViewModels.Passenger
                     }),
 
                 _pickupSearchPlaceViewModel.SelectedAddress
-					.ObserveOn(SynchronizationContext.Current)
+					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(address =>
                     {
                         RideViewModel.PickupAddress.SetAddress(address);
                         CameraTarget = address.Location;
                         _navigationService.GoBack();
-                    }),
+                    })
             };
 
-            OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
+	        _locationManager.StartUpdatingLocation();
+			OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
             return base.Load();
         }
 
@@ -149,19 +155,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
                 RideViewModel.IsPickupAddressLoading = false;
             }
         }
-
-        private void NavigateToPickupSearchViewModel()
-        {
-            _navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupSearchPlaceViewModel);
-            _pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
-        }
-
-        private void NavigateToDistinationSearchViewModel()
-        {
-            _navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);
-            _destinationSearchPlaceViewModel.SearchText = RideViewModel.DestinationAddress.FormattedAddress;
-        }
-
+		
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

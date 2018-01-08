@@ -212,7 +212,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Services\AutostopFirebaseListenerService.cs" />
     <Compile Include="Services\FirebaseNotificationService.cs" />
-    <Compile Include="Views\RootActivity.cs" />
+    <Compile Include="Views\MainActivity.cs" />
     <Compile Include="Managers\LocationManager.cs" />
     <Compile Include="Providers\FirebasePhoneAuthenticationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -226,7 +226,7 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\root.axml" />
+    <AndroidResource Include="Resources\layout\main.axml" />
     <AndroidResource Include="Resources\layout\main_fragment.axml" />
     <AndroidResource Include="Resources\layout\toolbar.axml" />
   </ItemGroup>
@@ -306,6 +306,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\pickup_address_top_corners.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\pickup_location_background.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

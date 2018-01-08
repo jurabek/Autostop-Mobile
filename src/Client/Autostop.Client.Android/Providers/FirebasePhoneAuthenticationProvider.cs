@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Providers;
-using Autostop.Client.Android.Views;
 using Autostop.Common.Shared.Models;
 using Firebase;
 using Firebase.Auth;
 using Java.Util.Concurrent;
 using JetBrains.Annotations;
+using Plugin.CurrentActivity;
 
 namespace Autostop.Client.Android.Providers
 {
     [UsedImplicitly]
     public class FirebasePhoneAuthenticationProvider : IPhoneAuthenticationProvider
     {
-        private PhoneAuthProvider.ForceResendingToken _forceResendToken;
+	    private readonly ICurrentActivity _currentActivity;
+	    private PhoneAuthProvider.ForceResendingToken _forceResendToken;
+
+	    public FirebasePhoneAuthenticationProvider(ICurrentActivity currentActivity)
+	    {
+		    _currentActivity = currentActivity;
+	    }
 
         public async Task<AuthorizedUser> SignIn(string verificationId, string verificationCode)
         {
@@ -31,7 +37,7 @@ namespace Autostop.Client.Android.Providers
         {
             var tcs = new TaskCompletionSource<VerifyNumberResult>();
 
-            PhoneAuthProvider.Instance.VerifyPhoneNumber(phoneNumber, 60, TimeUnit.Seconds, RootActivity.Instance, new VerificationCallback(
+            PhoneAuthProvider.Instance.VerifyPhoneNumber(phoneNumber, 60, TimeUnit.Seconds, _currentActivity.Activity, new VerificationCallback(
                     credential => {}, exception => tcs.SetException(exception),
                     (verificationId, forceResendingToken) =>
                     {
@@ -46,7 +52,7 @@ namespace Autostop.Client.Android.Providers
         {
             var tcs = new TaskCompletionSource<VerifyNumberResult>();
 
-            PhoneAuthProvider.Instance.VerifyPhoneNumber(phoneNumber, 60, TimeUnit.Seconds, RootActivity.Instance, new VerificationCallback(
+            PhoneAuthProvider.Instance.VerifyPhoneNumber(phoneNumber, 60, TimeUnit.Seconds, _currentActivity.Activity, new VerificationCallback(
                 credential => { }, exception => tcs.SetException(exception),
                 (verificationId, forceResendingToken) =>
                 {

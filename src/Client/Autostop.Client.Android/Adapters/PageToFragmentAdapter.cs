@@ -2,8 +2,8 @@
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.ViewModels;
-using Autostop.Client.Android.Views;
 using JetBrains.Annotations;
+using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Fragment = Android.App.Fragment;
@@ -13,6 +13,12 @@ namespace Autostop.Client.Android.Adapters
     [UsedImplicitly]
     public class PageToFragmentAdapter : IViewAdapter<Fragment>
     {
+	    private readonly ICurrentActivity _currentActivity;
+
+	    public PageToFragmentAdapter(ICurrentActivity currentActivity)
+	    {
+		    _currentActivity = currentActivity;
+	    }
         public Fragment GetView<TViewModel>(IScreenFor<TViewModel> view)
         {
             try
@@ -20,7 +26,7 @@ namespace Autostop.Client.Android.Adapters
                 switch (view)
                 {
                     case ContentPage page:
-                        return page.CreateFragment(RootActivity.Instance);
+                        return page.CreateFragment(_currentActivity.Activity);
                     case Fragment resultView:
                         return resultView;
                 }

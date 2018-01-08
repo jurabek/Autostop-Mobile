@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <resources>
 
   <style name="MainTheme" parent="MainTheme.Base">
-  </style>
+  <item name="android:colorPrimary">#ff00c853</item><item name="android:colorPrimaryDark">#ff81c784</item><item name="android:colorAccent">#ffffa000</item></style>
 
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="windowNoTitle">true</item>
