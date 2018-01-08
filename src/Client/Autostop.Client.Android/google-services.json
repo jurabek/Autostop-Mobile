@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "969201508359-56na93usj28skt9l3q3i013s5anft6fr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.autostop.android",
+            "certificate_hash": "db3f77d44a241e1c25f94ac3dc17d3ddfce2a6e0"
+          }
+        },
+        {
+          "client_id": "969201508359-c7qvsu72u6n5ir87ato0dbffc278mg66.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.autostop.android",
+            "certificate_hash": "cf2b4fbf9275ec437ad472306117dfeeaa5e5679"
+          }
+        },
+        {
           "client_id": "969201508359-p6vokq7sebesuue12unsrni6ehkcuedb.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969201508359-p6vokq7sebesuue12unsrni6ehkcuedb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "969201508359-0dp5v708kgdc69pc482dkibis2cqc8b7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.autostop.ios"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

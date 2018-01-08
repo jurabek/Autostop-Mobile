@@ -6,9 +6,11 @@ using Autostop.Common.Shared.Models;
 using Firebase;
 using Firebase.Auth;
 using Java.Util.Concurrent;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Android.Providers
 {
+    [UsedImplicitly]
     public class FirebasePhoneAuthenticationProvider : IPhoneAuthenticationProvider
     {
         private PhoneAuthProvider.ForceResendingToken _forceResendToken;

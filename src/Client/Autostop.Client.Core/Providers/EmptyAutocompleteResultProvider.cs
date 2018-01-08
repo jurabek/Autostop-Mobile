@@ -1,9 +1,11 @@
 ﻿using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Core.Models;
+using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.Providers
 {
+    [UsedImplicitly]
     public class EmptyAutocompleteResultProvider : IEmptyAutocompleteResultProvider
     {
 	    private readonly ISettingsProvider _settingsProvider;
