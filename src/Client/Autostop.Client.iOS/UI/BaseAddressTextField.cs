@@ -17,10 +17,10 @@ namespace Autostop.Client.iOS.UI
             _loadingActivatyIndacator = GetLocationsLoadActivityIndacator();
             _leftImageView = GetLocationsTextFieldLeftImageView();
             LeftViewMode = UITextFieldViewMode.Always;
-            LeftView = _leftImageView;
+            //LeftView = _leftImageView;
             BackgroundColor = UIColor.White;
             BorderStyle = UITextBorderStyle.None;
-            Font = UIFont.SystemFontOfSize(12, UIFontWeight.Regular);
+            Font = UIFont.SystemFontOfSize(14, UIFontWeight.Regular);
             TextAlignment = UITextAlignment.Center;
         }
 
@@ -38,7 +38,7 @@ namespace Autostop.Client.iOS.UI
                 else
                 {
                     _loadingActivatyIndacator.StopAnimating();
-                    LeftView = _leftImageView;
+                    //LeftView = _leftImageView;
                 }
             }
         }

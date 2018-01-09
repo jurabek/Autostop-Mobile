@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Shared.UI;
 using UIKit;
+using Xamarin.Forms.Platform.iOS;
 using Location = Autostop.Common.Shared.Models.Location;
 using MapView = Autostop.Client.iOS.UI.MapView;
 
@@ -23,11 +25,10 @@ namespace Autostop.Client.iOS.Views.Passenger
 	{
 		private readonly IVisibleRegionProvider _visibleRegionProvider;
 		private readonly MapView _mapView;
-		private readonly DestinationAddressTextField _destinationAddressTextField;
+		private readonly UIButton _whereToGoButton;
 		private readonly PickupAddressTextField _pickupAddressTextField;
 		private readonly MyLocationButton _myLocationButton;
 		private readonly UIImageView _centerPinImageView;
-		private readonly UIStackView _addresseStackView;
 		private readonly ConfirmitionView _confirmitionView;
 	    private readonly SetPickupLocationView _setPickupLocationView;
 
@@ -44,28 +45,25 @@ namespace Autostop.Client.iOS.Views.Passenger
 			_myLocationButton = new MyLocationButton();
 			_confirmitionView = new ConfirmitionView();
 
-			_destinationAddressTextField = new DestinationAddressTextField
+			_whereToGoButton = new UIButton
 			{
-				ShouldBeginEditing = DestinationAddressShouldBeginEditing
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				BackgroundColor = AutostopColors.White.ToUIColor(),
+				TintColor = UIColor.Black
 			};
+
 
 			_pickupAddressTextField = new PickupAddressTextField
 			{
-				ShouldBeginEditing = PickupAddressShouldBeginEditing
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				ShouldBeginEditing = PickupAddressShouldBeginEditing,
+				BackgroundColor = UIColor.FromRGBA(255, 255, 255, 200)
 			};
 
 			_centerPinImageView = new UIImageView(Icons.PickupPin)
 			{
 				ContentMode = UIViewContentMode.ScaleAspectFit,
 				TranslatesAutoresizingMaskIntoConstraints = false
-			};
-
-			_addresseStackView = new UIStackView(new UIView[] { _pickupAddressTextField, _destinationAddressTextField })
-			{
-				Axis = UILayoutConstraintAxis.Vertical,
-				TranslatesAutoresizingMaskIntoConstraints = false,
-				Distribution = UIStackViewDistribution.FillEqually,
-				Spacing = 2
 			};
 
             _setPickupLocationView = new SetPickupLocationView();
@@ -82,6 +80,8 @@ namespace Autostop.Client.iOS.Views.Passenger
 		public override async void ViewDidLoad()
 		{
 			base.ViewDidLoad();
+			_whereToGoButton.SetTitle("Where to go?", UIControlState.Normal);
+
 			AddCommands();
 			SetupBindings();
 			AddSubViews();
@@ -108,16 +108,18 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		    if (ViewModel.RideViewModel.HasPickupLocation)
 		    {
-		        _pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
-		        _destinationAddressTextField.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
-		        _destinationAddressTextField.Alpha = 1;
+		        //_pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
+		        //_whereToGoButton.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
+		        //_whereToGoButton.Alpha = 1;
 		    }
 		    else
 		    {
-		        _pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
-		        _destinationAddressTextField.Alpha = 0;
+		        //_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
+		        //_whereToGoButton.Alpha = 0;
 		    }
-            _myLocationButton.ToCircleView();
+
+			_whereToGoButton.Layer.CornerRadius = 20;
+			_myLocationButton.ToCircleView();
 		}
 
 		private void AddSubscribers()
@@ -151,6 +153,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 		{
 			this.BindCommand(_setPickupLocationView.SetPickupButton, ViewModel.RideViewModel.SetPickupLocation);
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
+			this.BindCommand(_whereToGoButton, ViewModel.NavigateToDestinationSearch);
 		}
 
 		private void SetupBindings()
@@ -160,10 +163,6 @@ namespace Autostop.Client.iOS.Views.Passenger
 				this.SetBinding(
 					() => _pickupAddressTextField.Text,
 					() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
-
-				this.SetBinding(
-					() => _destinationAddressTextField.Text,
-					() => ViewModel.RideViewModel.DestinationAddress.FormattedAddress, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _pickupAddressTextField.Loading,
@@ -188,7 +187,8 @@ namespace Autostop.Client.iOS.Views.Passenger
 		private void AddSubViews()
 		{
 			View.AddSubview(_mapView);
-			View.AddSubview(_addresseStackView);
+			View.AddSubview(_pickupAddressTextField);
+			View.AddSubview(_whereToGoButton);
 			View.AddSubview(_centerPinImageView);
             View.AddSubview(_setPickupLocationView);
 			View.AddSubview(_myLocationButton);
@@ -207,10 +207,18 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 			NSLayoutConstraint.ActivateConstraints(new[]
 			{
-				_addresseStackView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, 6),
-				_addresseStackView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 10),
-				_addresseStackView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
-				_addresseStackView.HeightAnchor.ConstraintEqualTo(80)
+				_pickupAddressTextField.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, 6),
+				_pickupAddressTextField.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 10),
+				_pickupAddressTextField.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -10),
+				_pickupAddressTextField.HeightAnchor.ConstraintEqualTo(40)
+			});
+
+			NSLayoutConstraint.ActivateConstraints(new[]
+			{
+				_whereToGoButton.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, -30),
+				_whereToGoButton.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 25),
+				_whereToGoButton.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -25),
+				_whereToGoButton.HeightAnchor.ConstraintEqualTo(40)
 			});
 
 			NSLayoutConstraint.ActivateConstraints(new[]
@@ -226,15 +234,15 @@ namespace Autostop.Client.iOS.Views.Passenger
 				_centerPinImageView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
 				NSLayoutConstraint.Create(_centerPinImageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
 					NSLayoutAttribute.CenterY, (nfloat) 0.93, 0),
-				_centerPinImageView.WidthAnchor.ConstraintEqualTo(40),
-				_centerPinImageView.HeightAnchor.ConstraintEqualTo(40)
+				_centerPinImageView.WidthAnchor.ConstraintEqualTo(50),
+				_centerPinImageView.HeightAnchor.ConstraintEqualTo(50)
 			});
 
 		    NSLayoutConstraint.ActivateConstraints(new[]
 		    {
 		        _setPickupLocationView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
                 NSLayoutConstraint.Create(_setPickupLocationView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View.SafeAreaLayoutGuide,
-                    NSLayoutAttribute.CenterY, (nfloat) 0.88, 0),
+                    NSLayoutAttribute.CenterY, (nfloat) 0.89, 0),
 		        _setPickupLocationView.WidthAnchor.ConstraintEqualTo(305),
 		        _setPickupLocationView.HeightAnchor.ConstraintEqualTo(40)
             });
@@ -273,12 +281,6 @@ namespace Autostop.Client.iOS.Views.Passenger
 			    _setPickupLocationView.Transform = CGAffineTransform.MakeScale((nfloat)0.1, 1);
 			    _setPickupLocationView.Alpha = 0;
 			});
-		}
-
-		private bool DestinationAddressShouldBeginEditing(UITextField textField)
-		{
-			ViewModel.NavigateToDestinationSearch.Execute(null);
-			return false;
 		}
 
 		private bool PickupAddressShouldBeginEditing(UITextField textField)

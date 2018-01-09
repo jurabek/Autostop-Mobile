@@ -29,7 +29,7 @@ namespace Autostop.Client.iOS.UI
 
             EstimatedTimeLabel = new UILabel
             {
-                BackgroundColor = Colors.Accent,
+                //BackgroundColor = Colors.Accent,
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 TextColor = UIColor.White,
                 Text = "2\nmin",
@@ -39,59 +39,59 @@ namespace Autostop.Client.iOS.UI
                 Lines = 0
             };
 
-            RightArrowButton = new UIButton()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                TintColor = UIColor.White,
-                BackgroundColor = Colors.Accent,
-                ContentEdgeInsets = new UIEdgeInsets(5, 5, 5, 5)
-            };
-            RightArrowButton.SetImage(UIImage.FromFile("right_arrow.png"), UIControlState.Normal);
+            //RightArrowButton = new UIButton()
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false,
+            //    TintColor = UIColor.White,
+            //    BackgroundColor = Colors.Accent,
+            //    ContentEdgeInsets = new UIEdgeInsets(5, 5, 5, 5)
+            //};
+            //RightArrowButton.SetImage(UIImage.FromFile("right_arrow.png"), UIControlState.Normal);
 
-            SetPickupButton.Layer.CornerRadius = 20;
-            SetPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
+            //SetPickupButton.Layer.CornerRadius = 20;
+            //SetPickupButton.SetTitle("SET PICKUP LOCATION", UIControlState.Normal);
 
 
-            AddSubview(SetPickupButton);
+            //AddSubview(SetPickupButton);
             AddSubview(EstimatedTimeLabel);
-            AddSubview(RightArrowButton);
+            //AddSubview(RightArrowButton);
         }
 
         public override void UpdateConstraints()
         {
             base.UpdateConstraints();
 
-            NSLayoutConstraint.ActivateConstraints(new[]
-            {
-                SetPickupButton.TrailingAnchor.ConstraintEqualTo(TrailingAnchor),
-                SetPickupButton.LeadingAnchor.ConstraintEqualTo(LeadingAnchor),
-                SetPickupButton.TopAnchor.ConstraintEqualTo(TopAnchor),
-                SetPickupButton.BottomAnchor.ConstraintEqualTo(BottomAnchor)
-            });
+            //NSLayoutConstraint.ActivateConstraints(new[]
+            //{
+            //    SetPickupButton.TrailingAnchor.ConstraintEqualTo(TrailingAnchor),
+            //    SetPickupButton.LeadingAnchor.ConstraintEqualTo(LeadingAnchor),
+            //    SetPickupButton.TopAnchor.ConstraintEqualTo(TopAnchor),
+            //    SetPickupButton.BottomAnchor.ConstraintEqualTo(BottomAnchor)
+            //});
 
             NSLayoutConstraint.ActivateConstraints(new[]
             {
-                EstimatedTimeLabel.LeadingAnchor.ConstraintEqualTo(LeadingAnchor, 5),
+                EstimatedTimeLabel.CenterXAnchor.ConstraintEqualTo(CenterXAnchor),
                 EstimatedTimeLabel.CenterYAnchor.ConstraintEqualTo(CenterYAnchor),
                 EstimatedTimeLabel.HeightAnchor.ConstraintEqualTo(30),
                 EstimatedTimeLabel.WidthAnchor.ConstraintEqualTo(30),
             });
 
-            NSLayoutConstraint.ActivateConstraints(new[]
-            {
-                RightArrowButton.TrailingAnchor.ConstraintEqualTo(TrailingAnchor, -5),
-                RightArrowButton.CenterYAnchor.ConstraintEqualTo(CenterYAnchor),
-                RightArrowButton.HeightAnchor.ConstraintEqualTo(30),
-                RightArrowButton.WidthAnchor.ConstraintEqualTo(30),
-            });
+            //NSLayoutConstraint.ActivateConstraints(new[]
+            //{
+            //    RightArrowButton.TrailingAnchor.ConstraintEqualTo(TrailingAnchor, -5),
+            //    RightArrowButton.CenterYAnchor.ConstraintEqualTo(CenterYAnchor),
+            //    RightArrowButton.HeightAnchor.ConstraintEqualTo(30),
+            //    RightArrowButton.WidthAnchor.ConstraintEqualTo(30),
+            //});
         }
 
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
 
-            EstimatedTimeLabel.ToCircleView();
-            RightArrowButton.ToCircleView();
+            //EstimatedTimeLabel.ToCircleView();
+            //RightArrowButton.ToCircleView();
         }
     }
 }

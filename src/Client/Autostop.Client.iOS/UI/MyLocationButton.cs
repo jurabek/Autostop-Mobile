@@ -1,4 +1,6 @@
-﻿using UIKit;
+﻿using Autostop.Client.Shared.UI;
+using UIKit;
+using Xamarin.Forms.Platform.iOS;
 
 namespace Autostop.Client.iOS.UI
 {
@@ -8,9 +10,9 @@ namespace Autostop.Client.iOS.UI
         {
 	        TranslatesAutoresizingMaskIntoConstraints = false;
 			SetImage(UIImage.FromFile("location.png"), UIControlState.Normal);
-            TintColor = UIColor.Black;
-            BackgroundColor = UIColor.White;
-            ImageEdgeInsets = new UIEdgeInsets(10, 10, 10, 10);
+            TintColor = AutostopColors.AsphaltRgb.ToUIColor();
+            BackgroundColor = AutostopColors.White.ToUIColor();
+            ImageEdgeInsets = new UIEdgeInsets(12, 12, 12, 12);
         }
     }
 }
