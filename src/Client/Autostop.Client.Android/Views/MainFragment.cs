@@ -6,10 +6,12 @@ using Android.Util;
 using Android.Views;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Core.ViewModels.Passenger;
-using JetBrains.Annotations;
 using System;
 using System.Reactive.Linq;
+using Android.Gms.Maps.Model;
 using Android.Widget;
+using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Android.Extensions;
 using GalaSoft.MvvmLight.Helpers;
 using LatLng = Android.Gms.Maps.Model.LatLng;
 using Location = Autostop.Common.Shared.Models.Location;
@@ -17,14 +19,18 @@ using MapView = Android.Gms.Maps.MapView;
 
 namespace Autostop.Client.Android.Views
 {
-	[UsedImplicitly]
 	public class MainFragment : Fragment, IScreenFor<MainViewModel>, IOnMapReadyCallback
 	{
-		private MapView _mapView;
+	    private readonly IVisibleRegionProvider _visibleRegionProvider;
+	    private MapView _mapView;
 		private EditText _pickupAddressEditText;
 		private EditText _destinationAddressEditText;
 		private GoogleMap _googleMap;
 
+	    public MainFragment(IVisibleRegionProvider visibleRegionProvider)
+	    {
+	        _visibleRegionProvider = visibleRegionProvider;
+	    }
 		public override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -47,15 +53,33 @@ namespace Autostop.Client.Android.Views
 			_mapView.OnResume();
 			_mapView.GetMapAsync(this);
 
-			_pickupAddressEditText.SetCommand("Click", ViewModel.NavigateToPickupSearch);
-			_destinationAddressEditText.SetCommand("Click", ViewModel.NavigateToDestinationSearch);
+			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
+			_destinationAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToDestinationSearch);
 
-			this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
+			this.SetBinding(() => ViewModel.CameraTarget)
 				.WhenSourceChanges(() =>
 				{
 					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);
 					_googleMap?.MoveCamera(camera);
 				});
+
+		    this.SetBinding(() => ViewModel.OnlineDrivers)
+		        .WhenSourceChanges(() =>
+		        {
+		            BitmapDescriptor icon = BitmapDescriptorFactory.FromResource(Resource.Drawable.car);
+
+                    foreach (var driverLocation in ViewModel.OnlineDrivers)
+		            {
+		                var markerOption = new MarkerOptions();
+		                markerOption.SetPosition(new LatLng(driverLocation.CurrentLocation.Latitude, driverLocation.CurrentLocation.Longitude));
+		                markerOption.Anchor((float) 0.5, (float) 0.5);
+		                markerOption.SetRotation((float) driverLocation.Bearing);
+		                markerOption.Flat(true);
+		                markerOption.SetIcon(icon);
+
+                        _googleMap.AddMarker(markerOption);
+                    }
+                });
 
 			this.SetBinding(
 				() => _pickupAddressEditText.Text,
@@ -79,18 +103,19 @@ namespace Autostop.Client.Android.Views
 			_googleMap.MyLocationEnabled = true;
 
 			var cameraPositionIdle = Observable
-				.FromEventPattern<EventHandler<GoogleMap.CameraChangeEventArgs>, GoogleMap.CameraChangeEventArgs>(
-					e => _googleMap.CameraChange += e,
-					e => _googleMap.CameraChange -= e);
+				.FromEventPattern<EventHandler, EventArgs>(
+					e => _googleMap.CameraIdle += e,
+					e => _googleMap.CameraIdle -= e);
 
 			ViewModel.CameraPositionObservable = cameraPositionIdle
-				.Select(e => new Location(e.EventArgs.Position.Target.Latitude, e.EventArgs.Position.Target.Longitude));
+                .Select(_ => _googleMap.CameraPosition.Target)
+				.Select(target => new Location(target.Latitude, target.Longitude));
 
-			//ViewModel.VisibleRegionChanged = cameraPositionIdle
-			//	.Select(_ => new CoordinateBounds(_mapView.Projection.VisibleRegion))
-			//	.Select(bounds => _visibleRegionProvider.GetVisibleRegion(bounds.NorthEast.ToLocation(), bounds.SouthWest.ToLocation()));
+            ViewModel.VisibleRegionChanged = cameraPositionIdle
+                .Select(_ => _googleMap.Projection.VisibleRegion.LatLngBounds)
+                .Select(bounds => _visibleRegionProvider.GetVisibleRegion(bounds.Northeast.ToLocation(), bounds.Southwest.ToLocation()));
 
-			ViewModel.CameraStartMoving = Observable
+            ViewModel.CameraStartMoving = Observable
 				.FromEventPattern<EventHandler<GoogleMap.CameraMoveStartedEventArgs>, GoogleMap.CameraMoveStartedEventArgs>(
 					e => _googleMap.CameraMoveStarted += e,
 					e => _googleMap.CameraMoveStarted -= e)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autostop.Client.Abstraction.Providers;
+﻿using Autostop.Client.Abstraction.Providers;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core.Providers

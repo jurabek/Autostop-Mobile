@@ -2453,8 +2453,26 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
+			// aapt resource value: 0x7f020153
+			public const int avd_hide_password_1 = 2130837843;
+			
+			// aapt resource value: 0x7f020154
+			public const int avd_hide_password_2 = 2130837844;
+			
+			// aapt resource value: 0x7f020155
+			public const int avd_hide_password_3 = 2130837845;
+			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
+			
+			// aapt resource value: 0x7f020156
+			public const int avd_show_password_1 = 2130837846;
+			
+			// aapt resource value: 0x7f020157
+			public const int avd_show_password_2 = 2130837847;
+			
+			// aapt resource value: 0x7f020158
+			public const int avd_show_password_3 = 2130837848;
 			
 			// aapt resource value: 0x7f020056
 			public const int car = 2130837590;

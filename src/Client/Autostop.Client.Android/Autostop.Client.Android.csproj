@@ -41,7 +41,7 @@
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidSupportedAbis />
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -207,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\PageToFragmentAdapter.cs" />
+    <Compile Include="Extensions\LatLngExtensions.cs" />
     <Compile Include="IoC\AndroidLocator.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

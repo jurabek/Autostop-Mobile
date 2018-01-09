@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Autostop.Common.Shared.Models
+﻿namespace Autostop.Common.Shared.Models
 {
     public class VisibleRegion
     {
