@@ -28,7 +28,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 	    private readonly INavigationService _navigationService;
         private readonly IBaseSearchPlaceViewModel _pickupSearchPlaceViewModel;
         private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
-        private ObservableCollection<DriverLocation> _onlineDrivers;
+        private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
         private Location _cameraTarget;
         private IDisposable _myLocationObservable;
 	    private List<IDisposable> _subscribers;
