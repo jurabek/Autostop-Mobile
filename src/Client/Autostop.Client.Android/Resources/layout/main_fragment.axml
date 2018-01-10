@@ -17,6 +17,7 @@
         <EditText
             android:id="@+id/pickupLocationAddressEditText"
             android:editable="false"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:padding="10dip"
@@ -25,25 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp" />
-    <!--<EditText
-            android:id="@+id/destinationAddressEditText"
-            android:editable="false"
-            android:padding="10dip"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:drawableLeft="@drawable/pickup_destination_dot"
-            android:background="@drawable/destination_address_bottom_corners"
-            android:hint="Set destination location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp" />-->
     </LinearLayout>
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/pin_pickup" />
+
     <Button
         android:textColor="#000000"
         android:layout_alignParentBottom="true"
@@ -54,5 +44,5 @@
         android:layout_height="35dp"
         android:layout_width="match_parent"
         android:text="Where to go?"
-        android:id="@+id/setPickupLocationButton" />
+        android:id="@+id/whereToGoButton" />
 </RelativeLayout>

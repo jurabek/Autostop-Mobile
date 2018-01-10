@@ -9,6 +9,9 @@ using Autostop.Client.Core.ViewModels.Passenger;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using Android.Gms.Maps.Model;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Widget;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Android.Extensions;
@@ -24,7 +27,7 @@ namespace Autostop.Client.Android.Views
 	    private readonly IVisibleRegionProvider _visibleRegionProvider;
 	    private MapView _mapView;
 		private EditText _pickupAddressEditText;
-	    private Button _pickupLocationbutton;
+	    private Button _whereToGoButton;
 		private GoogleMap _googleMap;
 
 	    public MainFragment(IVisibleRegionProvider visibleRegionProvider)
@@ -46,8 +49,7 @@ namespace Autostop.Client.Android.Views
 		{
 			base.OnViewCreated(view, savedInstanceState);
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
-			//_destinationAddressEditText = view.FindViewById<EditText>(Resource.Id.destinationAddressEditText);
-		    _pickupLocationbutton = view.FindViewById<Button>(Resource.Id.setPickupLocationButton);
+			_whereToGoButton = view.FindViewById<Button>(Resource.Id.whereToGoButton);
             
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
@@ -65,25 +67,30 @@ namespace Autostop.Client.Android.Views
 
 		    this.SetBinding(() => ViewModel.OnlineDrivers)
 		        .WhenSourceChanges(() =>
-		        {
-                    //BitmapDescriptor icon = BitmapDescriptorFactory.FromResource(Resource.Drawable.car);
+			    {
+				    BitmapDrawable bitmapdraw = (BitmapDrawable)Resources.GetDrawable(Resource.Drawable.car);
+			        Bitmap b = bitmapdraw.Bitmap;
+			        Bitmap smallMarker = Bitmap.CreateScaledBitmap(b, 20, 40, false);
+					BitmapDescriptor icon = BitmapDescriptorFactory.FromBitmap(smallMarker);
 
-                    //foreach (var driverLocation in ViewModel.OnlineDrivers)
-                    //{
-                    //    var markerOption = new MarkerOptions();
-                    //    markerOption.SetPosition(new LatLng(driverLocation.CurrentLocation.Latitude, driverLocation.CurrentLocation.Longitude));
-                    //    markerOption.Anchor((float)0.5, (float)0.5);
-                    //    markerOption.SetRotation((float)driverLocation.Bearing);
-                    //    markerOption.Flat(true);
-                    //    markerOption.SetIcon(icon);
+					foreach (var driverLocation in ViewModel.OnlineDrivers)
+					{
+						var markerOption = new MarkerOptions();
+						markerOption.SetPosition(new LatLng(driverLocation.CurrentLocation.Latitude, driverLocation.CurrentLocation.Longitude));
+						markerOption.Anchor((float)0.5, (float)0.5);
+						markerOption.SetRotation((float)driverLocation.Bearing);
+						markerOption.Flat(true);
+						markerOption.SetIcon(icon);
 
-                    //    _googleMap.AddMarker(markerOption);
-                    //}
-                });
+						_googleMap.AddMarker(markerOption);
+					}
+				});
 
 			this.SetBinding(
 				() => _pickupAddressEditText.Text,
 				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
+
+			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToDestinationSearch);
 		}
 
 		private void CheckGooglePlayServicesIsInstalled()

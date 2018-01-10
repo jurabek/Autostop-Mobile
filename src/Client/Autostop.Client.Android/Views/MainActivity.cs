@@ -7,6 +7,7 @@ using Android.Support.V7.Widget;
 using Autofac;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Android.IoC;
+using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Xamarin.Forms;
 
@@ -19,19 +20,25 @@ namespace Autostop.Client.Android.Views
 		{
 			base.OnCreate(savedInstanceState);
 
-			Forms.Init(this, savedInstanceState);
 			SetContentView(Resource.Layout.main);
 
-			var toolbar = FindViewById<Toolbar>(Resource.Layout.toolbar);
+			var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
 			SetSupportActionBar(toolbar);
+
+			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+			SupportActionBar.SetHomeButtonEnabled(true);
+
+			Forms.Init(this, savedInstanceState);
 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
-			new AndroidLocator()
+			var navigationService = new AndroidLocator()
 				.Build()
-				.Resolve<INavigationService>()
-				.NavigateTo<MainViewModel>();
+				.Resolve<INavigationService>();
+
+			navigationService.NavigateTo<MainViewModel>();
+			toolbar.NavigationClick += (sender, args) => navigationService.GoBack();
 		}
 
 		private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
