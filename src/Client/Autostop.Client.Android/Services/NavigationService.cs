@@ -67,13 +67,17 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel
 		{
-			throw new NotImplementedException();
-		}
+		    var viewModel = Locator.Resolve<TViewModel>();
+		    var fragment = GetFragment(viewModel);
+		    callBack(viewModel);
+		    ReplaceContent(fragment);
+        }
 
 		public void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel
 		{
-			throw new NotImplementedException();
-		}
+		    var fragment = GetFragment(viewModel);
+		    ReplaceContent(fragment);
+        }
 
 		public void GoBack()
 		{
