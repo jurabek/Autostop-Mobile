@@ -9,8 +9,6 @@ using Autostop.Client.Core.ViewModels.Passenger;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
-using Android.Gms.Maps.Model;
-using Android.Views.Animations;
 using Android.Widget;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Android.Extensions;
@@ -26,7 +24,6 @@ namespace Autostop.Client.Android.Views
 	    private readonly IVisibleRegionProvider _visibleRegionProvider;
 	    private MapView _mapView;
 		private EditText _pickupAddressEditText;
-		private EditText _destinationAddressEditText;
 	    private Button _pickupLocationbutton;
 		private GoogleMap _googleMap;
 
@@ -49,7 +46,7 @@ namespace Autostop.Client.Android.Views
 		{
 			base.OnViewCreated(view, savedInstanceState);
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
-			_destinationAddressEditText = view.FindViewById<EditText>(Resource.Id.destinationAddressEditText);
+			//_destinationAddressEditText = view.FindViewById<EditText>(Resource.Id.destinationAddressEditText);
 		    _pickupLocationbutton = view.FindViewById<Button>(Resource.Id.setPickupLocationButton);
             
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
@@ -58,7 +55,6 @@ namespace Autostop.Client.Android.Views
 			_mapView.GetMapAsync(this);
 
 			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
-			_destinationAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToDestinationSearch);
 
 			this.SetBinding(() => ViewModel.CameraTarget)
 				.WhenSourceChanges(() =>
@@ -70,19 +66,19 @@ namespace Autostop.Client.Android.Views
 		    this.SetBinding(() => ViewModel.OnlineDrivers)
 		        .WhenSourceChanges(() =>
 		        {
-                    BitmapDescriptor icon = BitmapDescriptorFactory.FromResource(Resource.Drawable.car);
+                    //BitmapDescriptor icon = BitmapDescriptorFactory.FromResource(Resource.Drawable.car);
 
-                    foreach (var driverLocation in ViewModel.OnlineDrivers)
-                    {
-                        var markerOption = new MarkerOptions();
-                        markerOption.SetPosition(new LatLng(driverLocation.CurrentLocation.Latitude, driverLocation.CurrentLocation.Longitude));
-                        markerOption.Anchor((float)0.5, (float)0.5);
-                        markerOption.SetRotation((float)driverLocation.Bearing);
-                        markerOption.Flat(true);
-                        markerOption.SetIcon(icon);
+                    //foreach (var driverLocation in ViewModel.OnlineDrivers)
+                    //{
+                    //    var markerOption = new MarkerOptions();
+                    //    markerOption.SetPosition(new LatLng(driverLocation.CurrentLocation.Latitude, driverLocation.CurrentLocation.Longitude));
+                    //    markerOption.Anchor((float)0.5, (float)0.5);
+                    //    markerOption.SetRotation((float)driverLocation.Bearing);
+                    //    markerOption.Flat(true);
+                    //    markerOption.SetIcon(icon);
 
-                        _googleMap.AddMarker(markerOption);
-                    }
+                    //    _googleMap.AddMarker(markerOption);
+                    //}
                 });
 
 			this.SetBinding(
@@ -131,16 +127,16 @@ namespace Autostop.Client.Android.Views
 
 	    private void CameraStarted(EventPattern<GoogleMap.CameraMoveStartedEventArgs> eventPattern)
 	    {
-	        ScaleAnimation fadeIn =
-	            new ScaleAnimation(0f, 1f, 0f, 1f, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f)
-	            {
-	                Duration = 1,
-	                FillAfter = true,
-                    RepeatMode = RepeatMode.Reverse
-	            };
-	        // animation duration in milliseconds
-	        // If fillAfter is true, the transformation that this animation performed will persist when it is finished.
-	        _pickupLocationbutton.StartAnimation(fadeIn);
+	        //ScaleAnimation fadeIn =
+	        //    new ScaleAnimation(0f, 1f, 0f, 1f, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f)
+	        //    {
+	        //        Duration = 1,
+	        //        FillAfter = true,
+         //           RepeatMode = RepeatMode.Reverse
+	        //    };
+	        //// animation duration in milliseconds
+	        //// If fillAfter is true, the transformation that this animation performed will persist when it is finished.
+	        //_pickupLocationbutton.StartAnimation(fadeIn);
         }
 
 	    public override void OnResume()
