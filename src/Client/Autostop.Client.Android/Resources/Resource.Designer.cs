@@ -3450,6 +3450,9 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0061
 			public const int forever = 2131427425;
 			
+			// aapt resource value: 0x7f0b00d3
+			public const int general_appbar = 2131427539;
+			
 			// aapt resource value: 0x7f0b000a
 			public const int ghost_view = 2131427338;
 			
@@ -3513,14 +3516,14 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b00a3
 			public const int mapView = 2131427491;
 			
-			// aapt resource value: 0x7f0b00d6
-			public const int masked = 2131427542;
+			// aapt resource value: 0x7f0b00d8
+			public const int masked = 2131427544;
 			
 			// aapt resource value: 0x7f0b00c6
 			public const int media_actions = 2131427526;
 			
-			// aapt resource value: 0x7f0b00d4
-			public const int message = 2131427540;
+			// aapt resource value: 0x7f0b00d6
+			public const int message = 2131427542;
 			
 			// aapt resource value: 0x7f0b003b
 			public const int middle = 2131427387;
@@ -3690,6 +3693,9 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b005e
 			public const int scrollable = 2131427422;
 			
+			// aapt resource value: 0x7f0b00d5
+			public const int searchView = 2131427541;
+			
 			// aapt resource value: 0x7f0b0089
 			public const int search_badge = 2131427465;
 			
@@ -3816,8 +3822,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0078
 			public const int title_template = 2131427448;
 			
-			// aapt resource value: 0x7f0b00d3
-			public const int toolbar = 2131427539;
+			// aapt resource value: 0x7f0b00d4
+			public const int toolbar = 2131427540;
 			
 			// aapt resource value: 0x7f0b0048
 			public const int top = 2131427400;
@@ -3855,8 +3861,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0016
 			public const int view_offset_helper = 2131427350;
 			
-			// aapt resource value: 0x7f0b00d5
-			public const int visible = 2131427541;
+			// aapt resource value: 0x7f0b00d7
+			public const int visible = 2131427543;
 			
 			// aapt resource value: 0x7f0b00b8
 			public const int volume_item_container = 2131427512;

@@ -45,6 +45,13 @@ namespace Autostop.Client.iOS.Services
 			_navigationController.PushViewController(viewController, false);
 		}
 
+		public void NavigateTo<TViewModel>(bool root)
+		{
+			var viewModel = Locator.Resolve<TViewModel>();
+			var viewController = GetViewController(viewModel);
+			_navigationController.PushViewController(viewController, false);
+		}
+
 		public void NavigateTo<TViewModel>(TViewModel viewModel)
 		{
 			var viewController = GetViewController(viewModel);

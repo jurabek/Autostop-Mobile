@@ -17,6 +17,7 @@
     <item name="windowActionModeOverlay">false</item>
     <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
     <item name="buttonStyle">@style/Base.Widget.AppCompat.Button</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
   </style>
 
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">

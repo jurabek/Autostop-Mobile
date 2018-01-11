@@ -46,6 +46,13 @@ namespace Autostop.Client.Android.Services
 			ReplaceContent(fragment);
 		}
 
+		public void NavigateTo<TViewModel>(bool root)
+		{
+			var viewModel = Locator.Resolve<TViewModel>();
+			var fragment = GetFragment(viewModel);
+			ReplaceContent(fragment, root);
+		}
+
 		public void NavigateTo<TViewModel>(TViewModel viewModel)
 		{
 			var fragment = GetFragment(viewModel);
@@ -54,7 +61,7 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigateToModal<TViewModel>()
 		{
-			throw new NotImplementedException();
+
 		}
 
 		public void NavigateTo<TViewModel>(Action<object, TViewModel> configure)
@@ -89,7 +96,7 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigaeToRoot()
 		{
-			throw new NotImplementedException();
+		
 		}
 
 		private Fragment GetFragment<TViewModel>(TViewModel viewModel)
@@ -113,15 +120,25 @@ namespace Autostop.Client.Android.Services
 			return fragment;
 		}
 
-		private void ReplaceContent(Fragment fragment)
+		private void ReplaceContent(Fragment fragment, bool root = false)
 		{
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
-			
-			fragmentManager
-				.BeginTransaction()
-				.Replace(Resource.Id.container, fragment)
-				.AddToBackStack(null)
-				.Commit();
+
+			if (!root)
+			{
+				fragmentManager
+					.BeginTransaction()
+					.Replace(Resource.Id.container, fragment)
+					.AddToBackStack(null)
+					.Commit();
+			}
+			else
+			{
+				fragmentManager
+					.BeginTransaction()
+					.Replace(Resource.Id.container, fragment)
+					.Commit();
+			}
 		}
 	}
 }

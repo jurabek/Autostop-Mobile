@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FAFAFA"
-    android:minHeight="?android:attr/actionBarSize"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+<android.support.design.widget.AppBarLayout
+  android:id="@+id/general_appbar"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@null"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <android.support.v7.widget.Toolbar 
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#FAFAFA"
+      android:minHeight="?android:attr/actionBarSize"
+      android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+    <EditText
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search" />
+  </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>
