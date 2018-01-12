@@ -24,7 +24,8 @@ namespace Autostop.Client.Android.Views
 	    private readonly IVisibleRegionProvider _visibleRegionProvider;
 	    private MapView _mapView;
 		private EditText _pickupAddressEditText;
-	    private Button _pickupLocationbutton;
+	    private Button _whereToGoButton;
+	    private ImageView _centeredMarkerImage;
 		private GoogleMap _googleMap;
 
 	    public MainFragment(IVisibleRegionProvider visibleRegionProvider)
@@ -46,15 +47,19 @@ namespace Autostop.Client.Android.Views
 		{
 			base.OnViewCreated(view, savedInstanceState);
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
-			//_destinationAddressEditText = view.FindViewById<EditText>(Resource.Id.destinationAddressEditText);
-		    _pickupLocationbutton = view.FindViewById<Button>(Resource.Id.setPickupLocationButton);
+		    _whereToGoButton = view.FindViewById<Button>(Resource.Id.whereToGoButton);
+		    _centeredMarkerImage = view.FindViewById<ImageView>(Resource.Id.centeredMarkerIcon);
             
+            _pickupAddressEditText.SetTextSize(ComplexUnitType.Dip, 12);
+            _centeredMarkerImage.SetX(-15);
+
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
 			_mapView.OnResume();
 			_mapView.GetMapAsync(this);
 
 			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
+            _whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToDestinationSearch);
 
 			this.SetBinding(() => ViewModel.CameraTarget)
 				.WhenSourceChanges(() =>

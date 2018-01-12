@@ -7,11 +7,9 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
-using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-	[UsedImplicitly]
 	public sealed class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
 	{
 		public IRideViewModel RideViewModel { get; }
@@ -30,7 +28,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			_geocodingProvider = geocodingProvider;
 		}
 
-	    [UsedImplicitly] private ICommand _done;
+	    private ICommand _done;
 	    public override ICommand Done => _done ?? 
             new RelayCommand(
                 () =>
@@ -39,8 +37,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 	                _navigationService.NavigaeToRoot();
                 });
 
-	    [UsedImplicitly] private ICommand _goBack;
-	    public override ICommand GoBack => _goBack ?? 
+	    private ICommand _goBack;
+	    public override ICommand GoBack => _goBack ??
             new RelayCommand(
                 () => _navigationService.GoBack());
         
