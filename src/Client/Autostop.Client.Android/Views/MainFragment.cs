@@ -106,6 +106,8 @@ namespace Autostop.Client.Android.Views
 		{
 			_googleMap = googleMap;
 			_googleMap.MyLocationEnabled = true;
+		    _googleMap.UiSettings.CompassEnabled = true;
+		    _googleMap.UiSettings.MyLocationButtonEnabled = false;
 
 			var cameraPositionIdle = Observable
 				.FromEventPattern<EventHandler, EventArgs>(
