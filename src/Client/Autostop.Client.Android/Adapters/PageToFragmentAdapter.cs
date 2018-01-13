@@ -2,7 +2,6 @@
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.ViewModels;
-using JetBrains.Annotations;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -10,7 +9,6 @@ using Fragment = Android.App.Fragment;
 
 namespace Autostop.Client.Android.Adapters
 {
-    [UsedImplicitly]
     public class PageToFragmentAdapter : IViewAdapter<Fragment>
     {
 	    private readonly ICurrentActivity _currentActivity;

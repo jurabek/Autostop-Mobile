@@ -1,23 +1,25 @@
-﻿using Android.App;
-using Android.Gms.Common;
-using Android.Gms.Maps;
-using Android.OS;
-using Android.Util;
-using Android.Views;
-using Autostop.Client.Abstraction;
-using Autostop.Client.Core.ViewModels.Passenger;
-using System;
+﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using Android.App;
+using Android.Gms.Common;
+using Android.Gms.Maps;
+using Android.Graphics;
+using Android.OS;
+using Android.Text;
+using Android.Util;
+using Android.Views;
 using Android.Widget;
+using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Android.Extensions;
+using Autostop.Client.Core.ViewModels.Passenger;
 using GalaSoft.MvvmLight.Helpers;
 using LatLng = Android.Gms.Maps.Model.LatLng;
 using Location = Autostop.Common.Shared.Models.Location;
 using MapView = Android.Gms.Maps.MapView;
 
-namespace Autostop.Client.Android.Views
+namespace Autostop.Client.Android.Fragments
 {
 	public class MainFragment : Fragment, IScreenFor<MainViewModel>, IOnMapReadyCallback
 	{
@@ -27,6 +29,7 @@ namespace Autostop.Client.Android.Views
 	    private Button _whereToGoButton;
 	    private ImageView _centeredMarkerImage;
 		private GoogleMap _googleMap;
+		private ProgressBar _pickupAddressLoading;
 
 	    public MainFragment(IVisibleRegionProvider visibleRegionProvider)
 	    {
@@ -46,12 +49,14 @@ namespace Autostop.Client.Android.Views
 		public override void OnViewCreated(View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated(view, savedInstanceState);
+
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
 		    _whereToGoButton = view.FindViewById<Button>(Resource.Id.whereToGoButton);
 		    _centeredMarkerImage = view.FindViewById<ImageView>(Resource.Id.centeredMarkerIcon);
+			_pickupAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.pickupAddressLoading);
             
-            _pickupAddressEditText.SetTextSize(ComplexUnitType.Dip, 12);
-            _centeredMarkerImage.SetX(-15);
+            _pickupAddressEditText.SetTextSize(ComplexUnitType.Dip, 14);
+			_pickupAddressEditText.SetMaxLines(1);
 
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
@@ -60,6 +65,13 @@ namespace Autostop.Client.Android.Views
 
 			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
             _whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToDestinationSearch);
+
+			this.SetBinding(() => ViewModel.RideViewModel.IsPickupAddressLoading)
+				.WhenSourceChanges(() =>
+				{
+					_pickupAddressLoading.Visibility =
+						ViewModel.RideViewModel.IsPickupAddressLoading ? ViewStates.Visible : ViewStates.Gone;
+				});
 
 			this.SetBinding(() => ViewModel.CameraTarget)
 				.WhenSourceChanges(() =>
@@ -134,16 +146,6 @@ namespace Autostop.Client.Android.Views
 
 	    private void CameraStarted(EventPattern<GoogleMap.CameraMoveStartedEventArgs> eventPattern)
 	    {
-	        //ScaleAnimation fadeIn =
-	        //    new ScaleAnimation(0f, 1f, 0f, 1f, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f)
-	        //    {
-	        //        Duration = 1,
-	        //        FillAfter = true,
-         //           RepeatMode = RepeatMode.Reverse
-	        //    };
-	        //// animation duration in milliseconds
-	        //// If fillAfter is true, the transformation that this animation performed will persist when it is finished.
-	        //_pickupLocationbutton.StartAnimation(fadeIn);
         }
 
 	    public override void OnResume()

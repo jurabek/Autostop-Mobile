@@ -3,28 +3,19 @@
 <resources>
 
   <style name="MainTheme" parent="MainTheme.Base">
-    <item name="android:colorPrimary">#ff00c853</item>
-    <item name="android:colorPrimaryDark">#ff81c784</item>
-    <item name="android:colorAccent">#ffffa000</item>
   </style>
 
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="windowNoTitle">true</item>
     <item name="windowActionBar">false</item>
-    <item name="colorPrimary">#FF9800</item>
-    <item name="colorPrimaryDark">#F57C00</item>
-    <item name="colorAccent">#FF5252</item>
-    <item name="windowActionModeOverlay">false</item>
-    <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
-    <item name="buttonStyle">@style/Base.Widget.AppCompat.Button</item>
-    <item name="android:statusBarColor">@android:color/transparent</item>
-    <item name="android:windowTranslucentNavigation">true</item>
-    <item name="android:windowNoTitle">true</item>
-    <item name="android:windowTranslucentStatus">true</item>
+    <item name="windowActionBarOverlay">true</item>
+    <item name="android:windowActionBarOverlay">true</item>
   </style>
 
-  <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-    <item name="colorAccent">#FF4081</item>
+  <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+    <item name="android:windowActionBarOverlay">true</item>
+    <!-- Support library compatibility -->
+    <item name="windowActionBarOverlay">true</item>
   </style>
 
 </resources>

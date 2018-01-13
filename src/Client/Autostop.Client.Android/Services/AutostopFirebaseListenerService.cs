@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Media;
 using Android.Support.V4.App;
-using Autostop.Client.Android.Views;
+using Autostop.Client.Android.Activities;
 using Firebase.Messaging;
 
 namespace Autostop.Client.Android.Services

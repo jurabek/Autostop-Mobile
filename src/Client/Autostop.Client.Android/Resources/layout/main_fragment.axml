@@ -3,41 +3,60 @@
     android:id="@+id/main_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  
-  <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/mapView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:minWidth="25px"
-      android:minHeight="25px" />
-  
-  <LinearLayout
-      android:layout_marginTop="5dp"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-    
-    <EditText
-        android:id="@+id/pickupLocationAddressEditText"
-        android:editable="false"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="10dip"
-        android:background="@drawable/pickup_address_all_corners"
-        android:hint="Set pickup location"
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="25px"
+        android:minHeight="25px" />
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="10dp" />
-  </LinearLayout>
-  
-  <ImageView
-      android:id="@+id/centeredMarkerIcon"
-      android:layout_width="40dp"
-      android:layout_height="40dp"
-      android:layout_centerInParent="true"
-      android:src="@drawable/pin_pickup" />
-
-  <Button
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <EditText
+            android:id="@+id/pickupLocationAddressEditText"
+            android:editable="false"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:paddingRight="10dip"
+            android:paddingLeft="22dip"
+            android:gravity="center"
+            android:background="@drawable/pickup_address_all_corners"
+            android:hint="Set pickup location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:padding="10dip"
+            android:id="@+id/pickupAddressLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/pickupLocationAddressEditText"
+            android:layout_alignBottom="@id/pickupLocationAddressEditText"
+            android:layout_alignLeft="@id/pickupLocationAddressEditText" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/centeredMarkerIcon"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="40dp"
+        android:src="@drawable/pin_pickup" />
+    <TextView
+        android:id="@+id/estimatedTimeTextView"
+        android:text="2"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="60dp" />
+    <Button
         android:textColor="#000000"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="30dp"
@@ -48,5 +67,4 @@
         android:layout_width="match_parent"
         android:text="Where to go?"
         android:id="@+id/whereToGoButton" />
-  
 </RelativeLayout>
