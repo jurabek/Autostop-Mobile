@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Gms.Common;
 using Android.OS;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using Android.Support.V7.Widget;
+using Android.Util;
+using Android.Widget;
 using Autofac;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Android.IoC;
+using Autostop.Client.Android.Platform.Android.IoC;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Xamarin.Forms;
+using SearchView = Android.Support.V7.Widget.SearchView;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 using View = Android.Views.View;
 
 namespace Autostop.Client.Android.Activities
@@ -21,12 +25,17 @@ namespace Autostop.Client.Android.Activities
 		private DrawerLayout _drawerLayout;
 		private ActionBarDrawerToggle _drawerToggle;
 		private Toolbar _toolbar;
+		internal TextView TitleTextView { get; private set; }
+		internal SearchView SearchView { get; private set; }
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 
 			SetContentView(Resource.Layout.main);
+			CheckGooglePlayServicesIsInstalled();
+			TitleTextView = FindViewById<TextView>(Resource.Id.toolbarTitleTextView);
+			SearchView = FindViewById<SearchView>(Resource.Id.toolbarSearchView);
 
 			_toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
 			SetSupportActionBar(_toolbar);
@@ -39,17 +48,14 @@ namespace Autostop.Client.Android.Activities
 			_drawerLayout.DrawerOpened += (_, __) => _drawerToggle.DrawerIndicatorEnabled = true;
 			_drawerLayout.AddDrawerListener(_drawerToggle);
 			_drawerToggle.SyncState();
+			FragmentManager.AddOnBackStackChangedListener(this);
 
 			Forms.Init(this, savedInstanceState);
-			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-			TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
-
-			var navigationService = new AndroidLocator()
+			new AndroidLocator()
 				.Build()
-				.Resolve<INavigationService>();
+				.Resolve<INavigationService>()
+				.NavigateTo<MainViewModel>(true);
 
-			navigationService.NavigateTo<MainViewModel>(true);
-			FragmentManager.AddOnBackStackChangedListener(this);
 		}
 		public void OnBackStackChanged()
 		{
@@ -62,17 +68,10 @@ namespace Autostop.Client.Android.Activities
 		}
 
 		private void SyncDrawerToggleState()
-		{	
-			if (FragmentManager.BackStackEntryCount >= 1)
-			{
-				_drawerToggle.DrawerIndicatorEnabled = false;
-				_drawerToggle.ToolbarNavigationClickListener = this;
-			}
-			else
-			{
-				_drawerToggle.DrawerIndicatorEnabled = true;
-				_drawerToggle.ToolbarNavigationClickListener = _drawerToggle.ToolbarNavigationClickListener;
-			}
+		{
+			var condition = FragmentManager.BackStackEntryCount < 1;
+			_drawerToggle.DrawerIndicatorEnabled = condition;
+			_drawerToggle.ToolbarNavigationClickListener = condition ? _drawerToggle.ToolbarNavigationClickListener : this;
 		}
 
 		public override void OnBackPressed()
@@ -87,15 +86,17 @@ namespace Autostop.Client.Android.Activities
 			}
 		}
 
-		private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
+		private void CheckGooglePlayServicesIsInstalled()
 		{
-			//var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", unobservedTaskExceptionEventArgs.Exception);
-		}
-
-
-		private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
-		{
-			//var newExc = new Exception("CurrentDomainOnUnhandledException", unhandledExceptionEventArgs.ExceptionObject as Exception);
+			int queryResult = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
+			if (queryResult == ConnectionResult.Success)
+			{
+				Log.Info("", "Google Play Services is installed on this device.");
+			}
+			else
+			{
+				throw new GooglePlayServicesNotAvailableException(0);
+			}
 		}
 	}
 }

@@ -209,9 +209,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\GooglePlayServicesException.cs" />
+    <Compile Include="Platform\Android\Abstraction\IMarkerAdapter.cs" />
+    <Compile Include="Adapters\MarkerAdapter.cs" />
     <Compile Include="Adapters\PageToFragmentAdapter.cs" />
     <Compile Include="Extensions\LatLngExtensions.cs" />
-    <Compile Include="IoC\AndroidLocator.cs" />
+    <Compile Include="Platform\Android\IoC\AndroidLocator.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Services\AutostopFirebaseListenerService.cs" />

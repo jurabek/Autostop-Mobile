@@ -13,14 +13,41 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:theme="@style/CustomActionBar"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Autostop"
-                android:textSize="20sp" />
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:paddingLeft="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:contentInsetEnd="0dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.SearchView
+                    android:visibility="gone"
+                    app:iconifiedByDefault="false"
+                    android:paddingLeft="-16dp"
+                    android:paddingStart="-16dp"
+                    app:searchIcon="@null"
+                    app:queryHint="Search"
+                    android:id="@+id/toolbarSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/toolbarTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="-16dp"
+                    android:text="Autostop"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
         <FrameLayout
             android:id="@+id/container"

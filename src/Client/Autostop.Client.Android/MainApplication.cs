@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
@@ -19,7 +20,8 @@ namespace XamarinEvolve.Droid
 			base.OnCreate();
 			RegisterActivityLifecycleCallbacks(this);
 			//Microsoft.WindowsAzure.MobileServices.CurrentPlatform.Init();
-
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+			TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 		}
 
 		public override void OnTerminate()
@@ -60,5 +62,16 @@ namespace XamarinEvolve.Droid
 		{
 			//HockeyApp.Android.Tracking.StopUsage(activity);
 		}
+
+		private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
+		{
+			//var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", unobservedTaskExceptionEventArgs.Exception);
+		}
+
+		private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+		{
+			//var newExc = new Exception("CurrentDomainOnUnhandledException", unhandledExceptionEventArgs.ExceptionObject as Exception);
+		}
+
 	}
 }

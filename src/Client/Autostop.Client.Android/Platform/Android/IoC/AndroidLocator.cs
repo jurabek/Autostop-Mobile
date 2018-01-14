@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.Locations;
 using Autofac;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Adapters;
@@ -8,6 +7,7 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Android.Adapters;
 using Autostop.Client.Android.Fragments;
+using Autostop.Client.Android.Platform.Android.Abstraction;
 using Autostop.Client.Android.Providers;
 using Autostop.Client.Android.Services;
 using Autostop.Client.Core.IoC;
@@ -15,7 +15,7 @@ using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.Shared.UI.IoC;
 using Plugin.CurrentActivity;
 
-namespace Autostop.Client.Android.IoC
+namespace Autostop.Client.Android.Platform.Android.IoC
 {
 	public class AndroidLocator : Locator
 	{
@@ -28,6 +28,7 @@ namespace Autostop.Client.Android.IoC
 			builder.RegisterInstance(CrossCurrentActivity.Current).As<ICurrentActivity>();			
 
 		    builder.RegisterType<MainFragment>().As<IScreenFor<MainViewModel>>();
+			builder.RegisterType<MarkerAdapter>().As<IMarkerAdapter>();
 
 		    builder.ClientTypesRegistry();
         }

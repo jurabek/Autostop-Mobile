@@ -18,7 +18,6 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    [UsedImplicitly]
     public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
     {
         public IRideViewModel RideViewModel { get; }
@@ -85,17 +84,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public ICommand GoToMyLocation => new RelayCommand(
 	        () => CameraTarget = _locationManager.Location);
-
-	    [UsedImplicitly] private ICommand _navigateToPickupSearch;
-        public ICommand NavigateToPickupSearch => _navigateToPickupSearch ?? new RelayCommand(
+		
+        public ICommand NavigateToPickupSearch => new RelayCommand(
 	        () =>
 	        {
 		        _navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupSearchPlaceViewModel);
 		        _pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
 			});
-
-	    [UsedImplicitly] private ICommand _navigateToDestinationSearch;
-        public ICommand NavigateToDestinationSearch => _navigateToDestinationSearch ?? new RelayCommand(
+		
+        public ICommand NavigateToDestinationSearch => new RelayCommand(
 	        () =>
 	        {
 		        _navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);

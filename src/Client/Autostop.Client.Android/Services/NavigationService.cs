@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Reactive.Linq;
 using Android.App;
+using Android.Views;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
+using Autostop.Client.Android.Activities;
+using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.IoC;
 using JetBrains.Annotations;
 using Plugin.CurrentActivity;
+using QueryTextChangeEventArgs = Android.Support.V7.Widget.SearchView.QueryTextChangeEventArgs;
 
 namespace Autostop.Client.Android.Services
 {
@@ -16,6 +21,8 @@ namespace Autostop.Client.Android.Services
 		private readonly ICurrentActivity _currentActivity;
 		private readonly IViewAdapter<Fragment> _viewAdapter;
 		private readonly IViewFactory _viewFactory;
+		private IDisposable _searchTextChanged;
+		private IDisposable _searchViewQueryChanged;
 
 		public NavigationService(
 			ICurrentActivity currentActivity,
@@ -61,7 +68,6 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigateToModal<TViewModel>()
 		{
-
 		}
 
 		public void NavigateTo<TViewModel>(Action<object, TViewModel> configure)
@@ -82,21 +88,39 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel
 		{
+			ShowSearchView(viewModel);
 			var fragment = GetFragment(viewModel);
 			ReplaceContent(fragment);
 		}
 
+		private void ShowSearchView(ISearchableViewModel searchableViewModel)
+		{
+			var mainActivity = (MainActivity)_currentActivity.Activity;
+			mainActivity.TitleTextView.Visibility = ViewStates.Gone;
+
+			var searchView = mainActivity.SearchView;
+			searchView.Visibility = ViewStates.Visible;
+			searchView.QueryHint = searchableViewModel.PlaceholderText;
+
+			_searchTextChanged = searchableViewModel
+				.Changed(() => searchableViewModel.SearchText)
+				.Subscribe(searchText => searchView.SetQuery(searchText, false));
+
+			_searchViewQueryChanged = Observable.FromEventPattern<EventHandler<QueryTextChangeEventArgs>, QueryTextChangeEventArgs>(
+						e => searchView.QueryTextChange += e,
+						e => searchView.QueryTextChange -= e)
+				.Subscribe(ep => searchableViewModel.SearchText = ep.EventArgs.NewText);
+		}
+
 		public void GoBack()
 		{
-			if (_currentActivity.Activity.FragmentManager.BackStackEntryCount > 0)
-			{
-				var result = _currentActivity.Activity.FragmentManager.PopBackStackImmediate();
-			}
+			_searchTextChanged?.Dispose();
+			_searchViewQueryChanged?.Dispose();
+			var _ = _currentActivity.Activity.FragmentManager.PopBackStackImmediate();
 		}
 
 		public void NavigaeToRoot()
 		{
-		
 		}
 
 		private Fragment GetFragment<TViewModel>(TViewModel viewModel)
@@ -120,25 +144,17 @@ namespace Autostop.Client.Android.Services
 			return fragment;
 		}
 
-		private void ReplaceContent(Fragment fragment, bool root = false)
+		private int ReplaceContent(Fragment fragment, bool root = false)
 		{
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
 
-			if (!root)
-			{
-				fragmentManager
-					.BeginTransaction()
+			return root ? fragmentManager.BeginTransaction()
+					.Replace(Resource.Id.container, fragment)
+					.Commit() : 
+				fragmentManager.BeginTransaction()
 					.Replace(Resource.Id.container, fragment)
 					.AddToBackStack(null)
 					.Commit();
-			}
-			else
-			{
-				fragmentManager
-					.BeginTransaction()
-					.Replace(Resource.Id.container, fragment)
-					.Commit();
-			}
 		}
 	}
 }
