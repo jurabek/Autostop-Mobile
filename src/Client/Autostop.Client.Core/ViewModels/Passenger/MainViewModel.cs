@@ -78,11 +78,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public ObservableCollection<DriverLocation> OnlineDrivers
         {
-            get => _onlineDrivers;
-	        private set => RaiseAndSetIfChanged(ref _onlineDrivers, value);
+	        get => _onlineDrivers;
+	        private set
+	        {
+		        _onlineDrivers = value;
+				RaisePropertyChanged();
+	        }
         }
 
-        public ICommand GoToMyLocation => new RelayCommand(
+	    public ICommand GoToMyLocation => new RelayCommand(
 	        () => CameraTarget = _locationManager.Location);
 		
         public ICommand NavigateToPickupSearch => new RelayCommand(
@@ -117,6 +121,12 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 						RideViewModel.IsPickupAddressLoading = true;
 					}),
 
+				VisibleRegionChanged
+					.Subscribe(r =>
+					{
+						OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
+					}),
+
 				CameraPositionObservable
 					.Subscribe(async location =>
 					{
@@ -141,7 +151,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			};
 
 			_locationManager.StartUpdatingLocation();
-			OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
             return base.Load();
         }
 

@@ -19,7 +19,7 @@
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
@@ -216,7 +216,6 @@
     <Compile Include="Extensions\LatLngExtensions.cs" />
     <Compile Include="Platform\Android\IoC\AndroidLocator.cs" />
     <Compile Include="MainApplication.cs" />
-    <Compile Include="Providers\MarkerSizeProvider.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Services\AutostopFirebaseListenerService.cs" />
     <Compile Include="Services\FirebaseNotificationService.cs" />

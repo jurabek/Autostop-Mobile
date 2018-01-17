@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Android.App;
@@ -6,6 +7,7 @@ using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Graphics;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Autostop.Client.Abstraction;
@@ -13,6 +15,7 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Android.Activities;
 using Autostop.Client.Android.Extensions;
 using Autostop.Client.Android.Platform.Android.Abstraction;
+using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using GalaSoft.MvvmLight.Helpers;
 using LatLng = Android.Gms.Maps.Model.LatLng;
@@ -23,8 +26,10 @@ namespace Autostop.Client.Android.Fragments
 {
 	public class MainFragment : Fragment, IScreenFor<MainViewModel>, IOnMapReadyCallback
 	{
+		private readonly ISchedulerProvider _schedulerProvider;
 		private readonly IVisibleRegionProvider _visibleRegionProvider;
 		private readonly IMarkerAdapter _markerAdapter;
+		private readonly IMarkerSizeProvider _markerSizeProvider;
 		private MapView _mapView;
 		private EditText _pickupAddressEditText;
 		private Button _whereToGoButton;
@@ -33,11 +38,15 @@ namespace Autostop.Client.Android.Fragments
 		private ProgressBar _pickupAddressLoading;
 
 		public MainFragment(
+			ISchedulerProvider schedulerProvider,
 			IVisibleRegionProvider visibleRegionProvider,
-			IMarkerAdapter markerAdapter)
+			IMarkerAdapter markerAdapter,
+			IMarkerSizeProvider markerSizeProvider)
 		{
+			_schedulerProvider = schedulerProvider;
 			_visibleRegionProvider = visibleRegionProvider;
 			_markerAdapter = markerAdapter;
+			_markerSizeProvider = markerSizeProvider;
 		}
 
 		public override void OnCreate(Bundle savedInstanceState)
@@ -80,25 +89,29 @@ namespace Autostop.Client.Android.Fragments
 					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);
 					_googleMap?.MoveCamera(camera);
 				});
+			
+			this.SetBinding(
+				() => _pickupAddressEditText.Text,
+				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
 
-			this.SetBinding(() => ViewModel.OnlineDrivers)
-				.WhenSourceChanges(async () =>
+			ViewModel.Changed(() => ViewModel.OnlineDrivers)
+				.Where(od => _googleMap != null && od.Any())
+				.SubscribeOn(_schedulerProvider.SynchronizationContextScheduler)
+				.Subscribe(async od =>
 				{
-					if(_googleMap == null)
-						return;
+					var zoomLevel = _googleMap.CameraPosition.Zoom;
+					var width = _markerSizeProvider.GetWidth(zoomLevel);
+					var height = _markerSizeProvider.GetHeight(zoomLevel);
 
 					var bitmapSource = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.car);
-					var bitmap = Bitmap.CreateScaledBitmap(bitmapSource, 20, 40, false);
+					var bitmap = Bitmap.CreateScaledBitmap(bitmapSource, width, height, false);
 					var icon = BitmapDescriptorFactory.FromBitmap(bitmap);
+					_googleMap.Clear();
 					foreach (var onlineDriver in ViewModel.OnlineDrivers)
 					{
 						_googleMap.AddMarker(_markerAdapter.GetMarkerOptions(onlineDriver).SetIcon(icon));
 					}
 				});
-
-			this.SetBinding(
-				() => _pickupAddressEditText.Text,
-				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
 		}
 
 		public MainViewModel ViewModel { get; set; }
@@ -108,7 +121,19 @@ namespace Autostop.Client.Android.Fragments
 			_googleMap = googleMap;
 			_googleMap.MyLocationEnabled = true;
 			_googleMap.UiSettings.CompassEnabled = true;
-			_googleMap.UiSettings.MyLocationButtonEnabled = false;
+			_googleMap.UiSettings.MyLocationButtonEnabled = true;
+
+			if (_mapView.FindViewById(1) != null)
+			{
+				View locationButton = ((View)_mapView.FindViewById(1).Parent).FindViewById(2);
+				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.LayoutParameters;
+				layoutParams.AddRule(LayoutRules.AlignParentTop, 0);
+				layoutParams.AddRule(LayoutRules.AlignParentBottom, 1);
+				DisplayMetrics realMetrics = new DisplayMetrics();
+				Activity.WindowManager.DefaultDisplay.GetRealMetrics(realMetrics);
+				var bottomPadding = realMetrics.HeightPixels / 4;
+				layoutParams.SetMargins(0, 0, 30, bottomPadding);
+			}
 
 			var cameraPositionIdle = Observable
 				.FromEventPattern<EventHandler, EventArgs>(

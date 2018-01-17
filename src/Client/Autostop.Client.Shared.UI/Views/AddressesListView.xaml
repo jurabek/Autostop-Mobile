@@ -23,9 +23,8 @@
                                Margin="10" Grid.Column="0" />
 
                         <StackLayout Grid.Column="1" VerticalOptions="Center" Margin="10, 5" Spacing="5">
-                            <Label Text="{Binding PrimaryText}" FontSize="Medium" TextColor="#212121" />
-                            <Label Text="{Binding SecondaryText}" FontSize="Small" TextColor="#bdbdbd"
-                                   LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding PrimaryText}" FontSize="Medium" LineBreakMode="TailTruncation" TextColor="#212121" />
+                            <Label Text="{Binding SecondaryText}" FontSize="Small" TextColor="#bdbdbd" LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </Grid>
                 </ViewCell.View>

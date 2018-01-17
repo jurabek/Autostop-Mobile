@@ -116,5 +116,9 @@ namespace Autostop.Client.Android.Managers
 					break;
 			}
 		}
+
+		public void GetSingleUpdate()
+		{
+		}
 	}
 }

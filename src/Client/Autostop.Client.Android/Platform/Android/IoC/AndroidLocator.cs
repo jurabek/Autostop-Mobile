@@ -29,6 +29,7 @@ namespace Autostop.Client.Android.Platform.Android.IoC
 
 		    builder.RegisterType<MainFragment>().As<IScreenFor<MainViewModel>>();
 			builder.RegisterType<MarkerAdapter>().As<IMarkerAdapter>();
+			builder.RegisterType<MarkerSizeProvider>().As<IMarkerSizeProvider>();
 
 		    builder.ClientTypesRegistry();
         }
