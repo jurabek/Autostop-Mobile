@@ -4,7 +4,6 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Autostop.Client.Core.Models;
 using JetBrains.Annotations;

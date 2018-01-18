@@ -29,7 +29,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
         private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
         private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
         private Location _cameraTarget;
-        private IDisposable _myLocationObservable;
 	    private List<IDisposable> _subscribers;
 
 		public MainViewModel(
@@ -87,7 +86,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
         }
 
 	    public ICommand GoToMyLocation => new RelayCommand(
-	        () => CameraTarget = _locationManager.Location);
+	        async () => await GetMyLocation());
 		
         public ICommand NavigateToPickupSearch => new RelayCommand(
 	        () =>
@@ -96,62 +95,63 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		        _pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
 			});
 		
-        public ICommand NavigateToDestinationSearch => new RelayCommand(
+        public ICommand NavigateToWhereTo => new RelayCommand(
 	        () =>
 	        {
 		        _navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);
-		        _destinationSearchPlaceViewModel.SearchText = RideViewModel.DestinationAddress.FormattedAddress;
+		        _destinationSearchPlaceViewModel.SearchText = string.Empty;
 			});
 
-        public override Task Load()
+        public override async Task Load()
         {
-            _myLocationObservable = MyLocationObservable
-                .Subscribe(async location =>
-                {
-	                _myLocationObservable.Dispose();
-					CameraTarget = _locationManager.Location;
-                    await CameraLocationChanged(location);
-                });
+            await base.Load();
+            await GetMyLocation();
 
-			_subscribers = new List<IDisposable>
-			{
-				CameraStartMoving
-					.Subscribe(moving =>
-					{
-						RideViewModel.IsPickupAddressLoading = true;
-					}),
+            _subscribers = new List<IDisposable>
+            {
+                CameraStartMoving
+                    .Subscribe(moving =>
+                    {
+                        RideViewModel.IsPickupAddressLoading = true;
+                    }),
 
-				VisibleRegionChanged
-					.Subscribe(r =>
-					{
-						OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
-					}),
+                VisibleRegionChanged
+                    .Subscribe(r =>
+                    {
+                        OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
+                    }),
 
-				CameraPositionObservable
-					.Subscribe(async location =>
-					{
-						await CameraLocationChanged(location);
-					}),
+                CameraPositionObservable
+                    .Subscribe(async location =>
+                    {
+                        await CameraLocationChanged(location);
+                    }),
 
-				_destinationSearchPlaceViewModel.SelectedAddress
-					.Subscribe(address =>
-					{
-						RideViewModel.DestinationAddress.SetAddress(address);
-						_navigationService.GoBack();
-					}),
+                _destinationSearchPlaceViewModel.SelectedAddress
+                    .Subscribe(address =>
+                    {
+                        RideViewModel.DestinationAddress.SetAddress(address);
+                        _navigationService.GoBack();
+                    }),
 
-				_pickupSearchPlaceViewModel.SelectedAddress
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
-					.Subscribe(address =>
-					{
-						RideViewModel.PickupAddress.SetAddress(address);
-						CameraTarget = address.Location;
-						_navigationService.GoBack();
-					})
-			};
+                _pickupSearchPlaceViewModel.SelectedAddress
+                    .ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
+                    .Subscribe(address =>
+                    {
+                        RideViewModel.PickupAddress.SetAddress(address);
+                        CameraTarget = address.Location;
+                        _navigationService.GoBack();
+                    })
+            };
 
-			_locationManager.StartUpdatingLocation();
-            return base.Load();
+            _locationManager.RequestLocationUpdates();
+        }
+
+        private async Task GetMyLocation()
+        {
+            var lastLocation = await _locationManager.RequestSingleLocationUpdate();
+            CameraTarget = lastLocation;
+            await CameraLocationChanged(lastLocation);
         }
 
         private async Task CameraLocationChanged(Location location)
@@ -170,7 +170,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
             if (disposing)
             {
-                _locationManager.StopUpdatingLocation();
+                _locationManager.StopLocationUpdates();
                 _subscribers.ForEach(d => d.Dispose());
             }
         }

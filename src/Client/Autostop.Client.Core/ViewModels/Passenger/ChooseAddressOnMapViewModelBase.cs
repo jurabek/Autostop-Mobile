@@ -43,8 +43,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
         public override async Task Load()
         {
-            CameraTarget = _locationManager.Location;
-            await CameraLocationChanged(_locationManager.Location);
+            CameraTarget = _locationManager.LastKnownLocation;
+            await CameraLocationChanged(_locationManager.LastKnownLocation);
 
             CameraStartMoving.Do(_ => IsSearching = true)
                 .Subscribe();

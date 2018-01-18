@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Abstraction.Managers
@@ -7,10 +8,12 @@ namespace Autostop.Client.Abstraction.Managers
     {
         IObservable<Location> LocationChanged { get; }
 
-        Location Location { get; }
+        Location LastKnownLocation { get; }
 
-        void StartUpdatingLocation();
+        void RequestLocationUpdates();
 
-        void StopUpdatingLocation();
+        void StopLocationUpdates();
+
+        Task<Location> RequestSingleLocationUpdate();
     }
 }

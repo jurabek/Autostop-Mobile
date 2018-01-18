@@ -32,7 +32,7 @@ namespace Autostop.Client.Core.Providers
 
         public async Task<ObservableCollection<IAutoCompleteResultModel>> GetAutoCompleteResponse(string input)
         {
-            var currentLocation = _locationManager.Location;
+            var currentLocation = _locationManager.LastKnownLocation;
             try
             {
                 var request = new AutocompleteRequest

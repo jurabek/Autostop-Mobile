@@ -153,7 +153,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 		{
 			this.BindCommand(_setPickupLocationView.SetPickupButton, ViewModel.RideViewModel.SetPickupLocation);
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
-			this.BindCommand(_whereToGoButton, ViewModel.NavigateToDestinationSearch);
+			this.BindCommand(_whereToGoButton, ViewModel.NavigateToWhereTo);
 		}
 
 		private void SetupBindings()

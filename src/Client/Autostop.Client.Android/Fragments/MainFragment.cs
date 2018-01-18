@@ -74,7 +74,7 @@ namespace Autostop.Client.Android.Fragments
 			_mapView.GetMapAsync(this);
 
 			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
-			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToDestinationSearch);
+			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToWhereTo);
 
 			this.SetBinding(() => ViewModel.RideViewModel.IsPickupAddressLoading)
 				.WhenSourceChanges(() =>
