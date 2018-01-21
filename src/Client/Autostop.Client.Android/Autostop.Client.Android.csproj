@@ -91,6 +91,12 @@
     <Reference Include="Plugin.CurrentActivity, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin.Permissions, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Plugin.Permissions.2.2.1\lib\MonoAndroid10\Plugin.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions.Abstractions, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Plugin.Permissions.2.2.1\lib\MonoAndroid10\Plugin.Permissions.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Plugin.Settings, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xam.Plugins.Settings.3.1.1\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
     </Reference>
@@ -210,12 +216,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\GooglePlayServicesException.cs" />
-    <Compile Include="Platform\Android\Abstraction\IMarkerAdapter.cs" />
+    <Compile Include="Abstraction\IMarkerAdapter.cs" />
     <Compile Include="Adapters\MarkerAdapter.cs" />
     <Compile Include="Adapters\PageToFragmentAdapter.cs" />
     <Compile Include="Extensions\LatLngExtensions.cs" />
-    <Compile Include="Platform\Android\IoC\AndroidLocator.cs" />
+    <Compile Include="IoC\AndroidLocator.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Providers\KeyboardProvider.cs" />
     <Compile Include="Providers\MarkerSizeProvider.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Services\AutostopFirebaseListenerService.cs" />
@@ -322,6 +329,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\marker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\white_dot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\search_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\where_to_left_drawable.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

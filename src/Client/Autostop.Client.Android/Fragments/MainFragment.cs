@@ -33,9 +33,10 @@ namespace Autostop.Client.Android.Fragments
 		private MapView _mapView;
 		private EditText _pickupAddressEditText;
 		private Button _whereToGoButton;
-		private ImageView _centeredMarkerImage;
 		private GoogleMap _googleMap;
 		private ProgressBar _pickupAddressLoading;
+		private TextView _estimatedTimeTimeTextView;
+		private ImageView _centeredAnimatableDot;
 
 		public MainFragment(
 			ISchedulerProvider schedulerProvider,
@@ -65,8 +66,9 @@ namespace Autostop.Client.Android.Fragments
 
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
 			_whereToGoButton = view.FindViewById<Button>(Resource.Id.whereToGoButton);
-			_centeredMarkerImage = view.FindViewById<ImageView>(Resource.Id.centeredMarkerIcon);
 			_pickupAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.pickupAddressLoading);
+			_estimatedTimeTimeTextView = view.FindViewById<TextView>(Resource.Id.estimatedTimeTextView);
+			_centeredAnimatableDot = view.FindViewById<ImageView>(Resource.Id.centeredAnimatableDot);
 
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
@@ -99,6 +101,7 @@ namespace Autostop.Client.Android.Fragments
 				.SubscribeOn(_schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(async od =>
 				{
+					
 					var zoomLevel = _googleMap.CameraPosition.Zoom;
 					var width = _markerSizeProvider.GetWidth(zoomLevel);
 					var height = _markerSizeProvider.GetHeight(zoomLevel);
@@ -141,6 +144,7 @@ namespace Autostop.Client.Android.Fragments
 					e => _googleMap.CameraIdle -= e);
 
 			ViewModel.CameraPositionObservable = cameraPositionIdle
+				.Do(CamerPositionIdle)
 				.Select(_ => _googleMap.CameraPosition.Target)
 				.Select(target => new Location(target.Latitude, target.Longitude));
 
@@ -158,8 +162,19 @@ namespace Autostop.Client.Android.Fragments
 			await ViewModel.Load();
 		}
 
+		private void CamerPositionIdle(EventPattern<EventArgs> eventPattern)
+		{
+			_estimatedTimeTimeTextView.Visibility = ViewStates.Visible;
+			Random rnd = new Random();
+			var min = rnd.Next(0, 10);
+			_estimatedTimeTimeTextView.Text = $"{min}\nmin";
+			_centeredAnimatableDot.Visibility = ViewStates.Gone;
+		}
+
 		private void CameraStarted(EventPattern<GoogleMap.CameraMoveStartedEventArgs> eventPattern)
 		{
+			_estimatedTimeTimeTextView.Visibility = ViewStates.Gone;
+			_centeredAnimatableDot.Visibility = ViewStates.Visible;
 		}
 
 		public override void OnResume()

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
 using Android.App;
+using Android.Content;
 using Android.Views;
+using Android.Views.InputMethods;
 using Autostop.Client.Abstraction.Adapters;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Services;
@@ -110,6 +112,10 @@ namespace Autostop.Client.Android.Services
 						e => searchView.QueryTextChange += e,
 						e => searchView.QueryTextChange -= e)
 				.Subscribe(ep => searchableViewModel.SearchText = ep.EventArgs.NewText);
+
+			searchView.RequestFocus();
+			InputMethodManager imm = (InputMethodManager)mainActivity.GetSystemService(Context.InputMethodService);
+			imm.ShowSoftInput(searchView, ShowFlags.Implicit);
 		}
 
 		public void GoBack()

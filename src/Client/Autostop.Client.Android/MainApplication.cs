@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using Autostop.Client.Android.Platform.Android.IoC;
 using Plugin.CurrentActivity;
 
 namespace XamarinEvolve.Droid
@@ -19,7 +20,7 @@ namespace XamarinEvolve.Droid
 		{
 			base.OnCreate();
 			RegisterActivityLifecycleCallbacks(this);
-			//Microsoft.WindowsAzure.MobileServices.CurrentPlatform.Init();
+			new AndroidLocator().Build();
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 		}

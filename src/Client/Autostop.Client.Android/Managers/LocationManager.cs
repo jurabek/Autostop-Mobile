@@ -15,7 +15,7 @@ using ALocationManager = Android.Locations.LocationManager;
 
 namespace Autostop.Client.Android.Managers
 {
-    [UsedImplicitly]
+	[UsedImplicitly]
     [Preserve(AllMembers = true)]
     public class LocationManager : Java.Lang.Object, ILocationManager, ILocationListener
     {
@@ -28,7 +28,7 @@ namespace Autostop.Client.Android.Managers
 
         public LocationManager()
         {
-            _locationManager = (ALocationManager)Application.Context.GetSystemService(Context.LocationService);
+			_locationManager = (ALocationManager)Application.Context.GetSystemService(Context.LocationService);
             _providers = _locationManager.GetProviders(false).ToArray();
             _ignoredProviders = new[] { ALocationManager.PassiveProvider, "local_database" };
         }
@@ -90,6 +90,7 @@ namespace Autostop.Client.Android.Managers
                 new SingleLocationListinter(location =>
                 {
                     var lastLocation = new Location(location.Latitude, location.Longitude);
+					LastKnownLocation = lastLocation;
                     tcs.SetResult(lastLocation);
                 }),
                 looper);

@@ -3,10 +3,16 @@
 <ListView xmlns="http://xamarin.com/schemas/2014/forms"
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
           x:Class="Autostop.Client.Shared.UI.Views.AddressesListView"
+          xmlns:converters="clr-namespace:Autostop.Client.Shared.UI.Converters;assembly=Autostop.Client.Shared.UI"
           SeparatorColor="#eeeeee"
           BackgroundColor="#F5F5F5"
           RowHeight="60"
           Margin="0, 15">
+    <ListView.Resources>
+        <ResourceDictionary>
+            <converters:EmptyToBooleanConverter x:Key="EmptyToBooleanConverter"/>
+        </ResourceDictionary>
+    </ListView.Resources>
     <ListView.ItemTemplate>
         <DataTemplate>
             <ViewCell>
@@ -24,7 +30,7 @@
 
                         <StackLayout Grid.Column="1" VerticalOptions="Center" Margin="10, 5" Spacing="5">
                             <Label Text="{Binding PrimaryText}" FontSize="Medium" LineBreakMode="TailTruncation" TextColor="#212121" />
-                            <Label Text="{Binding SecondaryText}" FontSize="Small" TextColor="#bdbdbd" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding SecondaryText}" IsVisible="{Binding SecondaryText, Converter={StaticResource EmptyToBooleanConverter}}" FontSize="Small" TextColor="#bdbdbd" LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </Grid>
                 </ViewCell.View>

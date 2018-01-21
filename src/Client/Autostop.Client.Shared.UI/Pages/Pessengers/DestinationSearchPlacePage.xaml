@@ -8,6 +8,8 @@
              BackgroundColor="#F5F5F5"
              helpers:PageHelper.BarTintColor="#F5F5F5">
     <ContentPage.Content>
-        <views:AddressesListView ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedSearchResult}"/>
+        <RelativeLayout>
+            <views:AddressesListView ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedSearchResult}"/>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

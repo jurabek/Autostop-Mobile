@@ -43,7 +43,7 @@ namespace Autostop.Client.iOS.Managers
 
 	    public Task<Location> RequestSingleLocationUpdate()
 	    {
-	        return null;
+			return Task.FromResult<Location>(new Location());
 	    }
         
 		public IObservable<Location> LocationChanged { get; }

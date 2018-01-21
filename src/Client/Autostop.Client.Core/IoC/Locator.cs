@@ -38,6 +38,7 @@ namespace Autostop.Client.Core.IoC
 	        builder.RegisterType<ChooseHomeAddressOnMapViewModel>().AsSelf();
 	        builder.RegisterType<ChooseWorkAddressOnMapViewModel>().AsSelf();
             builder.RegisterType<PhoneVerificationViewModel>().AsSelf();
+			builder.RegisterType<SignInViewModel>().AsSelf();
 
 			builder.RegisterType<GeocodingProvider>().As<IGeocodingProvider>();
             builder.RegisterType<PlacesProvider>().As<IPlacesProvider>();

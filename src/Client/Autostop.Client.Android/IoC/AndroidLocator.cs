@@ -24,12 +24,13 @@ namespace Autostop.Client.Android.Platform.Android.IoC
 		    builder.RegisterType<PageToFragmentAdapter>().As<IViewAdapter<Fragment>>();
 		    builder.RegisterType<FirebasePhoneAuthenticationProvider>().As<IPhoneAuthenticationProvider>();
 		    builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-			builder.RegisterType<Managers.LocationManager>().As<ILocationManager>();
+			builder.RegisterType<Managers.LocationManager>().As<ILocationManager>().SingleInstance(); ;
 			builder.RegisterInstance(CrossCurrentActivity.Current).As<ICurrentActivity>();			
 
 		    builder.RegisterType<MainFragment>().As<IScreenFor<MainViewModel>>();
 			builder.RegisterType<MarkerAdapter>().As<IMarkerAdapter>();
 			builder.RegisterType<MarkerSizeProvider>().As<IMarkerSizeProvider>();
+			builder.RegisterType<KeyboardProvider>().As<IKeyboardProvider>().SingleInstance();
 
 		    builder.ClientTypesRegistry();
         }

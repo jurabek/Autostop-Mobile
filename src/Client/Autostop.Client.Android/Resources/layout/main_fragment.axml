@@ -42,17 +42,27 @@
     </RelativeLayout>
     <ImageView
         android:id="@+id/centeredMarkerIcon"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="80dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:paddingBottom="40dp"
         android:src="@drawable/pin_pickup" />
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/centeredAnimatableDot"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="55dp"
+        android:src="@drawable/white_dot" />
     <TextView
+        android:visibility="gone"
         android:id="@+id/estimatedTimeTextView"
-        android:text="2"
-        android:maxLines="1"
-        android:textSize="12sp"
+        android:maxLines="2"
+        android:gravity="center"
+        android:textSize="8sp"
         android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,6 +78,6 @@
         android:background="@drawable/pickup_location_background"
         android:layout_height="35dp"
         android:layout_width="match_parent"
-        android:text="Where to go?"
+        android:text="Where to?"
         android:id="@+id/whereToGoButton" />
 </RelativeLayout>
