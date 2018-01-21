@@ -339,6 +339,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\where_to_left_drawable.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\enter_from_left.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\exit_to_right.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
