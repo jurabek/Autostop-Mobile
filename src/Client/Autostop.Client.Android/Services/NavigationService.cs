@@ -155,7 +155,7 @@ namespace Autostop.Client.Android.Services
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
 
 			var transaction = fragmentManager.BeginTransaction();
-			transaction.SetCustomAnimations(Resource.Animation.enter_from_left, Resource.Animation.exit_to_right);
+			//transaction.SetCustomAnimations(Resource.Animation.enter_from_left, Resource.Animation.exit_to_right);
 
 			return root ? 
 				transaction
