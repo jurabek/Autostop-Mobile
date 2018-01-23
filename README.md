@@ -10,6 +10,7 @@ for iOS should be MacOS with XCode 9.2 or higher
 Clone the repository
 Open Autostop.sln
 Restore nuget packages
+ask me on slack https://autostop-group.slack.com/messages 
 
 # Build and Test
 
