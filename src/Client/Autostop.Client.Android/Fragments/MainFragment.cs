@@ -50,9 +50,10 @@ namespace Autostop.Client.Android.Fragments
 			_markerSizeProvider = markerSizeProvider;
 		}
 
-		public override void OnCreate(Bundle savedInstanceState)
+		public async override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			await ViewModel.GetMyLocation();
 		}
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -63,7 +64,6 @@ namespace Autostop.Client.Android.Fragments
 		public override void OnViewCreated(View view, Bundle savedInstanceState)
 		{
 			base.OnViewCreated(view, savedInstanceState);
-
 			_pickupAddressEditText = view.FindViewById<EditText>(Resource.Id.pickupLocationAddressEditText);
 			_whereToGoButton = view.FindViewById<Button>(Resource.Id.whereToGoButton);
 			_pickupAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.pickupAddressLoading);
@@ -77,44 +77,6 @@ namespace Autostop.Client.Android.Fragments
 
 			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
 			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToWhereTo);
-
-			this.SetBinding(() => ViewModel.RideViewModel.IsPickupAddressLoading)
-				.WhenSourceChanges(() =>
-				{
-					_pickupAddressLoading.Visibility =
-						ViewModel.RideViewModel.IsPickupAddressLoading ? ViewStates.Visible : ViewStates.Gone;
-				});
-
-			this.SetBinding(() => ViewModel.CameraTarget)
-				.WhenSourceChanges(() =>
-				{
-					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);
-					_googleMap?.MoveCamera(camera);
-				});
-			
-			this.SetBinding(
-				() => _pickupAddressEditText.Text,
-				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
-
-			ViewModel.Changed(() => ViewModel.OnlineDrivers)
-				.Where(od => _googleMap != null && od.Any())
-				.SubscribeOn(_schedulerProvider.SynchronizationContextScheduler)
-				.Subscribe(async od =>
-				{
-					
-					var zoomLevel = _googleMap.CameraPosition.Zoom;
-					var width = _markerSizeProvider.GetWidth(zoomLevel);
-					var height = _markerSizeProvider.GetHeight(zoomLevel);
-
-					var bitmapSource = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.car);
-					var bitmap = Bitmap.CreateScaledBitmap(bitmapSource, width, height, false);
-					var icon = BitmapDescriptorFactory.FromBitmap(bitmap);
-					_googleMap.Clear();
-					foreach (var onlineDriver in ViewModel.OnlineDrivers)
-					{
-						_googleMap.AddMarker(_markerAdapter.GetMarkerOptions(onlineDriver).SetIcon(icon));
-					}
-				});
 		}
 
 		public MainViewModel ViewModel { get; set; }
@@ -158,6 +120,43 @@ namespace Autostop.Client.Android.Fragments
 					e => _googleMap.CameraMoveStarted -= e)
 				.Do(CameraStarted)
 				.Select(e => true);
+
+			this.SetBinding(() => ViewModel.RideViewModel.IsPickupAddressLoading)
+				.WhenSourceChanges(() =>
+				{
+					_pickupAddressLoading.Visibility =
+						ViewModel.RideViewModel.IsPickupAddressLoading ? ViewStates.Visible : ViewStates.Gone;
+				});
+
+			this.SetBinding(
+				() => _pickupAddressEditText.Text,
+				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
+
+			ViewModel.Changed(() => ViewModel.OnlineDrivers)
+				.Where(od => _googleMap != null && od.Any())
+				.SubscribeOn(_schedulerProvider.SynchronizationContextScheduler)
+				.Subscribe(async od =>
+				{
+					var zoomLevel = _googleMap.CameraPosition.Zoom;
+					var width = _markerSizeProvider.GetWidth(zoomLevel);
+					var height = _markerSizeProvider.GetHeight(zoomLevel);
+
+					var bitmapSource = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.car);
+					var bitmap = Bitmap.CreateScaledBitmap(bitmapSource, width, height, false);
+					var icon = BitmapDescriptorFactory.FromBitmap(bitmap);
+					_googleMap.Clear();
+					foreach (var onlineDriver in ViewModel.OnlineDrivers)
+					{
+						_googleMap.AddMarker(_markerAdapter.GetMarkerOptions(onlineDriver).SetIcon(icon));
+					}
+				});
+
+			this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
+				.WhenSourceChanges(() =>
+				{
+					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);
+					_googleMap?.MoveCamera(camera);
+				});
 
 			await ViewModel.Load();
 		}

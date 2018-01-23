@@ -1,0 +1,1 @@
+java -jar .\android-gps-emulator-0.2.war

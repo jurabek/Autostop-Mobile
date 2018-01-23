@@ -80,4 +80,11 @@
         android:layout_width="match_parent"
         android:text="Where to?"
         android:id="@+id/whereToGoButton" />
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/requestView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF" />
 </RelativeLayout>
