@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-    [UsedImplicitly]
-    public class RideViewModel : BaseViewModel, IRideViewModel
+	[UsedImplicitly]
+	public class RideViewModel : BaseViewModel, IRideViewModel
 	{
 		private bool _isPickupAddressLoading;
 		private bool _hasPickupLocation;
@@ -25,20 +25,27 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		public IAddressModel PickupAddress { get; } = new AddressModel();
 
-	    public IAddressModel DestinationAddress { get; } = new AddressModel();
+		public IAddressModel DestinationAddress { get; } = new AddressModel();
 
-	    public ICommand SetPickupLocation { get; }
+		public ICommand SetPickupLocation { get; }
 
 		public bool IsPickupAddressLoading
 		{
 			get => _isPickupAddressLoading;
 			set => RaiseAndSetIfChanged(ref _isPickupAddressLoading, value);
 		}
-		
+
 		public bool HasPickupLocation
 		{
 			get => _hasPickupLocation;
 			set => RaiseAndSetIfChanged(ref _hasPickupLocation, value);
+		}
+
+		private bool _hasDestinationAddress;
+		public bool HasDestinationAddress
+		{
+			get => _hasDestinationAddress;
+			set => RaiseAndSetIfChanged(ref _hasDestinationAddress, value);
 		}
 	}
 }

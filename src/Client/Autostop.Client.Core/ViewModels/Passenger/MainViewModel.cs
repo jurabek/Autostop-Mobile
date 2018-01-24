@@ -134,6 +134,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 					.Subscribe(address =>
 					{
 						RideViewModel.DestinationAddress.SetAddress(address);
+						RideViewModel.HasDestinationAddress = true;
 						_navigationService.GoBack();
 					}),
 

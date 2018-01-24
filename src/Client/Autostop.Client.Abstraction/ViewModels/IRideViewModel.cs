@@ -10,5 +10,6 @@ namespace Autostop.Client.Abstraction.ViewModels
 		ICommand SetPickupLocation { get; }
 		bool IsPickupAddressLoading { get; set; }
 		bool HasPickupLocation { get; set; }
+		bool HasDestinationAddress { get; set; }
 	}
 }

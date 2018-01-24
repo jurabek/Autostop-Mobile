@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_fragment"
+    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -40,6 +40,13 @@
             android:layout_alignBottom="@id/pickupLocationAddressEditText"
             android:layout_alignLeft="@id/pickupLocationAddressEditText" />
     </RelativeLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/requestView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF" />
     <ImageView
         android:id="@+id/centeredMarkerIcon"
         android:layout_width="50dp"
@@ -80,11 +87,4 @@
         android:layout_width="match_parent"
         android:text="Where to?"
         android:id="@+id/whereToGoButton" />
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/requestView"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF" />
 </RelativeLayout>

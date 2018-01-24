@@ -9,6 +9,7 @@ using Android.Graphics;
 using Android.OS;
 using Android.Util;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Providers;
@@ -37,6 +38,7 @@ namespace Autostop.Client.Android.Fragments
 		private ProgressBar _pickupAddressLoading;
 		private TextView _estimatedTimeTimeTextView;
 		private ImageView _centeredAnimatableDot;
+		private View _requestView;
 
 		public MainFragment(
 			ISchedulerProvider schedulerProvider,
@@ -69,6 +71,7 @@ namespace Autostop.Client.Android.Fragments
 			_pickupAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.pickupAddressLoading);
 			_estimatedTimeTimeTextView = view.FindViewById<TextView>(Resource.Id.estimatedTimeTextView);
 			_centeredAnimatableDot = view.FindViewById<ImageView>(Resource.Id.centeredAnimatableDot);
+			_requestView = view.FindViewById<FrameLayout>(Resource.Id.requestView);
 
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
@@ -81,6 +84,31 @@ namespace Autostop.Client.Android.Fragments
 
 		public MainViewModel ViewModel { get; set; }
 
+		public void slideUp(View view)
+		{
+			view.Visibility = ViewStates.Visible;
+
+			TranslateAnimation animate = new TranslateAnimation(0, 0, view.Height, 0)
+			{
+				Duration = 500,
+				FillAfter = true
+			};
+			view.StartAnimation(animate);
+
+			view.BringToFront();
+			view.Parent.RequestLayout();
+		}
+
+		public void slideDown(View view)
+		{
+			TranslateAnimation animate = new TranslateAnimation(0, 0, 0, view.Height)
+			{
+				Duration = 500,
+				FillAfter = true
+			};
+			view.StartAnimation(animate);
+		}
+
 		public async void OnMapReady(GoogleMap googleMap)
 		{
 			_googleMap = googleMap;
@@ -91,7 +119,7 @@ namespace Autostop.Client.Android.Fragments
 			if (_mapView.FindViewById(1) != null)
 			{
 				View locationButton = ((View)_mapView.FindViewById(1).Parent).FindViewById(2);
-				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.LayoutParameters;
+				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)locationButton.LayoutParameters;
 				layoutParams.AddRule(LayoutRules.AlignParentTop, 0);
 				layoutParams.AddRule(LayoutRules.AlignParentBottom, 1);
 				DisplayMetrics realMetrics = new DisplayMetrics();
@@ -148,6 +176,19 @@ namespace Autostop.Client.Android.Fragments
 					foreach (var onlineDriver in ViewModel.OnlineDrivers)
 					{
 						_googleMap.AddMarker(_markerAdapter.GetMarkerOptions(onlineDriver).SetIcon(icon));
+					}
+				});
+
+			this.SetBinding(() => ViewModel.RideViewModel.HasDestinationAddress)
+				.WhenSourceChanges(() =>
+				{
+					if (ViewModel.RideViewModel.HasDestinationAddress)
+					{
+						slideUp(_requestView);
+					}
+					else
+					{
+						slideDown(_requestView);
 					}
 				});
 
