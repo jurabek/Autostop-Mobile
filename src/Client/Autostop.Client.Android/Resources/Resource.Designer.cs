@@ -3393,11 +3393,11 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0050
 			public const int center_vertical = 2131427408;
 			
-			// aapt resource value: 0x7f0b00ad
-			public const int centeredAnimatableDot = 2131427501;
-			
 			// aapt resource value: 0x7f0b00ac
-			public const int centeredMarkerIcon = 2131427500;
+			public const int centeredAnimatableDot = 2131427500;
+			
+			// aapt resource value: 0x7f0b00ab
+			public const int centeredMarkerIcon = 2131427499;
 			
 			// aapt resource value: 0x7f0b007c
 			public const int checkbox = 2131427452;
@@ -3474,8 +3474,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b004a
 			public const int enterAlwaysCollapsed = 2131427402;
 			
-			// aapt resource value: 0x7f0b00ae
-			public const int estimatedTimeTextView = 2131427502;
+			// aapt resource value: 0x7f0b00ad
+			public const int estimatedTimeTextView = 2131427501;
 			
 			// aapt resource value: 0x7f0b004b
 			public const int exitUntilCollapsed = 2131427403;
@@ -3708,8 +3708,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b007e
 			public const int radio = 2131427454;
 			
-			// aapt resource value: 0x7f0b00ab
-			public const int requestView = 2131427499;
+			// aapt resource value: 0x7f0b00af
+			public const int requestView = 2131427503;
 			
 			// aapt resource value: 0x7f0b0053
 			public const int right = 2131427411;
@@ -3927,8 +3927,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b00c2
 			public const int volume_item_container = 2131427522;
 			
-			// aapt resource value: 0x7f0b00af
-			public const int whereToGoButton = 2131427503;
+			// aapt resource value: 0x7f0b00ae
+			public const int whereToGoButton = 2131427502;
 			
 			// aapt resource value: 0x7f0b0025
 			public const int wide = 2131427365;

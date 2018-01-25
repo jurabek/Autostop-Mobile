@@ -40,13 +40,7 @@
             android:layout_alignBottom="@id/pickupLocationAddressEditText"
             android:layout_alignLeft="@id/pickupLocationAddressEditText" />
     </RelativeLayout>
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/requestView"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF" />
+    
     <ImageView
         android:id="@+id/centeredMarkerIcon"
         android:layout_width="50dp"
@@ -87,4 +81,18 @@
         android:layout_width="match_parent"
         android:text="Where to?"
         android:id="@+id/whereToGoButton" />
+  <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/requestView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF">
+
+    <Button android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:text="Request"/>
+  
+  </RelativeLayout>
 </RelativeLayout>

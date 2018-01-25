@@ -58,10 +58,8 @@ namespace Autostop.Client.Android.Fragments
 			await ViewModel.GetMyLocation();
 		}
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			return inflater.Inflate(Resource.Layout.main_fragment, container, false);
-		}
+		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) => 
+			inflater.Inflate(Resource.Layout.main_fragment, container, false);
 
 		public override void OnViewCreated(View view, Bundle savedInstanceState)
 		{
@@ -71,7 +69,7 @@ namespace Autostop.Client.Android.Fragments
 			_pickupAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.pickupAddressLoading);
 			_estimatedTimeTimeTextView = view.FindViewById<TextView>(Resource.Id.estimatedTimeTextView);
 			_centeredAnimatableDot = view.FindViewById<ImageView>(Resource.Id.centeredAnimatableDot);
-			_requestView = view.FindViewById<FrameLayout>(Resource.Id.requestView);
+			_requestView = view.FindViewById<RelativeLayout>(Resource.Id.requestView);
 
 			_mapView = view.FindViewById<MapView>(Resource.Id.mapView);
 			_mapView.OnCreate(savedInstanceState);
@@ -115,18 +113,7 @@ namespace Autostop.Client.Android.Fragments
 			_googleMap.MyLocationEnabled = true;
 			_googleMap.UiSettings.CompassEnabled = true;
 			_googleMap.UiSettings.MyLocationButtonEnabled = true;
-
-			if (_mapView.FindViewById(1) != null)
-			{
-				View locationButton = ((View)_mapView.FindViewById(1).Parent).FindViewById(2);
-				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)locationButton.LayoutParameters;
-				layoutParams.AddRule(LayoutRules.AlignParentTop, 0);
-				layoutParams.AddRule(LayoutRules.AlignParentBottom, 1);
-				DisplayMetrics realMetrics = new DisplayMetrics();
-				Activity.WindowManager.DefaultDisplay.GetRealMetrics(realMetrics);
-				var bottomPadding = realMetrics.HeightPixels / 4;
-				layoutParams.SetMargins(0, 0, 30, bottomPadding);
-			}
+			MoveMyLocationButtonIntoBottom();
 
 			var cameraPositionIdle = Observable
 				.FromEventPattern<EventHandler, EventArgs>(
@@ -185,10 +172,12 @@ namespace Autostop.Client.Android.Fragments
 					if (ViewModel.RideViewModel.HasDestinationAddress)
 					{
 						slideUp(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Gone;
 					}
 					else
 					{
 						slideDown(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Visible;
 					}
 				});
 
@@ -200,6 +189,21 @@ namespace Autostop.Client.Android.Fragments
 				});
 
 			await ViewModel.Load();
+		}
+
+		private void MoveMyLocationButtonIntoBottom()
+		{
+			if (_mapView.FindViewById(1) != null)
+			{
+				View locationButton = ((View)_mapView.FindViewById(1).Parent).FindViewById(2);
+				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)locationButton.LayoutParameters;
+				layoutParams.AddRule(LayoutRules.AlignParentTop, 0);
+				layoutParams.AddRule(LayoutRules.AlignParentBottom, 1);
+				DisplayMetrics realMetrics = new DisplayMetrics();
+				Activity.WindowManager.DefaultDisplay.GetRealMetrics(realMetrics);
+				var bottomPadding = realMetrics.HeightPixels / 4;
+				layoutParams.SetMargins(0, 0, 30, bottomPadding);
+			}
 		}
 
 		private void CamerPositionIdle(EventPattern<EventArgs> eventPattern)
