@@ -1,35 +1,34 @@
-﻿using Autostop.Client.Abstraction.Factories;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Linq;
+using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
-using JetBrains.Annotations;
-using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	[UsedImplicitly]
-    public sealed class DestinationSearchPlaceViewModel : BaseSearchPlaceViewModel
+    public sealed class DestinationLocationEditorViewModel : BaseLocationEditorViewModel
 	{
-		private readonly IRideViewModel _rideViewModel;
+		private readonly ITripLocationViewModel _tripLocationViewModel;
 	    private readonly INavigationService _navigationService;
 	    private readonly IChooseOnMapViewModelFactory _chooseOnMapViewModelFactory;
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-        public DestinationSearchPlaceViewModel(
+        public DestinationLocationEditorViewModel(
 			ISchedulerProvider schedulerProvider,
-            IRideViewModel rideViewModel,
+            ITripLocationViewModel tripLocationViewModel,
             INavigationService navigationService,
             IPlacesProvider placesProvider,
             IGeocodingProvider geocodingProvider,
             IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
             IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
         {
-	        _rideViewModel = rideViewModel;
+	        _tripLocationViewModel = tripLocationViewModel;
 	        _navigationService = navigationService;
 	        _chooseOnMapViewModelFactory = chooseOnMapViewModelFactory;
 	        _autocompleteResultProvider = autocompleteResultProvider;
@@ -45,7 +44,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 
 	    private void NavigateToChooseDestinationOnMapViewModel(IAutoCompleteResultModel autoCompleteResultModel)
 	    {
-		    var chooseDestinationOnMapViewModel = _chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(_rideViewModel);
+		    var chooseDestinationOnMapViewModel = _chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(_tripLocationViewModel);
 		    _navigationService.NavigateTo(chooseDestinationOnMapViewModel as ChooseDestinationOnMapViewModel);
 		}
 
@@ -54,10 +53,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		    switch (selectedResult)
 		    {
 			    case HomeResultModel _:
-				    _navigationService.NavigateToSearchView<SearchHomeAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+				    _navigationService.NavigateToSearchView<HomeLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
 				    break;
 			    case WorkResultModel _:
-				    _navigationService.NavigateToSearchView<SearchWorkAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+				    _navigationService.NavigateToSearchView<WorkLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
 				    break;
 		    }
 	    }

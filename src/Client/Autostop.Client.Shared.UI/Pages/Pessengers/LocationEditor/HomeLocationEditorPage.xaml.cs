@@ -1,19 +1,19 @@
 ﻿using Autostop.Client.Abstraction;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Autostop.Client.Shared.UI.Pages.Pessengers
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class SearchWorkAddressPage : ContentPage, IScreenFor<SearchWorkAddressViewModel>
+	public partial class HomeLocationEditorPage : ContentPage, IScreenFor<HomeLocationEditorViewModel>
 	{
-		public SearchWorkAddressPage ()
+		public HomeLocationEditorPage ()
 		{
 			InitializeComponent ();
 		}
 
-		public SearchWorkAddressViewModel ViewModel { get; set; }
+		public HomeLocationEditorViewModel ViewModel { get; set; }
 
 		protected override void OnAppearing()
 		{

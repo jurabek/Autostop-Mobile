@@ -2,7 +2,8 @@
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Core.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
+using Autostop.Client.Core.ViewModels.Passenger.Welcome;
 using Autostop.Client.Shared.UI.Pages;
 using Autostop.Client.Shared.UI.Pages.Pessengers;
 using Autostop.Client.Shared.UI.Providers;
@@ -15,10 +16,10 @@ namespace Autostop.Client.Shared.UI.IoC
     {
         public static void ClientTypesRegistry(this ContainerBuilder builder)
         {
-            builder.RegisterType<DestinationSearchPlacePage>().As<IScreenFor<DestinationSearchPlaceViewModel>>();
-            builder.RegisterType<PickupSearchPlacePage>().As<IScreenFor<PickupSearchPlaceViewModel>>();
-	        builder.RegisterType<SearchHomeAddressPage>().As<IScreenFor<SearchHomeAddressViewModel>>();
-	        builder.RegisterType<SearchWorkAddressPage>().As<IScreenFor<SearchWorkAddressViewModel>>();
+            builder.RegisterType<DestinationLocationEditorPage>().As<IScreenFor<DestinationLocationEditorViewModel>>();
+            builder.RegisterType<PickupLocationEditorPage>().As<IScreenFor<PickupLocationEditorViewModel>>();
+	        builder.RegisterType<HomeLocationEditorPage>().As<IScreenFor<HomeLocationEditorViewModel>>();
+	        builder.RegisterType<WorkLocationEditorPage>().As<IScreenFor<WorkLocationEditorViewModel>>();
             builder.RegisterType<PhoneVerificationPage>().As<IScreenFor<PhoneVerificationViewModel>>();
 			builder.RegisterType<SignInPage>().As<IScreenFor<SignInViewModel>>();
             builder.RegisterType<SettingsProvider>().As<ISettingsProvider>();

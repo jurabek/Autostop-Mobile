@@ -13,9 +13,9 @@ using Conditions;
 using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	public abstract class BaseSearchPlaceViewModel : BaseViewModel, IBaseSearchPlaceViewModel
+	public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseSearchPlaceViewModel
 	{
 		private readonly INavigationService _navigationService;
 		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
@@ -23,7 +23,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 		private bool _isLoading;
 		private string _searchText;
 
-		protected BaseSearchPlaceViewModel(
+		protected BaseLocationEditorViewModel(
 			ISchedulerProvider schedulerProvider,
 			IPlacesProvider placesProvider,
 			IGeocodingProvider geocodingProvider,

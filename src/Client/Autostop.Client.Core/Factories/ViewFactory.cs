@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Autofac;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Core.IoC;

@@ -41,7 +41,7 @@ namespace Autostop.Client.Android.Activities
 		internal TextView TitleTextView { get; private set; }
 		internal SearchView SearchView { get; private set; }
 
-		protected async override void OnCreate(Bundle savedInstanceState)
+		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			_keyboardProvider = Locator.Resolve<IKeyboardProvider>();
@@ -153,7 +153,7 @@ namespace Autostop.Client.Android.Activities
 				{
 					if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Plugin.Permissions.Abstractions.Permission.Location))
 					{
-						Log.Debug("", "Need location", "Gunna need that location", "OK");
+						Log.Debug("", "Need location", "Need that location", "OK");
 					}
 
 					var results = await CrossPermissions.Current.RequestPermissionsAsync(Plugin.Permissions.Abstractions.Permission.Location);

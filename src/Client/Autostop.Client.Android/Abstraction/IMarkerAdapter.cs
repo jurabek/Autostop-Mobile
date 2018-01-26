@@ -1,7 +1,7 @@
 ﻿using Android.Gms.Maps.Model;
 using Autostop.Common.Shared.Models;
 
-namespace Autostop.Client.Android.Platform.Android.Abstraction
+namespace Autostop.Client.Android.Abstraction
 {
 	public interface IMarkerAdapter
 	{

@@ -4,13 +4,10 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Providers;
-using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
 using Autostop.Common.Shared.Models;
 using Conditions;
 using GalaSoft.MvvmLight.Command;
@@ -20,41 +17,31 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 {
 	public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
 	{
-		public IRideViewModel RideViewModel { get; }
+		public ITripLocationViewModel TripLocationViewModel { get; }
 		private readonly IGeocodingProvider _geocodingProvider;
 		private readonly ILocationManager _locationManager;
 		private readonly ISchedulerProvider _schedulerProvider;
-		private readonly INavigationService _navigationService;
-		private readonly IBaseSearchPlaceViewModel _pickupSearchPlaceViewModel;
-		private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
 		private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
 		private Location _cameraTarget;
 		private List<IDisposable> _subscribers;
 
 		public MainViewModel(
 			ISchedulerProvider schedulerProvider,
-			ISearchPlaceViewModelFactory searchPlaceViewModelFactory,
-			INavigationService navigationService,
 			IGeocodingProvider geocodingProvider,
 			ILocationManager locationManager,
-			IRideViewModel rideViewModel)
+			ITripLocationViewModel tripLocationViewModel)
 		{
 			schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
-			searchPlaceViewModelFactory.Requires(nameof(searchPlaceViewModelFactory)).IsNotNull();
-			navigationService.Requires(nameof(navigationService)).IsNotNull();
 			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
 			locationManager.Requires(nameof(locationManager)).IsNotNull();
-			rideViewModel.Requires(nameof(rideViewModel)).IsNotNull();
+			tripLocationViewModel.Requires(nameof(tripLocationViewModel)).IsNotNull();
 
 			_schedulerProvider = schedulerProvider;
-			_navigationService = navigationService;
 			_geocodingProvider = geocodingProvider;
 			_locationManager = locationManager;
-			RideViewModel = rideViewModel;
 
+			TripLocationViewModel = tripLocationViewModel;
 			MyLocationObservable = locationManager.LocationChanged;
-			_pickupSearchPlaceViewModel = searchPlaceViewModelFactory.GetPickupSearchPlaceViewModel();
-			_destinationSearchPlaceViewModel = searchPlaceViewModelFactory.DestinationSearchPlaceViewModel(RideViewModel);
 		}
 
 		public IObservable<Location> MyLocationObservable { get; }
@@ -88,19 +75,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		public ICommand GoToMyLocation => new RelayCommand(
 			async () => await GetMyLocation());
 
-		public ICommand NavigateToPickupSearch => new RelayCommand(
-			() =>
-			{
-				_navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupSearchPlaceViewModel);
-				_pickupSearchPlaceViewModel.SearchText = RideViewModel.PickupAddress.FormattedAddress;
-			});
-
-		public ICommand NavigateToWhereTo => new RelayCommand(
-			() =>
-			{
-				_navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationSearchPlaceViewModel);
-				_destinationSearchPlaceViewModel.SearchText = string.Empty;
-			});
 
 		public override async Task Load()
 		{
@@ -112,7 +86,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(moving =>
 					{
-						RideViewModel.IsPickupAddressLoading = true;
+						TripLocationViewModel.PickupAddress.Loading = true;
 					}),
 
 				VisibleRegionChanged
@@ -127,24 +101,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 					.Subscribe(async location =>
 					{
 						await CameraLocationChanged(location);
-					}),
-
-				_destinationSearchPlaceViewModel.SelectedAddress
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
-					.Subscribe(address =>
-					{
-						RideViewModel.DestinationAddress.SetAddress(address);
-						RideViewModel.HasDestinationAddress = true;
-						_navigationService.GoBack();
-					}),
-
-				_pickupSearchPlaceViewModel.SelectedAddress
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
-					.Subscribe(address =>
-					{
-						RideViewModel.PickupAddress.SetAddress(address);
-						CameraTarget = address.Location;
-						_navigationService.GoBack();
 					})
 			};
 		}
@@ -161,8 +117,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
 			if (address != null)
 			{
-				RideViewModel.PickupAddress.SetAddress(address);
-				RideViewModel.IsPickupAddressLoading = false;
+				TripLocationViewModel.PickupAddress.SetAddress(address);
+				TripLocationViewModel.PickupAddress.Loading = false;
 			}
 		}
 

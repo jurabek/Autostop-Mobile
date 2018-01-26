@@ -1,4 +1,5 @@
 ﻿using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
 using CoreGraphics;
@@ -18,7 +19,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		    this.BindCommand(DoneButton, ViewModel.Done);
 
-		    var pickupLocation = ViewModel.RideViewModel.PickupAddress.Location;
+		    var pickupLocation = ViewModel.TripLocationViewModel.PickupAddress.Location;
             var unused = new Marker
 		    {
 		        Position = new CLLocationCoordinate2D(pickupLocation.Latitude, pickupLocation.Longitude),

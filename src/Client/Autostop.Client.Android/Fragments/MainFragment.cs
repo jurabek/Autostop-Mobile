@@ -13,9 +13,9 @@ using Android.Views.Animations;
 using Android.Widget;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Android.Abstraction;
 using Autostop.Client.Android.Activities;
 using Autostop.Client.Android.Extensions;
-using Autostop.Client.Android.Platform.Android.Abstraction;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.ViewModels.Passenger;
 using GalaSoft.MvvmLight.Helpers;
@@ -52,7 +52,7 @@ namespace Autostop.Client.Android.Fragments
 			_markerSizeProvider = markerSizeProvider;
 		}
 
-		public async override void OnCreate(Bundle savedInstanceState)
+		public override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			await ViewModel.GetMyLocation();
@@ -76,8 +76,8 @@ namespace Autostop.Client.Android.Fragments
 			_mapView.OnResume();
 			_mapView.GetMapAsync(this);
 
-			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
-			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToWhereTo);
+			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.TripLocationViewModel.NavigateToPickupSearch);
+			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.TripLocationViewModel.NavigateToWhereTo);
 		}
 
 		public MainViewModel ViewModel { get; set; }
@@ -136,16 +136,16 @@ namespace Autostop.Client.Android.Fragments
 				.Do(CameraStarted)
 				.Select(e => true);
 
-			this.SetBinding(() => ViewModel.RideViewModel.IsPickupAddressLoading)
+			this.SetBinding(() => ViewModel.TripLocationViewModel.PickupAddress.Loading)
 				.WhenSourceChanges(() =>
 				{
 					_pickupAddressLoading.Visibility =
-						ViewModel.RideViewModel.IsPickupAddressLoading ? ViewStates.Visible : ViewStates.Gone;
+						ViewModel.TripLocationViewModel.PickupAddress.Loading ? ViewStates.Visible : ViewStates.Gone;
 				});
 
 			this.SetBinding(
 				() => _pickupAddressEditText.Text,
-				() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
+				() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
 
 			ViewModel.Changed(() => ViewModel.OnlineDrivers)
 				.Where(od => _googleMap != null && od.Any())
@@ -166,20 +166,20 @@ namespace Autostop.Client.Android.Fragments
 					}
 				});
 
-			this.SetBinding(() => ViewModel.RideViewModel.HasDestinationAddress)
-				.WhenSourceChanges(() =>
-				{
-					if (ViewModel.RideViewModel.HasDestinationAddress)
-					{
-						slideUp(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Gone;
-					}
-					else
-					{
-						slideDown(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Visible;
-					}
-				});
+			//this.SetBinding(() => ViewModel.TripLocationViewModel.HasDestinationAddress)
+			//	.WhenSourceChanges(() =>
+			//	{
+			//		if (ViewModel.TripLocationViewModel.HasDestinationAddress)
+			//		{
+			//			slideUp(_requestView);
+			//			_whereToGoButton.Visibility = ViewStates.Gone;
+			//		}
+			//		else
+			//		{
+			//			slideDown(_requestView);
+			//			_whereToGoButton.Visibility = ViewStates.Visible;
+			//		}
+			//	});
 
 			this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
 				.WhenSourceChanges(() =>

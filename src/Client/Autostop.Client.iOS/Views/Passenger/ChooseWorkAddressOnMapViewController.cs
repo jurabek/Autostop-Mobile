@@ -1,4 +1,5 @@
 ﻿using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.iOS.Constants;
 using Autostop.Client.iOS.Extensions;
 using JetBrains.Annotations;

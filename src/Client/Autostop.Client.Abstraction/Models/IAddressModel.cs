@@ -8,6 +8,8 @@ namespace Autostop.Client.Abstraction.Models
 
         Location Location { get; set; }
 
+		bool Loading { get; set; }
+
 	    void SetAddress(Address address);
     }
 }

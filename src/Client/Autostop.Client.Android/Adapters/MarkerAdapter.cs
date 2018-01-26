@@ -1,5 +1,5 @@
 ﻿using Android.Gms.Maps.Model;
-using Autostop.Client.Android.Platform.Android.Abstraction;
+using Autostop.Client.Android.Abstraction;
 using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Android.Adapters

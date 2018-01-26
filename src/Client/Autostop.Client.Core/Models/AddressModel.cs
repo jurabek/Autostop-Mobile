@@ -8,6 +8,7 @@ namespace Autostop.Client.Core.Models
     {
         private string _formattedAddress;
         private Location _location;
+	    private bool _loading;
 
         public string FormattedAddress
         {
@@ -21,10 +22,18 @@ namespace Autostop.Client.Core.Models
             set => RaiseAndSetIfChanged(ref _location, value);
         }
 
+	    public bool Loading
+	    {
+		    get => _loading;
+		    set => this.RaiseAndSetIfChanged(ref _loading, value);
+	    }
+
 	    public void SetAddress(Address address)
 	    {
 		    FormattedAddress = address.FormattedAddress;
 		    Location = address.Location;
 		}
+
+
     }
 }

@@ -6,16 +6,15 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
-using JetBrains.Annotations;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	[UsedImplicitly]
-	public sealed class SearchWorkAddressViewModel : BaseSearchPlaceViewModel
+	public sealed class WorkLocationEditorViewModel : BaseLocationEditorViewModel
 	{
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-		public SearchWorkAddressViewModel(
+		public WorkLocationEditorViewModel(
 			ISchedulerProvider schedulerProvider,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,

@@ -7,15 +7,15 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Models;
 using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
 	[UsedImplicitly]
-	public sealed class PickupSearchPlaceViewModel : BaseSearchPlaceViewModel
+	public sealed class PickupLocationEditorViewModel : BaseLocationEditorViewModel
 	{
 		private readonly INavigationService _navigationService;
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-		public PickupSearchPlaceViewModel(
+		public PickupLocationEditorViewModel(
 			ISchedulerProvider schedulerProviderer,
 			INavigationService navigationService,
 			IPlacesProvider placesProvider,
@@ -36,10 +36,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Places
 			switch (selectedResult)
 			{
 				case HomeResultModel _:
-					_navigationService.NavigateToSearchView<SearchHomeAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+					_navigationService.NavigateToSearchView<HomeLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
 					break;
 				case WorkResultModel _:
-					_navigationService.NavigateToSearchView<SearchWorkAddressViewModel>(vm => vm.GoBackCallback = GoBackCallback);
+					_navigationService.NavigateToSearchView<WorkLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
 					break;
 			}
 		}

@@ -1,21 +1,20 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
-using System;
-using System.Reactive.Linq;
 using Autostop.Client.Core.Models;
-using JetBrains.Annotations;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-    [UsedImplicitly]
-    public sealed class SearchHomeAddressViewModel : BaseSearchPlaceViewModel
+    public sealed class HomeLocationEditorViewModel : BaseLocationEditorViewModel
     {
         private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
-        public SearchHomeAddressViewModel(
+        public HomeLocationEditorViewModel(
             ISchedulerProvider schedulerProvider,
             INavigationService navigationService,
             IPlacesProvider placesProvider,

@@ -9,7 +9,7 @@ using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger
+namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 {
     public abstract class ChooseAddressOnMapViewModelBase : ChooseOnMapViewModelBase
     {

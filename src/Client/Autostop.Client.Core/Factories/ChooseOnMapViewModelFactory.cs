@@ -11,9 +11,9 @@ namespace Autostop.Client.Core.Factories
     [UsedImplicitly]
     public class ChooseOnMapViewModelFactory : IChooseOnMapViewModelFactory
     {
-        public ISearchableViewModel GetChooseDestinationOnMapViewModel(IRideViewModel rideViewModel)
+        public ISearchableViewModel GetChooseDestinationOnMapViewModel(ITripLocationViewModel tripLocationViewModel)
         {
-	        return Locator.ResolveNamed<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap, new NamedParameter(nameof(rideViewModel), rideViewModel));
+	        return Locator.ResolveNamed<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap, new NamedParameter(nameof(tripLocationViewModel), tripLocationViewModel));
         }
     }
 }

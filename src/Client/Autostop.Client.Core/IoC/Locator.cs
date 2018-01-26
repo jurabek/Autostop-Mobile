@@ -10,7 +10,10 @@ using Autostop.Client.Core.Facades;
 using Autostop.Client.Core.Factories;
 using Autostop.Client.Core.Providers;
 using Autostop.Client.Core.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
+using Autostop.Client.Core.ViewModels.Passenger.Trip;
+using Autostop.Client.Core.ViewModels.Passenger.Welcome;
 using Google.Maps;
 using Google.Maps.Geocoding;
 using Google.Maps.Places;
@@ -27,14 +30,14 @@ namespace Autostop.Client.Core.IoC
             var builder = new ContainerBuilder();
             var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
 
-	        builder.RegisterType<RideViewModel>().As<IRideViewModel>();
+	        builder.RegisterType<TripLocationViewModel>().As<ITripLocationViewModel>();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<PickupSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.PickupSearch);
-            builder.RegisterType<DestinationSearchPlaceViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.DestinationSearch);
+            builder.RegisterType<PickupLocationEditorViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.PickupSearch);
+            builder.RegisterType<DestinationLocationEditorViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.DestinationSearch);
             builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap);
 
-            builder.RegisterType<SearchHomeAddressViewModel>().AsSelf();
-	        builder.RegisterType<SearchWorkAddressViewModel>().AsSelf();
+            builder.RegisterType<HomeLocationEditorViewModel>().AsSelf();
+	        builder.RegisterType<WorkLocationEditorViewModel>().AsSelf();
 	        builder.RegisterType<ChooseHomeAddressOnMapViewModel>().AsSelf();
 	        builder.RegisterType<ChooseWorkAddressOnMapViewModel>().AsSelf();
             builder.RegisterType<PhoneVerificationViewModel>().AsSelf();

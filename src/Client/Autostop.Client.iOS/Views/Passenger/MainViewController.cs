@@ -106,17 +106,17 @@ namespace Autostop.Client.iOS.Views.Passenger
 		{
 			base.ViewDidLayoutSubviews();
 
-		    if (ViewModel.RideViewModel.HasPickupLocation)
-		    {
-		        //_pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
-		        //_whereToGoButton.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
-		        //_whereToGoButton.Alpha = 1;
-		    }
-		    else
-		    {
-		        //_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
-		        //_whereToGoButton.Alpha = 0;
-		    }
+		    //if (ViewModel.TripLocationViewModel.HasPickupLocation)
+		    //{
+		    //    //_pickupAddressTextField.RoundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, 5);
+		    //    //_whereToGoButton.RoundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 5);
+		    //    //_whereToGoButton.Alpha = 1;
+		    //}
+		    //else
+		    //{
+		    //    //_pickupAddressTextField.RoundCorners(UIRectCorner.AllCorners, 5);
+		    //    //_whereToGoButton.Alpha = 0;
+		    //}
 
 			_whereToGoButton.Layer.CornerRadius = 20;
 			_myLocationButton.ToCircleView();
@@ -151,9 +151,8 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		private void AddCommands()
 		{
-			this.BindCommand(_setPickupLocationView.SetPickupButton, ViewModel.RideViewModel.SetPickupLocation);
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
-			this.BindCommand(_whereToGoButton, ViewModel.NavigateToWhereTo);
+			this.BindCommand(_whereToGoButton, ViewModel.TripLocationViewModel.NavigateToWhereTo);
 		}
 
 		private void SetupBindings()
@@ -162,11 +161,11 @@ namespace Autostop.Client.iOS.Views.Passenger
 			{
 				this.SetBinding(
 					() => _pickupAddressTextField.Text,
-					() => ViewModel.RideViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
+					() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _pickupAddressTextField.Loading,
-					() => ViewModel.RideViewModel.IsPickupAddressLoading, BindingMode.TwoWay),
+					() => ViewModel.TripLocationViewModel.PickupAddress.Loading, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _mapView.OnlineDrivers,
@@ -178,9 +177,9 @@ namespace Autostop.Client.iOS.Views.Passenger
 					.ConvertTargetToSource(location =>
 						CameraPosition.FromCamera(location.Latitude,location.Longitude, 17)),
 
-                this.SetBinding(
-                    () => ViewModel.RideViewModel.HasPickupLocation)
-                    .WhenSourceChanges(ViewDidLayoutSubviews)
+                //this.SetBinding(
+                //    () => ViewModel.TripLocationViewModel.HasPickupLocation)
+                //    .WhenSourceChanges(ViewDidLayoutSubviews)
 			};
 		}
 
@@ -285,7 +284,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		private bool PickupAddressShouldBeginEditing(UITextField textField)
 		{
-			ViewModel.NavigateToPickupSearch.Execute(null);
+			ViewModel.TripLocationViewModel.NavigateToPickupSearch.Execute(null);
 			return false;
 		}
 

@@ -61,7 +61,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
         }
 
 	    private ICommand _verifyCommand;
-        public ICommand VerifyCommand => _verifyCommand ?? new RelayCommand(async () =>
+        public ICommand VerifyCommand => _verifyCommand ?? (_verifyCommand = new RelayCommand(async () =>
         {
 	        try
 	        {
@@ -70,6 +70,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 	        catch (Exception e)
 	        {
 	        }
-        });
+        }));
 	}
 }

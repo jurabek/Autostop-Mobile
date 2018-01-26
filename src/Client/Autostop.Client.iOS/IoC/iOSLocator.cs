@@ -5,6 +5,7 @@ using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.iOS.Adapters;
 using Autostop.Client.iOS.Managers;
 using Autostop.Client.iOS.Services;

@@ -3,7 +3,7 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger
+namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 {
     [UsedImplicitly]
     public class ChooseHomeAddressOnMapViewModel : ChooseAddressOnMapViewModelBase

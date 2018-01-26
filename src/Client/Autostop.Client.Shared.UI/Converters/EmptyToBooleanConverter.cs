@@ -8,7 +8,7 @@ namespace Autostop.Client.Shared.UI.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return string.IsNullOrEmpty(value as string) ? false : true;
+			return !string.IsNullOrEmpty(value as string);
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

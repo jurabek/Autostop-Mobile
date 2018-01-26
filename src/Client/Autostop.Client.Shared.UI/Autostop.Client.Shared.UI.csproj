@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Drivers\**" />
+    <EmbeddedResource Remove="Pages\Drivers\**" />
+    <None Remove="Pages\Drivers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.0.1-alpha" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
@@ -21,10 +27,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Drivers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Update="Pages\Pessengers\LocationEditor\DestinationLocationEditorPage.xaml.cs">
+      <DependentUpon>DestinationLocationEditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Pessengers\LocationEditor\PickupLocationEditorPage.xaml.cs">
+      <DependentUpon>PickupLocationEditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Pessengers\LocationEditor\HomeLocationEditorPage.xaml.cs">
+      <DependentUpon>HomeLocationEditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Pessengers\LocationEditor\WorkLocationEditorPage.xaml.cs">
+      <DependentUpon>WorkLocationEditorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
@@ -34,7 +48,7 @@
     <EmbeddedResource Update="Pages\SignInPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Pessengers\DestinationSearchPlacePage.xaml">
+    <EmbeddedResource Update="Pages\Pessengers\LocationEditor\DestinationLocationEditorPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\Pessengers\GettingStarted.xaml">
@@ -43,16 +57,16 @@
     <EmbeddedResource Update="Pages\Pessengers\PhoneVerificationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Pessengers\PickupSearchPlacePage.xaml">
+    <EmbeddedResource Update="Pages\Pessengers\LocationEditor\PickupLocationEditorPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\Pessengers\RideHistoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Pessengers\SearchHomeAddressPage.xaml">
+    <EmbeddedResource Update="Pages\Pessengers\LocationEditor\HomeLocationEditorPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Pessengers\SearchWorkAddressPage.xaml">
+    <EmbeddedResource Update="Pages\Pessengers\LocationEditor\WorkLocationEditorPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\SignUpPage.xaml">

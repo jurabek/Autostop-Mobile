@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Autofac.Extras.Moq;
+﻿using Autofac.Extras.Moq;
 using Autostop.Client.Abstraction.Providers;
 using Microsoft.Reactive.Testing;
 using Moq;

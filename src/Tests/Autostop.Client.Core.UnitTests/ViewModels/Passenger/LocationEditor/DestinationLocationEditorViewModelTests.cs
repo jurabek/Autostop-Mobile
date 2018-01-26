@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
-using System.Text;
 using AutoFixture;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Models;
@@ -10,14 +8,14 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Models;
-using Autostop.Client.Core.ViewModels.Passenger;
-using Autostop.Client.Core.ViewModels.Passenger.Places;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
 using Moq;
 using NUnit.Framework;
 
-namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.Places
+namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 {
-    public class DestinationSearchPlaceViewModelTests : BaseAutoMockedReactiveTest<DestinationSearchPlaceViewModel>
+    public class DestinationLocationEditorViewModelTests : BaseAutoMockedReactiveTest<DestinationLocationEditorViewModel>
     {
 	    [Test, AutoDomainData]
 	    public void Search_ReturnsHomeAndWorkResultModel_WhenTextSearchIsEmpty(HomeResultModel homeResultModel, WorkResultModel workResultModel, SetLocationOnMapResultModel setLocationOnMapResultModel)
@@ -56,7 +54,7 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.Places
 				workResultModel
 			};
 
-			GetMock<IChooseOnMapViewModelFactory>().Setup(x => x.GetChooseDestinationOnMapViewModel(It.IsAny<IRideViewModel>()))
+			GetMock<IChooseOnMapViewModelFactory>().Setup(x => x.GetChooseDestinationOnMapViewModel(It.IsAny<ITripLocationViewModel>()))
 				.Returns(choseDetinationViewModel);
 
 			// Act
@@ -81,17 +79,17 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.Places
 		    };
 		    var navigationServiceMoq = GetMock<INavigationService>();
 
-		    var searchHomeViewModel = Mocker.Create<SearchHomeAddressViewModel>();
-		    var searchWorkViewModel = Mocker.Create<SearchWorkAddressViewModel>();
+		    var searchHomeViewModel = Mocker.Create<HomeLocationEditorViewModel>();
+		    var searchWorkViewModel = Mocker.Create<WorkLocationEditorViewModel>();
 
-		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<SearchHomeAddressViewModel>>()))
-			    .Callback<Action<SearchHomeAddressViewModel>>(model =>
+		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<HomeLocationEditorViewModel>>()))
+			    .Callback<Action<HomeLocationEditorViewModel>>(model =>
 			    {
 				    model(searchHomeViewModel);
 			    });
 
-		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<SearchWorkAddressViewModel>>()))
-			    .Callback<Action<SearchWorkAddressViewModel>>(model =>
+		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<WorkLocationEditorViewModel>>()))
+			    .Callback<Action<WorkLocationEditorViewModel>>(model =>
 			    {
 				    model(searchWorkViewModel);
 			    });
@@ -102,8 +100,8 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.Places
 		    Scheduler.Start();
 
 		    // Assert
-		    navigationServiceMoq.Verify(x => x.NavigateToSearchView(It.IsAny<Action<SearchHomeAddressViewModel>>()), Times.Once);
-		    navigationServiceMoq.Verify(x => x.NavigateToSearchView(It.IsAny<Action<SearchWorkAddressViewModel>>()), Times.Once);
+		    navigationServiceMoq.Verify(x => x.NavigateToSearchView(It.IsAny<Action<HomeLocationEditorViewModel>>()), Times.Once);
+		    navigationServiceMoq.Verify(x => x.NavigateToSearchView(It.IsAny<Action<WorkLocationEditorViewModel>>()), Times.Once);
 	    }
 	}
 }

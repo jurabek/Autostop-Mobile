@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Common.Shared.Models;
 
-namespace Autostop.Client.Core.ViewModels.Passenger
+namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 {
     public abstract class ChooseOnMapViewModelBase : BaseViewModel, ISearchableViewModel, IMapViewModel
     {
