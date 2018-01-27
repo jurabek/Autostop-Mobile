@@ -54,7 +54,7 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 				workResultModel
 			};
 
-			GetMock<IChooseOnMapViewModelFactory>().Setup(x => x.GetChooseDestinationOnMapViewModel(It.IsAny<ITripLocationViewModel>()))
+			GetMock<IChooseOnMapViewModelFactory>().Setup(x => x.GetChooseDestinationOnMapViewModel())
 				.Returns(choseDetinationViewModel);
 
 			// Act

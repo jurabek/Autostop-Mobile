@@ -19,7 +19,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		    this.BindCommand(DoneButton, ViewModel.Done);
 
-		    var pickupLocation = ViewModel.TripLocationViewModel.PickupAddress.Location;
+		    var pickupLocation = ViewModel.CameraTarget;
             var unused = new Marker
 		    {
 		        Position = new CLLocationCoordinate2D(pickupLocation.Latitude, pickupLocation.Longitude),

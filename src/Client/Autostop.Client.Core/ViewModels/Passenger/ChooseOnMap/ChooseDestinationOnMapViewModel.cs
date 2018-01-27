@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 
@@ -12,39 +11,34 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 {
 	public sealed class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
 	{
-		public ITripLocationViewModel TripLocationViewModel { get; }
-
+		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
 		private readonly INavigationService _navigationService;
 		private readonly IGeocodingProvider _geocodingProvider;
 		private Address _currentAddress;
 
+		public override IObservable<Address> SelectedAddress => _selectedAddress;
+
 		public ChooseDestinationOnMapViewModel(
-			ITripLocationViewModel tripLocationViewModel,
 			INavigationService navigationService,
 			IGeocodingProvider geocodingProvider)
 		{
-			TripLocationViewModel = tripLocationViewModel;
 			_navigationService = navigationService;
 			_geocodingProvider = geocodingProvider;
 		}
 
 		private ICommand _done;
 		public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
-				{
-					TripLocationViewModel.DestinationAddress.SetAddress(_currentAddress);
-					_navigationService.NavigaeToRoot();
-				}));
+			                                 {
+				                                 _selectedAddress.OnNext(_currentAddress);
+				                                 _navigationService.NavigaeToRoot();
+											 }));
 
 		private ICommand _goBack;
-		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(
-			() => _navigationService.GoBack()));
+		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
 
 		public override Task Load()
 		{
-			CameraTarget = TripLocationViewModel.PickupAddress.Location;
-			CameraStartMoving
-				.Do(_ => IsSearching = true)
-				.Subscribe();
+			CameraStartMoving.Subscribe(_ => IsSearching = true);
 
 			CameraPositionObservable
 				.Subscribe(async location =>

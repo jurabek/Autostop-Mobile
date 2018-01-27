@@ -14,21 +14,18 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
     public sealed class DestinationLocationEditorViewModel : BaseLocationEditorViewModel
 	{
-		private readonly ITripLocationViewModel _tripLocationViewModel;
 	    private readonly INavigationService _navigationService;
 	    private readonly IChooseOnMapViewModelFactory _chooseOnMapViewModelFactory;
 	    private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
         public DestinationLocationEditorViewModel(
 			ISchedulerProvider schedulerProvider,
-            ITripLocationViewModel tripLocationViewModel,
             INavigationService navigationService,
             IPlacesProvider placesProvider,
             IGeocodingProvider geocodingProvider,
             IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
             IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
         {
-	        _tripLocationViewModel = tripLocationViewModel;
 	        _navigationService = navigationService;
 	        _chooseOnMapViewModelFactory = chooseOnMapViewModelFactory;
 	        _autocompleteResultProvider = autocompleteResultProvider;
@@ -44,11 +41,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 
 	    private void NavigateToChooseDestinationOnMapViewModel(IAutoCompleteResultModel autoCompleteResultModel)
 	    {
-		    var chooseDestinationOnMapViewModel = _chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel(_tripLocationViewModel);
-		    _navigationService.NavigateTo(chooseDestinationOnMapViewModel as ChooseDestinationOnMapViewModel);
-		}
+		    if (_chooseOnMapViewModelFactory.GetChooseDestinationOnMapViewModel() is ChooseDestinationOnMapViewModel chooseDestinationOnMapViewModel)
+		    {
+			    _navigationService.NavigateTo(chooseDestinationOnMapViewModel);
+			    SelectedAddress = chooseDestinationOnMapViewModel.SelectedAddress;
+			}
+	    }
 
-	    private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
+		private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
 	    {
 		    switch (selectedResult)
 		    {

@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseSearchPlaceViewModel
+	public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseLocationEditorViewModel
 	{
 		private readonly INavigationService _navigationService;
 		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
@@ -29,8 +29,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			IGeocodingProvider geocodingProvider,
 			INavigationService navigationService)
         {
+	        schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
             placesProvider.Requires(nameof(placesProvider)).IsNotNull();
-            navigationService.Requires(nameof(navigationService)).IsNotNull();
+	        geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
+			navigationService.Requires(nameof(navigationService)).IsNotNull();
 
             _navigationService = navigationService;
 
@@ -60,8 +62,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                 .Select(x => Observable.FromAsync(() => geocodingProvider.ReverseGeocodingFromPlaceId(x.PlaceId)))
                 .Concat()
                 .Merge(selectedEmptyAddress);
-
-            GoBack = new RelayCommand(GoBackAction);
         }
 
         protected IObservable<IAutoCompleteResultModel> SelectedAutoCompleteResultModelObservable()
@@ -75,11 +75,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			return this.Changed(() => SelectedSearchResult)
 				.Where(r => r is EmptyAutocompleteResultModel)
 				.Cast<EmptyAutocompleteResultModel>();
-		}
-
-		private void GoBackAction()
-		{
-			_navigationService.GoBack();
 		}
 
 		public bool IsSearching
@@ -106,12 +101,12 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			set => RaiseAndSetIfChanged(ref _selectedSearchResult, value);
 		}
 
-		public IObservable<Address> SelectedAddress { get; }
+		public IObservable<Address> SelectedAddress { get; protected set; }
 		
 		[UsedImplicitly]
 		public virtual string PlaceholderText { get; }
-
-		public virtual ICommand GoBack { get; }
+		
+		public virtual ICommand GoBack => new RelayCommand(() => _navigationService.GoBack());
 
 		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
 	}

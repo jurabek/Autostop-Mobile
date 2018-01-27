@@ -4,7 +4,7 @@ namespace Autostop.Client.Abstraction.Factories
 {
     public interface ISearchPlaceViewModelFactory
     {
-        IBaseSearchPlaceViewModel DestinationSearchPlaceViewModel(ITripLocationViewModel tripLocationViewModel);
-        IBaseSearchPlaceViewModel GetPickupSearchPlaceViewModel();
+        IBaseLocationEditorViewModel GetDestinationLocationEditorViewModel(ITripLocationViewModel tripLocationViewModel);
+        IBaseLocationEditorViewModel GetPickupLocationEditorViewModel();
     }
 }

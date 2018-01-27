@@ -44,5 +44,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 	    public IObservable<Location> CameraPositionObservable { get; set; }
 
 	    public IObservable<bool> CameraStartMoving { get; set; }
+
+	    public virtual IObservable<Address> SelectedAddress { get; }
 	}
 }

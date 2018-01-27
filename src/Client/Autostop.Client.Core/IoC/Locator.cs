@@ -32,8 +32,8 @@ namespace Autostop.Client.Core.IoC
 
 	        builder.RegisterType<TripLocationViewModel>().As<ITripLocationViewModel>();
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<PickupLocationEditorViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.PickupSearch);
-            builder.RegisterType<DestinationLocationEditorViewModel>().Named<IBaseSearchPlaceViewModel>(ViewModelKeys.DestinationSearch);
+            builder.RegisterType<PickupLocationEditorViewModel>().Named<IBaseLocationEditorViewModel>(ViewModelKeys.PickupSearch);
+            builder.RegisterType<DestinationLocationEditorViewModel>().Named<IBaseLocationEditorViewModel>(ViewModelKeys.DestinationSearch);
             builder.RegisterType<ChooseDestinationOnMapViewModel>().Named<ISearchableViewModel>(ViewModelKeys.ChooseDestinationOnMap);
 
             builder.RegisterType<HomeLocationEditorViewModel>().AsSelf();

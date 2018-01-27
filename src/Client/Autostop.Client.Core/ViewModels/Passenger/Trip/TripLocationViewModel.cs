@@ -15,8 +15,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 {
 	public class TripLocationViewModel : BaseViewModel, ITripLocationViewModel
 	{
-		private readonly IBaseSearchPlaceViewModel _pickupSearchPlaceViewModel;
-		private readonly IBaseSearchPlaceViewModel _destinationSearchPlaceViewModel;
+		private readonly IBaseLocationEditorViewModel _pickupLocationEditorViewModel;
+		private readonly IBaseLocationEditorViewModel _destinationLocationEditorViewModel;
 		private readonly INavigationService _navigationService;
 
 		public TripLocationViewModel(
@@ -29,11 +29,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 			searchPlaceViewModelFactory.Requires(nameof(searchPlaceViewModelFactory)).IsNotNull();
 
 
-			_pickupSearchPlaceViewModel = searchPlaceViewModelFactory.GetPickupSearchPlaceViewModel();
-			_destinationSearchPlaceViewModel = searchPlaceViewModelFactory.DestinationSearchPlaceViewModel(this);
+			_pickupLocationEditorViewModel = searchPlaceViewModelFactory.GetPickupLocationEditorViewModel();
+			_destinationLocationEditorViewModel = searchPlaceViewModelFactory.GetDestinationLocationEditorViewModel(this);
 			_navigationService = navigationService;
 			
-			_pickupSearchPlaceViewModel.SelectedAddress
+			_pickupLocationEditorViewModel.SelectedAddress
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(address =>
 				{
@@ -41,7 +41,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 					_navigationService.GoBack();
 				});
 
-			_destinationSearchPlaceViewModel.SelectedAddress
+			_destinationLocationEditorViewModel.SelectedAddress
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(address =>
 				{
@@ -57,15 +57,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 		public ICommand NavigateToPickupSearch => new RelayCommand(
 			() =>
 			{
-				_navigationService.NavigateToSearchView(_pickupSearchPlaceViewModel as PickupLocationEditorViewModel);
-				_pickupSearchPlaceViewModel.SearchText = PickupAddress.FormattedAddress;
+				_navigationService.NavigateToSearchView(_pickupLocationEditorViewModel as PickupLocationEditorViewModel);
+				_pickupLocationEditorViewModel.SearchText = PickupAddress.FormattedAddress;
 			});
 
 		public ICommand NavigateToWhereTo => new RelayCommand(
 			() =>
 			{
-				_navigationService.NavigateToSearchView(_destinationSearchPlaceViewModel as DestinationLocationEditorViewModel);
-				_destinationSearchPlaceViewModel.SearchText = string.Empty;
+				_navigationService.NavigateToSearchView(_destinationLocationEditorViewModel as DestinationLocationEditorViewModel);
+				_destinationLocationEditorViewModel.SearchText = string.Empty;
 			});
 	}
 }

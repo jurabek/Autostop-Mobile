@@ -5,7 +5,7 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Abstraction.ViewModels
 {
-	public interface IBaseSearchPlaceViewModel : ISearchableViewModel
+	public interface IBaseLocationEditorViewModel : ISearchableViewModel
 	{	
 		ObservableCollection<IAutoCompleteResultModel> SearchResults { get; set; }
 

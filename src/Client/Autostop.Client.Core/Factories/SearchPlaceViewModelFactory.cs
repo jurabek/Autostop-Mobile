@@ -8,14 +8,14 @@ namespace Autostop.Client.Core.Factories
 {
     public class SearchPlaceViewModelFactory : ISearchPlaceViewModelFactory
     {
-        public IBaseSearchPlaceViewModel GetPickupSearchPlaceViewModel()
+        public IBaseLocationEditorViewModel GetPickupLocationEditorViewModel()
         {
-            return Locator.ResolveNamed<IBaseSearchPlaceViewModel>(ViewModelKeys.PickupSearch);
+            return Locator.ResolveNamed<IBaseLocationEditorViewModel>(ViewModelKeys.PickupSearch);
         }
 
-        public IBaseSearchPlaceViewModel DestinationSearchPlaceViewModel(ITripLocationViewModel tripLocationViewModel)
+        public IBaseLocationEditorViewModel GetDestinationLocationEditorViewModel(ITripLocationViewModel tripLocationViewModel)
         {
-            return Locator.ResolveNamed<IBaseSearchPlaceViewModel>(ViewModelKeys.DestinationSearch, new NamedParameter(nameof(tripLocationViewModel), tripLocationViewModel));
+            return Locator.ResolveNamed<IBaseLocationEditorViewModel>(ViewModelKeys.DestinationSearch, new NamedParameter(nameof(tripLocationViewModel), tripLocationViewModel));
         }
     }
 }

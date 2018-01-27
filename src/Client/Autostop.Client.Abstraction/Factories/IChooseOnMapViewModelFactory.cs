@@ -4,6 +4,6 @@ namespace Autostop.Client.Abstraction.Factories
 {
     public interface IChooseOnMapViewModelFactory
     {
-        ISearchableViewModel GetChooseDestinationOnMapViewModel(ITripLocationViewModel tripLocationViewModel);
+        ISearchableViewModel GetChooseDestinationOnMapViewModel();
     }
 }
