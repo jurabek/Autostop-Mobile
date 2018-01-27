@@ -3,8 +3,8 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Abstraction.Repositores
 {
-    public interface ICarsRepository
+    public interface IOnlineDriversRepository
     {
-        ObservableCollection<Location> GetOnlineDriversLocation();
+        ObservableCollection<DriverLocation> GetOnlineDriversLocation();
     }
 }

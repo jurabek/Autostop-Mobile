@@ -3285,8 +3285,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0041
 			public const int SYM = 2131427393;
 			
-			// aapt resource value: 0x7f0b00cd
-			public const int action0 = 2131427533;
+			// aapt resource value: 0x7f0b00cf
+			public const int action0 = 2131427535;
 			
 			// aapt resource value: 0x7f0b0085
 			public const int action_bar = 2131427461;
@@ -3309,17 +3309,17 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0063
 			public const int action_bar_title = 2131427427;
 			
-			// aapt resource value: 0x7f0b00ca
-			public const int action_container = 2131427530;
+			// aapt resource value: 0x7f0b00cc
+			public const int action_container = 2131427532;
 			
 			// aapt resource value: 0x7f0b0086
 			public const int action_context_bar = 2131427462;
 			
-			// aapt resource value: 0x7f0b00d1
-			public const int action_divider = 2131427537;
+			// aapt resource value: 0x7f0b00d3
+			public const int action_divider = 2131427539;
 			
-			// aapt resource value: 0x7f0b00cb
-			public const int action_image = 2131427531;
+			// aapt resource value: 0x7f0b00cd
+			public const int action_image = 2131427533;
 			
 			// aapt resource value: 0x7f0b0003
 			public const int action_menu_divider = 2131427331;
@@ -3336,11 +3336,11 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0065
 			public const int action_mode_close_button = 2131427429;
 			
-			// aapt resource value: 0x7f0b00cc
-			public const int action_text = 2131427532;
+			// aapt resource value: 0x7f0b00ce
+			public const int action_text = 2131427534;
 			
-			// aapt resource value: 0x7f0b00da
-			public const int actions = 2131427546;
+			// aapt resource value: 0x7f0b00dc
+			public const int actions = 2131427548;
 			
 			// aapt resource value: 0x7f0b0066
 			public const int activity_chooser_view_content = 2131427430;
@@ -3381,8 +3381,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b006c
 			public const int buttonPanel = 2131427436;
 			
-			// aapt resource value: 0x7f0b00ce
-			public const int cancel_action = 2131427534;
+			// aapt resource value: 0x7f0b00d0
+			public const int cancel_action = 2131427536;
 			
 			// aapt resource value: 0x7f0b004e
 			public const int center = 2131427406;
@@ -3402,8 +3402,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b007c
 			public const int checkbox = 2131427452;
 			
-			// aapt resource value: 0x7f0b00d6
-			public const int chronometer = 2131427542;
+			// aapt resource value: 0x7f0b00d8
+			public const int chronometer = 2131427544;
 			
 			// aapt resource value: 0x7f0b0057
 			public const int clip_horizontal = 2131427415;
@@ -3465,8 +3465,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b003a
 			public const int end = 2131427386;
 			
-			// aapt resource value: 0x7f0b00dc
-			public const int end_padder = 2131427548;
+			// aapt resource value: 0x7f0b00de
+			public const int end_padder = 2131427550;
 			
 			// aapt resource value: 0x7f0b0049
 			public const int enterAlways = 2131427401;
@@ -3516,8 +3516,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b006b
 			public const int icon = 2131427435;
 			
-			// aapt resource value: 0x7f0b00db
-			public const int icon_group = 2131427547;
+			// aapt resource value: 0x7f0b00dd
+			public const int icon_group = 2131427549;
 			
 			// aapt resource value: 0x7f0b0023
 			public const int icon_only = 2131427363;
@@ -3528,8 +3528,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0068
 			public const int image = 2131427432;
 			
-			// aapt resource value: 0x7f0b00d7
-			public const int info = 2131427543;
+			// aapt resource value: 0x7f0b00d9
+			public const int info = 2131427545;
 			
 			// aapt resource value: 0x7f0b0062
 			public const int italic = 2131427426;
@@ -3564,14 +3564,14 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b00a8
 			public const int mapView = 2131427496;
 			
+			// aapt resource value: 0x7f0b00e1
+			public const int masked = 2131427553;
+			
+			// aapt resource value: 0x7f0b00d2
+			public const int media_actions = 2131427538;
+			
 			// aapt resource value: 0x7f0b00df
-			public const int masked = 2131427551;
-			
-			// aapt resource value: 0x7f0b00d0
-			public const int media_actions = 2131427536;
-			
-			// aapt resource value: 0x7f0b00dd
-			public const int message = 2131427549;
+			public const int message = 2131427551;
 			
 			// aapt resource value: 0x7f0b003b
 			public const int middle = 2131427387;
@@ -3579,80 +3579,80 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b005c
 			public const int mini = 2131427420;
 			
-			// aapt resource value: 0x7f0b00bc
-			public const int mr_art = 2131427516;
-			
-			// aapt resource value: 0x7f0b00b1
-			public const int mr_chooser_list = 2131427505;
-			
-			// aapt resource value: 0x7f0b00b4
-			public const int mr_chooser_route_desc = 2131427508;
-			
-			// aapt resource value: 0x7f0b00b2
-			public const int mr_chooser_route_icon = 2131427506;
+			// aapt resource value: 0x7f0b00be
+			public const int mr_art = 2131427518;
 			
 			// aapt resource value: 0x7f0b00b3
-			public const int mr_chooser_route_name = 2131427507;
-			
-			// aapt resource value: 0x7f0b00b0
-			public const int mr_chooser_title = 2131427504;
-			
-			// aapt resource value: 0x7f0b00b9
-			public const int mr_close = 2131427513;
-			
-			// aapt resource value: 0x7f0b00bf
-			public const int mr_control_divider = 2131427519;
-			
-			// aapt resource value: 0x7f0b00c5
-			public const int mr_control_playback_ctrl = 2131427525;
-			
-			// aapt resource value: 0x7f0b00c8
-			public const int mr_control_subtitle = 2131427528;
-			
-			// aapt resource value: 0x7f0b00c7
-			public const int mr_control_title = 2131427527;
-			
-			// aapt resource value: 0x7f0b00c6
-			public const int mr_control_title_container = 2131427526;
-			
-			// aapt resource value: 0x7f0b00ba
-			public const int mr_custom_control = 2131427514;
-			
-			// aapt resource value: 0x7f0b00bb
-			public const int mr_default_control = 2131427515;
+			public const int mr_chooser_list = 2131427507;
 			
 			// aapt resource value: 0x7f0b00b6
-			public const int mr_dialog_area = 2131427510;
+			public const int mr_chooser_route_desc = 2131427510;
+			
+			// aapt resource value: 0x7f0b00b4
+			public const int mr_chooser_route_icon = 2131427508;
 			
 			// aapt resource value: 0x7f0b00b5
-			public const int mr_expandable_area = 2131427509;
+			public const int mr_chooser_route_name = 2131427509;
 			
-			// aapt resource value: 0x7f0b00c9
-			public const int mr_group_expand_collapse = 2131427529;
+			// aapt resource value: 0x7f0b00b2
+			public const int mr_chooser_title = 2131427506;
 			
-			// aapt resource value: 0x7f0b00bd
-			public const int mr_media_main_control = 2131427517;
-			
-			// aapt resource value: 0x7f0b00b8
-			public const int mr_name = 2131427512;
-			
-			// aapt resource value: 0x7f0b00be
-			public const int mr_playback_control = 2131427518;
-			
-			// aapt resource value: 0x7f0b00b7
-			public const int mr_title_bar = 2131427511;
-			
-			// aapt resource value: 0x7f0b00c0
-			public const int mr_volume_control = 2131427520;
+			// aapt resource value: 0x7f0b00bb
+			public const int mr_close = 2131427515;
 			
 			// aapt resource value: 0x7f0b00c1
-			public const int mr_volume_group_list = 2131427521;
+			public const int mr_control_divider = 2131427521;
+			
+			// aapt resource value: 0x7f0b00c7
+			public const int mr_control_playback_ctrl = 2131427527;
+			
+			// aapt resource value: 0x7f0b00ca
+			public const int mr_control_subtitle = 2131427530;
+			
+			// aapt resource value: 0x7f0b00c9
+			public const int mr_control_title = 2131427529;
+			
+			// aapt resource value: 0x7f0b00c8
+			public const int mr_control_title_container = 2131427528;
+			
+			// aapt resource value: 0x7f0b00bc
+			public const int mr_custom_control = 2131427516;
+			
+			// aapt resource value: 0x7f0b00bd
+			public const int mr_default_control = 2131427517;
+			
+			// aapt resource value: 0x7f0b00b8
+			public const int mr_dialog_area = 2131427512;
+			
+			// aapt resource value: 0x7f0b00b7
+			public const int mr_expandable_area = 2131427511;
+			
+			// aapt resource value: 0x7f0b00cb
+			public const int mr_group_expand_collapse = 2131427531;
+			
+			// aapt resource value: 0x7f0b00bf
+			public const int mr_media_main_control = 2131427519;
+			
+			// aapt resource value: 0x7f0b00ba
+			public const int mr_name = 2131427514;
+			
+			// aapt resource value: 0x7f0b00c0
+			public const int mr_playback_control = 2131427520;
+			
+			// aapt resource value: 0x7f0b00b9
+			public const int mr_title_bar = 2131427513;
+			
+			// aapt resource value: 0x7f0b00c2
+			public const int mr_volume_control = 2131427522;
 			
 			// aapt resource value: 0x7f0b00c3
-			public const int mr_volume_item_icon = 2131427523;
+			public const int mr_volume_group_list = 2131427523;
 			
-			// aapt resource value: 0x7f0b00c4
-			public const int mr_volume_slider = 2131427524;
+			// aapt resource value: 0x7f0b00c5
+			public const int mr_volume_item_icon = 2131427525;
+			
+			// aapt resource value: 0x7f0b00c6
+			public const int mr_volume_slider = 2131427526;
 			
 			// aapt resource value: 0x7f0b0031
 			public const int multiply = 2131427377;
@@ -3672,14 +3672,14 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b001e
 			public const int normal = 2131427358;
 			
-			// aapt resource value: 0x7f0b00d9
-			public const int notification_background = 2131427545;
+			// aapt resource value: 0x7f0b00db
+			public const int notification_background = 2131427547;
 			
-			// aapt resource value: 0x7f0b00d3
-			public const int notification_main_column = 2131427539;
+			// aapt resource value: 0x7f0b00d5
+			public const int notification_main_column = 2131427541;
 			
-			// aapt resource value: 0x7f0b00d2
-			public const int notification_main_column_container = 2131427538;
+			// aapt resource value: 0x7f0b00d4
+			public const int notification_main_column_container = 2131427540;
 			
 			// aapt resource value: 0x7f0b0055
 			public const int parallax = 2131427413;
@@ -3714,11 +3714,11 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0053
 			public const int right = 2131427411;
 			
-			// aapt resource value: 0x7f0b00d8
-			public const int right_icon = 2131427544;
+			// aapt resource value: 0x7f0b00da
+			public const int right_icon = 2131427546;
 			
-			// aapt resource value: 0x7f0b00d4
-			public const int right_side = 2131427540;
+			// aapt resource value: 0x7f0b00d6
+			public const int right_side = 2131427542;
 			
 			// aapt resource value: 0x7f0b001f
 			public const int satellite = 2131427359;
@@ -3783,6 +3783,12 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0093
 			public const int select_dialog_listview = 2131427475;
 			
+			// aapt resource value: 0x7f0b00b1
+			public const int selectedDestinationLocation = 2131427505;
+			
+			// aapt resource value: 0x7f0b00b0
+			public const int selectedPickupLocation = 2131427504;
+			
 			// aapt resource value: 0x7f0b007d
 			public const int shortcut = 2131427453;
 			
@@ -3828,8 +3834,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0054
 			public const int start = 2131427412;
 			
-			// aapt resource value: 0x7f0b00cf
-			public const int status_bar_latest_event_content = 2131427535;
+			// aapt resource value: 0x7f0b00d1
+			public const int status_bar_latest_event_content = 2131427537;
 			
 			// aapt resource value: 0x7f0b007f
 			public const int submenuarrow = 2131427455;
@@ -3864,8 +3870,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0015
 			public const int textinput_error = 2131427349;
 			
-			// aapt resource value: 0x7f0b00d5
-			public const int time = 2131427541;
+			// aapt resource value: 0x7f0b00d7
+			public const int time = 2131427543;
 			
 			// aapt resource value: 0x7f0b001b
 			public const int title = 2131427355;
@@ -3921,11 +3927,11 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0016
 			public const int view_offset_helper = 2131427350;
 			
-			// aapt resource value: 0x7f0b00de
-			public const int visible = 2131427550;
+			// aapt resource value: 0x7f0b00e0
+			public const int visible = 2131427552;
 			
-			// aapt resource value: 0x7f0b00c2
-			public const int volume_item_container = 2131427522;
+			// aapt resource value: 0x7f0b00c4
+			public const int volume_item_container = 2131427524;
 			
 			// aapt resource value: 0x7f0b00ae
 			public const int whereToGoButton = 2131427502;
@@ -4108,130 +4114,133 @@ namespace Autostop.Client.Android
 			public const int abc_select_dialog_material = 2130903066;
 			
 			// aapt resource value: 0x7f03001b
-			public const int design_bottom_navigation_item = 2130903067;
+			public const int choose_on_map_fragment = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int design_bottom_sheet_dialog = 2130903068;
+			public const int design_bottom_navigation_item = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
-			public const int design_layout_snackbar = 2130903069;
+			public const int design_bottom_sheet_dialog = 2130903069;
 			
 			// aapt resource value: 0x7f03001e
-			public const int design_layout_snackbar_include = 2130903070;
+			public const int design_layout_snackbar = 2130903070;
 			
 			// aapt resource value: 0x7f03001f
-			public const int design_layout_tab_icon = 2130903071;
+			public const int design_layout_snackbar_include = 2130903071;
 			
 			// aapt resource value: 0x7f030020
-			public const int design_layout_tab_text = 2130903072;
+			public const int design_layout_tab_icon = 2130903072;
 			
 			// aapt resource value: 0x7f030021
-			public const int design_menu_item_action_area = 2130903073;
+			public const int design_layout_tab_text = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int design_navigation_item = 2130903074;
+			public const int design_menu_item_action_area = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int design_navigation_item_header = 2130903075;
+			public const int design_navigation_item = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int design_navigation_item_separator = 2130903076;
+			public const int design_navigation_item_header = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int design_navigation_item_subheader = 2130903077;
+			public const int design_navigation_item_separator = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int design_navigation_menu = 2130903078;
+			public const int design_navigation_item_subheader = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int design_navigation_menu_item = 2130903079;
+			public const int design_navigation_menu = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int design_text_input_password_icon = 2130903080;
+			public const int design_navigation_menu_item = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int main = 2130903081;
+			public const int design_text_input_password_icon = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int main_fragment = 2130903082;
+			public const int main = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int mr_chooser_dialog = 2130903083;
+			public const int main_fragment = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int mr_chooser_list_item = 2130903084;
+			public const int mr_chooser_dialog = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int mr_controller_material_dialog_b = 2130903085;
+			public const int mr_chooser_list_item = 2130903085;
 			
 			// aapt resource value: 0x7f03002e
-			public const int mr_controller_volume_item = 2130903086;
+			public const int mr_controller_material_dialog_b = 2130903086;
 			
 			// aapt resource value: 0x7f03002f
-			public const int mr_playback_control = 2130903087;
+			public const int mr_controller_volume_item = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int mr_volume_control = 2130903088;
+			public const int mr_playback_control = 2130903088;
 			
 			// aapt resource value: 0x7f030031
-			public const int notification_action = 2130903089;
+			public const int mr_volume_control = 2130903089;
 			
 			// aapt resource value: 0x7f030032
-			public const int notification_action_tombstone = 2130903090;
+			public const int notification_action = 2130903090;
 			
 			// aapt resource value: 0x7f030033
-			public const int notification_media_action = 2130903091;
+			public const int notification_action_tombstone = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int notification_media_cancel_action = 2130903092;
+			public const int notification_media_action = 2130903092;
 			
 			// aapt resource value: 0x7f030035
-			public const int notification_template_big_media = 2130903093;
+			public const int notification_media_cancel_action = 2130903093;
 			
 			// aapt resource value: 0x7f030036
-			public const int notification_template_big_media_custom = 2130903094;
+			public const int notification_template_big_media = 2130903094;
 			
 			// aapt resource value: 0x7f030037
-			public const int notification_template_big_media_narrow = 2130903095;
+			public const int notification_template_big_media_custom = 2130903095;
 			
 			// aapt resource value: 0x7f030038
-			public const int notification_template_big_media_narrow_custom = 2130903096;
+			public const int notification_template_big_media_narrow = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int notification_template_custom_big = 2130903097;
+			public const int notification_template_big_media_narrow_custom = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int notification_template_icon_group = 2130903098;
+			public const int notification_template_custom_big = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int notification_template_lines_media = 2130903099;
+			public const int notification_template_icon_group = 2130903099;
 			
 			// aapt resource value: 0x7f03003c
-			public const int notification_template_media = 2130903100;
+			public const int notification_template_lines_media = 2130903100;
 			
 			// aapt resource value: 0x7f03003d
-			public const int notification_template_media_custom = 2130903101;
+			public const int notification_template_media = 2130903101;
 			
 			// aapt resource value: 0x7f03003e
-			public const int notification_template_part_chronometer = 2130903102;
+			public const int notification_template_media_custom = 2130903102;
 			
 			// aapt resource value: 0x7f03003f
-			public const int notification_template_part_time = 2130903103;
+			public const int notification_template_part_chronometer = 2130903103;
 			
 			// aapt resource value: 0x7f030040
-			public const int select_dialog_item_material = 2130903104;
+			public const int notification_template_part_time = 2130903104;
 			
 			// aapt resource value: 0x7f030041
-			public const int select_dialog_multichoice_material = 2130903105;
+			public const int select_dialog_item_material = 2130903105;
 			
 			// aapt resource value: 0x7f030042
-			public const int select_dialog_singlechoice_material = 2130903106;
+			public const int select_dialog_multichoice_material = 2130903106;
 			
 			// aapt resource value: 0x7f030043
-			public const int support_simple_spinner_dropdown_item = 2130903107;
+			public const int select_dialog_singlechoice_material = 2130903107;
 			
 			// aapt resource value: 0x7f030044
-			public const int tooltip = 2130903108;
+			public const int support_simple_spinner_dropdown_item = 2130903108;
+			
+			// aapt resource value: 0x7f030045
+			public const int tooltip = 2130903109;
 			
 			static Layout()
 			{

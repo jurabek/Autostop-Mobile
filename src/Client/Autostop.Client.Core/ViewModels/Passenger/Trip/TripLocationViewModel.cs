@@ -47,6 +47,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 				{
 					DestinationAddress.SetAddress(address);
 					_navigationService.GoBack();
+					CanRequest = true;
 				});
 		}
 
@@ -65,7 +66,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 			() =>
 			{
 				_navigationService.NavigateToSearchView(_destinationLocationEditorViewModel as DestinationLocationEditorViewModel);
-				_destinationLocationEditorViewModel.SearchText = string.Empty;
 			});
+
+		private bool _canRequest;
+
+		public bool CanRequest
+		{
+			get => _canRequest;
+			set => RaiseAndSetIfChanged(ref _canRequest, value);
+		}
 	}
 }

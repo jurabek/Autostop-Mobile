@@ -9,5 +9,6 @@ namespace Autostop.Client.Abstraction.ViewModels
 		IAddressModel DestinationAddress { get; }
 		ICommand NavigateToPickupSearch { get; }
 		ICommand NavigateToWhereTo { get; }
+		bool CanRequest { get; set; }
 	}
 }

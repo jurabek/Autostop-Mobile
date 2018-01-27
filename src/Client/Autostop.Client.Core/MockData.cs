@@ -3,7 +3,7 @@ using Autostop.Common.Shared.Models;
 
 namespace Autostop.Client.Core
 {
-	public class MockData
+	public static class MockData
 	{
 		public static List<DriverLocation> AvailableDrivers = new List<DriverLocation>()
 		{

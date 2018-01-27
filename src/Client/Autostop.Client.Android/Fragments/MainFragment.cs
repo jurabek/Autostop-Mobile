@@ -166,22 +166,22 @@ namespace Autostop.Client.Android.Fragments
 					}
 				});
 
-			//this.SetBinding(() => ViewModel.TripLocationViewModel.HasDestinationAddress)
-			//	.WhenSourceChanges(() =>
-			//	{
-			//		if (ViewModel.TripLocationViewModel.HasDestinationAddress)
-			//		{
-			//			slideUp(_requestView);
-			//			_whereToGoButton.Visibility = ViewStates.Gone;
-			//		}
-			//		else
-			//		{
-			//			slideDown(_requestView);
-			//			_whereToGoButton.Visibility = ViewStates.Visible;
-			//		}
-			//	});
+			this.SetBinding(() => ViewModel.TripLocationViewModel.CanRequest)
+				.WhenSourceChanges(() =>
+				{
+					if (ViewModel.TripLocationViewModel.CanRequest)
+					{
+						slideUp(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Gone;
+					}
+					else
+					{
+						slideDown(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Visible;
+					}
+				});
 
-			this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
+					this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
 				.WhenSourceChanges(() =>
 				{
 					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);

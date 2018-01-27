@@ -11,6 +11,7 @@ using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Android.Activities;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.IoC;
+using Conditions;
 using JetBrains.Annotations;
 using Plugin.CurrentActivity;
 using QueryTextChangeEventArgs = Android.Support.V7.Widget.SearchView.QueryTextChangeEventArgs;
@@ -83,6 +84,7 @@ namespace Autostop.Client.Android.Services
 		public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel
 		{
 			var viewModel = Locator.Resolve<TViewModel>();
+			ShowSearchView(viewModel);
 			var fragment = GetFragment(viewModel);
 			callBack(viewModel);
 			ReplaceContent(fragment);
@@ -112,6 +114,8 @@ namespace Autostop.Client.Android.Services
 						e => searchView.QueryTextChange += e,
 						e => searchView.QueryTextChange -= e)
 				.Subscribe(ep => searchableViewModel.SearchText = ep.EventArgs.NewText);
+
+			searchableViewModel.SearchText = string.Empty;
 
 			searchView.RequestFocus();
 			InputMethodManager imm = (InputMethodManager)mainActivity.GetSystemService(Context.InputMethodService);
@@ -152,6 +156,8 @@ namespace Autostop.Client.Android.Services
 
 		private int ReplaceContent(Fragment fragment, bool root = false)
 		{
+			fragment.Requires(nameof(fragment)).IsNotNull();
+
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
 
 			var transaction = fragmentManager.BeginTransaction();
