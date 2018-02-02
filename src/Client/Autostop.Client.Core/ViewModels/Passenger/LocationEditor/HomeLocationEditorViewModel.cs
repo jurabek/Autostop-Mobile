@@ -29,7 +29,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                 {
                     var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
                     settingsProvider.HomeAddress = address;
-                    GoBackCallback?.Invoke();
+                    navigationService.GoBack();
                 });
 
             this.Changed(() => SelectedSearchResult)
@@ -39,9 +39,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                     navigationService.NavigateTo<ChooseHomeAddressOnMapViewModel>();
                 });
         }
-
-        public Action GoBackCallback { get; set; }
-
+        
         protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
         {
             return new ObservableCollection<IAutoCompleteResultModel>

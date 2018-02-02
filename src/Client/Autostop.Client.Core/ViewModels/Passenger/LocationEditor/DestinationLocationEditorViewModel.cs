@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
+using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 
@@ -34,10 +36,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(NavigateToChooseDestinationOnMapViewModel);
 
-			SelectedEmptyAutocompleteResultModelObservable()
-				.Where(r => r.Address == null)
-				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
-				.Subscribe(SelectedEmptyAutocompleteResultModel);
+			
 		}
 
 		private void NavigateToChooseDestinationOnMapViewModel(IAutoCompleteResultModel autoCompleteResultModel)
@@ -47,25 +46,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				_navigationService.NavigateTo(chooseDestinationOnMapViewModel);
 				SelectedAddress = chooseDestinationOnMapViewModel.SelectedAddress;
 			}
-		}
-
-		private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
-		{
-			switch (selectedResult)
-			{
-				case HomeResultModel _:
-					_navigationService.NavigateToSearchView<HomeLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-					break;
-				case WorkResultModel _:
-					_navigationService.NavigateToSearchView<WorkLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-					break;
-			}
-		}
-
-		private void GoBackCallback()
-		{
-			_navigationService.GoBack();
-			SearchResults = GetEmptyAutocompleteResult();
 		}
 
 		protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
@@ -79,5 +59,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		}
 
 		public override string PlaceholderText => "Set destination location";
-	}
+
+	    public override Task Load()
+	    {
+	        SearchResults = GetEmptyAutocompleteResult();
+            return base.Load();
+        }
+    }
 }

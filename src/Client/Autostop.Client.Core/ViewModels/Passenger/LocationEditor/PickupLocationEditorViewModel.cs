@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Core.Models;
 using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
@@ -12,7 +10,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 	[UsedImplicitly]
 	public sealed class PickupLocationEditorViewModel : BaseLocationEditorViewModel
 	{
-		private readonly INavigationService _navigationService;
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
 		public PickupLocationEditorViewModel(
@@ -22,35 +19,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			IGeocodingProvider geocodingProvider,
 			IEmptyAutocompleteResultProvider autocompleteResultProvider) : base(schedulerProviderer, placesProvider, geocodingProvider, navigationService)
 		{
-			_navigationService = navigationService;
 			_autocompleteResultProvider = autocompleteResultProvider;
-
-			SelectedEmptyAutocompleteResultModelObservable()
-				.Where(r => r.Address == null)
-				.Subscribe(SelectedEmptyAutocompleteResultModel);
-		}
-		
-
-		private void SelectedEmptyAutocompleteResultModel(IAutoCompleteResultModel selectedResult)
-		{
-			switch (selectedResult)
-			{
-				case HomeResultModel _:
-					_navigationService.NavigateToSearchView<HomeLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-					break;
-				case WorkResultModel _:
-					_navigationService.NavigateToSearchView<WorkLocationEditorViewModel>(vm => vm.GoBackCallback = GoBackCallback);
-					break;
-			}
 		}
 
-		private void GoBackCallback()
-		{
-			_navigationService.GoBack();
-			SearchResults = GetEmptyAutocompleteResult();
-		}
-
-		protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
+        protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
 		{
 			return new ObservableCollection<IAutoCompleteResultModel>
 			{	
@@ -60,5 +32,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		}
 
 	    public override string PlaceholderText => "Set pickup location";
-	}
+
+	    public override Task Load()
+	    {
+	        SearchResults = GetEmptyAutocompleteResult();
+	        return base.Load();
+	    }
+    }
 }

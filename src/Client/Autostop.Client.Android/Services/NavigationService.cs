@@ -86,7 +86,7 @@ namespace Autostop.Client.Android.Services
 			var viewModel = Locator.Resolve<TViewModel>();
 			ShowSearchView(viewModel);
 			var fragment = GetFragment(viewModel);
-			callBack(viewModel);
+			callBack?.Invoke(viewModel);
 			ReplaceContent(fragment);
 		}
 

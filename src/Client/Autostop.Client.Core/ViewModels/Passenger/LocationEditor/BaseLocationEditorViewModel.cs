@@ -7,6 +7,7 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Extensions;
+using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
 using Conditions;
@@ -53,8 +54,26 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                     }
                 });
 
+           var selectedEmptyAutocompleteResultModelObservable = this.Changed(() => SelectedSearchResult)
+                   .Where(r => r is EmptyAutocompleteResultModel)
+                   .Cast<EmptyAutocompleteResultModel>();
 
-            var selectedEmptyAddress = SelectedEmptyAutocompleteResultModelObservable()
+            selectedEmptyAutocompleteResultModelObservable.Where(r => r.Address == null)
+                .ObserveOn(schedulerProvider.SynchronizationContextScheduler)
+                .Subscribe(selectedResult =>
+                {
+                    switch (selectedResult)
+                    {
+                        case HomeResultModel _:
+                            _navigationService.NavigateToSearchView(Locator.Resolve<HomeLocationEditorViewModel>());
+                            break;
+                        case WorkResultModel _:
+                            _navigationService.NavigateToSearchView(Locator.Resolve<WorkLocationEditorViewModel>());
+                            break;
+                    }
+                });
+
+            var selectedEmptyAddress = selectedEmptyAutocompleteResultModelObservable
                 .Where(r => r.Address != null)
                 .Select(r => r.Address);
 
@@ -69,14 +88,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
             return this.Changed(() => SelectedSearchResult)
                             .Where(r => r is AutoCompleteResultModel);
         }
-
-        protected IObservable<EmptyAutocompleteResultModel> SelectedEmptyAutocompleteResultModelObservable()
-		{
-			return this.Changed(() => SelectedSearchResult)
-				.Where(r => r is EmptyAutocompleteResultModel)
-				.Cast<EmptyAutocompleteResultModel>();
-		}
-
+        
 		public bool IsSearching
 		{
 			get => _isLoading;
@@ -109,5 +121,5 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		public virtual ICommand GoBack => new RelayCommand(() => _navigationService.GoBack());
 
 		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
-	}
+    }
 }

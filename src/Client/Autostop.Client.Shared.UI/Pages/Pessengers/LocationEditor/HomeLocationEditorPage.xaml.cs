@@ -3,7 +3,7 @@ using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Autostop.Client.Shared.UI.Pages.Pessengers
+namespace Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HomeLocationEditorPage : ContentPage, IScreenFor<HomeLocationEditorViewModel>
