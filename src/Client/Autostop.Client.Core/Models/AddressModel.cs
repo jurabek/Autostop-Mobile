@@ -25,7 +25,7 @@ namespace Autostop.Client.Core.Models
 	    public bool Loading
 	    {
 		    get => _loading;
-		    set => this.RaiseAndSetIfChanged(ref _loading, value);
+		    set => RaiseAndSetIfChanged(ref _loading, value);
 	    }
 
 	    public void SetAddress(Address address)
@@ -33,7 +33,5 @@ namespace Autostop.Client.Core.Models
 		    FormattedAddress = address.FormattedAddress;
 		    Location = address.Location;
 		}
-
-
     }
 }

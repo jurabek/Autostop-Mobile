@@ -17,8 +17,6 @@ namespace Autostop.Client.Core.Providers
         public GeocodingProvider(
             IGeocodingService geocodingService)
         {
-            geocodingService.Requires(nameof(geocodingService));
-
             _geocodingService = geocodingService;
         }
 

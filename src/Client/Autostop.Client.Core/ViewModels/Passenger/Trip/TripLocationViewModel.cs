@@ -8,7 +8,6 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
-using Conditions;
 using GalaSoft.MvvmLight.Command;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Trip
@@ -18,17 +17,13 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 		private readonly IBaseLocationEditorViewModel _pickupLocationEditorViewModel;
 		private readonly IBaseLocationEditorViewModel _destinationLocationEditorViewModel;
 		private readonly INavigationService _navigationService;
+		public event EventHandler<EventArgs> PickupLocationChanged;
 
 		public TripLocationViewModel(
 			ISchedulerProvider schedulerProvider,
 			INavigationService navigationService,
 			ISearchPlaceViewModelFactory searchPlaceViewModelFactory)
 		{
-			schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
-			navigationService.Requires(nameof(navigationService)).IsNotNull();
-			searchPlaceViewModelFactory.Requires(nameof(searchPlaceViewModelFactory)).IsNotNull();
-
-
 			_pickupLocationEditorViewModel = searchPlaceViewModelFactory.GetPickupLocationEditorViewModel();
 			_destinationLocationEditorViewModel = searchPlaceViewModelFactory.GetDestinationLocationEditorViewModel(this);
 			_navigationService = navigationService;
@@ -38,6 +33,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 				.Subscribe(address =>
 				{
 					PickupAddress.SetAddress(address);
+					PickupLocationChanged?.Invoke(this, EventArgs.Empty);
 					_navigationService.GoBack();
 				});
 
@@ -46,8 +42,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 				.Subscribe(address =>
 				{
 					DestinationAddress.SetAddress(address);
-					_navigationService.GoBack();
 					CanRequest = true;
+					_navigationService.GoBack();
 				});
 		}
 

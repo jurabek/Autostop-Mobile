@@ -6,13 +6,10 @@ using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
 using Autostop.Client.Core.ViewModels.Passenger.Welcome;
 using Autostop.Client.Shared.UI.Pages;
 using Autostop.Client.Shared.UI.Pages.Pessengers;
+using Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor;
 using Autostop.Client.Shared.UI.Providers;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
-using DestinationLocationEditorPage = Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor.DestinationLocationEditorPage;
-using HomeLocationEditorPage = Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor.HomeLocationEditorPage;
-using PickupLocationEditorPage = Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor.PickupLocationEditorPage;
-using WorkLocationEditorPage = Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor.WorkLocationEditorPage;
 
 namespace Autostop.Client.Shared.UI.IoC
 {

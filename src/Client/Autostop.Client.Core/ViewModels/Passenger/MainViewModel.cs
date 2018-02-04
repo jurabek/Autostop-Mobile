@@ -9,7 +9,6 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
 using Autostop.Common.Shared.Models;
-using Conditions;
 using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
@@ -31,19 +30,18 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			ILocationManager locationManager,
 			ITripLocationViewModel tripLocationViewModel)
 		{
-			schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
-			geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
-			locationManager.Requires(nameof(locationManager)).IsNotNull();
-			tripLocationViewModel.Requires(nameof(tripLocationViewModel)).IsNotNull();
-
 			_schedulerProvider = schedulerProvider;
 			_geocodingProvider = geocodingProvider;
 			_locationManager = locationManager;
 
 			TripLocationViewModel = tripLocationViewModel;
 			MyLocationObservable = locationManager.LocationChanged;
+			TripLocationViewModel.PickupLocationChanged += (sender, args) =>
+				{
+					CameraTarget = TripLocationViewModel.PickupAddress.Location;
+				};
 		}
-
+		
 		public IObservable<Location> MyLocationObservable { get; }
 
 		public IObservable<Location> CameraPositionObservable { get; set; }
@@ -83,21 +81,19 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			_subscribers = new List<IDisposable>
 			{
 				CameraStartMoving
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(moving =>
 					{
+						TripLocationViewModel.PickupAddress.FormattedAddress = "Searching...";
 						TripLocationViewModel.PickupAddress.Loading = true;
 					}),
 
 				VisibleRegionChanged
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(r =>
 					{
 						OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
 					}),
 
 				CameraPositionObservable
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(async location =>
 					{
 						await CameraLocationChanged(location);
@@ -114,11 +110,22 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		private async Task CameraLocationChanged(Location location)
 		{
-			var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-			if (address != null)
+			try
 			{
-				TripLocationViewModel.PickupAddress.SetAddress(address);
+				var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
+				if (address != null)
+				{
+					TripLocationViewModel.PickupAddress.SetAddress(address);
+				}
+				else
+				{
+					TripLocationViewModel.PickupAddress.FormattedAddress = "Not found!";
+				}
 				TripLocationViewModel.PickupAddress.Loading = false;
+			}
+			catch (Exception e)
+			{
+				throw;
 			}
 		}
 

@@ -3708,8 +3708,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b007e
 			public const int radio = 2131427454;
 			
-			// aapt resource value: 0x7f0b00af
-			public const int requestView = 2131427503;
+			// aapt resource value: 0x7f0b00ae
+			public const int requestView = 2131427502;
 			
 			// aapt resource value: 0x7f0b0053
 			public const int right = 2131427411;
@@ -3783,11 +3783,11 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b0093
 			public const int select_dialog_listview = 2131427475;
 			
-			// aapt resource value: 0x7f0b00b1
-			public const int selectedDestinationLocation = 2131427505;
-			
 			// aapt resource value: 0x7f0b00b0
-			public const int selectedPickupLocation = 2131427504;
+			public const int selectedDestinationLocation = 2131427504;
+			
+			// aapt resource value: 0x7f0b00af
+			public const int selectedPickupLocation = 2131427503;
 			
 			// aapt resource value: 0x7f0b007d
 			public const int shortcut = 2131427453;
@@ -3933,8 +3933,8 @@ namespace Autostop.Client.Android
 			// aapt resource value: 0x7f0b00c4
 			public const int volume_item_container = 2131427524;
 			
-			// aapt resource value: 0x7f0b00ae
-			public const int whereToGoButton = 2131427502;
+			// aapt resource value: 0x7f0b00b1
+			public const int whereToGoButton = 2131427505;
 			
 			// aapt resource value: 0x7f0b0025
 			public const int wide = 2131427365;

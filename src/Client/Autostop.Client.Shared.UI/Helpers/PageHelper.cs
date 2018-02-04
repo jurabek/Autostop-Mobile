@@ -1,10 +1,11 @@
-﻿using Xamarin.Forms;
+﻿using JetBrains.Annotations;
+using Xamarin.Forms;
 
 namespace Autostop.Client.Shared.UI.Helpers
 {
     public static class PageHelper
     {
-		public static readonly BindableProperty BarTintColorProperty = 
+		[UsedImplicitly] public static readonly BindableProperty BarTintColorProperty = 
 			BindableProperty.CreateAttached("BarTintColor", typeof(Color), typeof(Page), Color.Transparent);
 
 	    public static Color GetBarTintColor(BindableObject page)

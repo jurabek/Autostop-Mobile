@@ -12,9 +12,7 @@ namespace Autostop.Client.Shared.UI.Providers
 
         public SettingsProvider(ISettings settings)
         {
-            settings.Requires(nameof(settings)).IsNotNull();
-
-            _settings = settings;
+	        _settings = settings;
         }
 
         public Address HomeAddress
