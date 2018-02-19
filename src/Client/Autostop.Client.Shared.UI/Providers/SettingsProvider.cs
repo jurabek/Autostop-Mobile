@@ -1,7 +1,6 @@
 ﻿using Autostop.Client.Abstraction.Providers;
 using Autostop.Common.Shared.Constants;
 using Autostop.Common.Shared.Models;
-using Conditions;
 using Plugin.Settings.Abstractions;
 
 namespace Autostop.Client.Shared.UI.Providers
@@ -15,32 +14,28 @@ namespace Autostop.Client.Shared.UI.Providers
 	        _settings = settings;
         }
 
-        public Address HomeAddress
+        public Address GetHomeAddress()
         {
-            get
-            {
-                var address = _settings.GetValueOrDefault(Settings.HomeAddress, string.Empty);
-                return Deserialize(address);
-            }
-            set
-            {
-                var formattedAddress = Serialize(value);
-                _settings.AddOrUpdateValue(Settings.HomeAddress, formattedAddress);
-            }
+            var address = _settings.GetValueOrDefault(Settings.HomeAddress, string.Empty);
+            return Deserialize(address);
         }
 
-        public Address WorkAddress
+        public void SetHomeAddress(Address value)
         {
-            get
-            {
-                var address = _settings.GetValueOrDefault(Settings.WorkAddress, string.Empty);
-                return Deserialize(address);
-            }
-            set
-            {
-                var formattedAddress = Serialize(value);
-                _settings.AddOrUpdateValue(Settings.WorkAddress, formattedAddress);
-            }
+            var formattedAddress = Serialize(value);
+            _settings.AddOrUpdateValue(Settings.HomeAddress, formattedAddress);
+        }
+
+        public Address GetWorkAddress()
+        {
+            var address = _settings.GetValueOrDefault(Settings.WorkAddress, string.Empty);
+            return Deserialize(address);
+        }
+
+        public void SetWorkAddress(Address value)
+        {
+            var formattedAddress = Serialize(value);
+            _settings.AddOrUpdateValue(Settings.WorkAddress, formattedAddress);
         }
 
         private string Serialize(Address value)

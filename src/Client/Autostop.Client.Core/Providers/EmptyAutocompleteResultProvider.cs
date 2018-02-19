@@ -17,12 +17,12 @@ namespace Autostop.Client.Core.Providers
 
 	    public IAutoCompleteResultModel GetHomeResultModel()
 	    {   
-		    return new HomeResultModel(_settingsProvider.HomeAddress);
+		    return new HomeResultModel(_settingsProvider.GetHomeAddress());
 	    }
 
 	    public IAutoCompleteResultModel GetWorkResultModel()
 	    {
-		    return new WorkResultModel(_settingsProvider.WorkAddress);
+		    return new WorkResultModel(_settingsProvider.GetWorkAddress());
 	    }
 
 	    public IAutoCompleteResultModel GetSetLocationOnMapResultModel()

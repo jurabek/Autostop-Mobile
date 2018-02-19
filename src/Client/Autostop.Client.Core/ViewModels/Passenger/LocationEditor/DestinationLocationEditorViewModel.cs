@@ -7,7 +7,6 @@ using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
-using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 
@@ -35,7 +34,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				.Where(r => r is SetLocationOnMapResultModel)
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(NavigateToChooseDestinationOnMapViewModel);
-
 			
 		}
 

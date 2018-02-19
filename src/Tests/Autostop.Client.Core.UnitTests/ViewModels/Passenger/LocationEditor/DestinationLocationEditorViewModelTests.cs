@@ -6,7 +6,6 @@ using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
-using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
@@ -78,22 +77,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 			    workResultModel
 		    };
 		    var navigationServiceMoq = GetMock<INavigationService>();
-
-		    var searchHomeViewModel = Mocker.Create<HomeLocationEditorViewModel>();
-		    var searchWorkViewModel = Mocker.Create<WorkLocationEditorViewModel>();
-
-		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<HomeLocationEditorViewModel>>()))
-			    .Callback<Action<HomeLocationEditorViewModel>>(model =>
-			    {
-				    model(searchHomeViewModel);
-			    });
-
-		    navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<WorkLocationEditorViewModel>>()))
-			    .Callback<Action<WorkLocationEditorViewModel>>(model =>
-			    {
-				    model(searchWorkViewModel);
-			    });
-
 		    // Arrange
 		    Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[0]);
 		    Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[1]);

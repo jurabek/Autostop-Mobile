@@ -27,6 +27,7 @@ namespace Autostop.Client.Android.UITests
 		}
 
 		[Test]
+        [Ignore("Not ready yet")]
 		public void AppLaunches()
 		{
 			app.Screenshot("First screen.");

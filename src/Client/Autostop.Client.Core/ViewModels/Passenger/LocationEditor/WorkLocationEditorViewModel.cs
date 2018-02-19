@@ -28,7 +28,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				.Subscribe(async result =>
 				{
 					var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
-					settingsProvider.WorkAddress = address;
+					settingsProvider.SetWorkAddress(address);
 					navigationService.GoBack();
 				});
 

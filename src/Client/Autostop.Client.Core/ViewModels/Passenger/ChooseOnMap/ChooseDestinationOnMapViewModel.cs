@@ -15,8 +15,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 		private readonly INavigationService _navigationService;
 		private readonly IGeocodingProvider _geocodingProvider;
 		private Address _currentAddress;
+	    private ICommand _goBack;
 
-		public override IObservable<Address> SelectedAddress => _selectedAddress;
+        public override IObservable<Address> SelectedAddress => _selectedAddress;
 
 		public ChooseDestinationOnMapViewModel(
 			INavigationService navigationService,
@@ -33,7 +34,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 				                                 _navigationService.NavigaeToRoot();
 											 }));
 
-		private ICommand _goBack;
 		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
 
 		public override Task Load()

@@ -78,7 +78,7 @@ namespace Autostop.Client.iOS.Services
 			var viewModel = Locator.Resolve<TViewModel>();
 			var view = _viewFactory.CreateView(viewModel);
 			var viewController = _viewAdapter.GetSearchView(view);
-			callBack(viewModel);
+			callBack?.Invoke(viewModel);
 			_navigationController.PushViewController(viewController, false);
 		}
 

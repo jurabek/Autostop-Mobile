@@ -10,25 +10,24 @@ using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
-using Conditions;
 using GalaSoft.MvvmLight.Command;
-using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseLocationEditorViewModel
-	{
-		private readonly INavigationService _navigationService;
-		private ObservableCollection<IAutoCompleteResultModel> _searchResults;
-		private IAutoCompleteResultModel _selectedSearchResult;
-		private bool _isLoading;
-		private string _searchText;
+    public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseLocationEditorViewModel
+    {
+        private readonly INavigationService _navigationService;
+        private ObservableCollection<IAutoCompleteResultModel> _searchResults;
+        private IAutoCompleteResultModel _selectedSearchResult;
+        private bool _isLoading;
+        private string _searchText;
+        private ICommand _goBack;
 
-		protected BaseLocationEditorViewModel(
-			ISchedulerProvider schedulerProvider,
-			IPlacesProvider placesProvider,
-			IGeocodingProvider geocodingProvider,
-			INavigationService navigationService)
+        protected BaseLocationEditorViewModel(
+            ISchedulerProvider schedulerProvider,
+            IPlacesProvider placesProvider,
+            IGeocodingProvider geocodingProvider,
+            INavigationService navigationService)
         {
             _navigationService = navigationService;
 
@@ -37,21 +36,16 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                 .ObserveOn(schedulerProvider.SynchronizationContextScheduler)
                 .Subscribe(async searchText =>
                 {
-                    if (string.IsNullOrEmpty(searchText))
-                    {
-                        SearchResults = GetEmptyAutocompleteResult();
-                    }
-                    else
-                    {
-                        IsSearching = true;
-                        SearchResults = await placesProvider.GetAutoCompleteResponse(searchText);
-                        IsSearching = false;
-                    }
+                    IsSearching = true;
+                    SearchResults = string.IsNullOrEmpty(searchText)
+                            ? GetEmptyAutocompleteResult()
+                            : await placesProvider.GetAutoCompleteResponse(searchText);
+                    IsSearching = false;
                 });
 
-           var selectedEmptyAutocompleteResultModelObservable = this.Changed(() => SelectedSearchResult)
-                   .Where(r => r is EmptyAutocompleteResultModel)
-                   .Cast<EmptyAutocompleteResultModel>();
+            var selectedEmptyAutocompleteResultModelObservable = this.Changed(() => SelectedSearchResult)
+                    .Where(result => result is EmptyAutocompleteResultModel)
+                    .Cast<EmptyAutocompleteResultModel>();
 
             selectedEmptyAutocompleteResultModelObservable.Where(r => r.Address == null)
                 .ObserveOn(schedulerProvider.SynchronizationContextScheduler)
@@ -60,10 +54,10 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                     switch (selectedResult)
                     {
                         case HomeResultModel _:
-                            _navigationService.NavigateToSearchView(Locator.Resolve<HomeLocationEditorViewModel>());
+                            _navigationService.NavigateToSearchView<HomeLocationEditorViewModel>(callBack: null);
                             break;
                         case WorkResultModel _:
-                            _navigationService.NavigateToSearchView(Locator.Resolve<WorkLocationEditorViewModel>());
+                            _navigationService.NavigateToSearchView<WorkLocationEditorViewModel>(callBack: null);
                             break;
                     }
                 });
@@ -83,38 +77,37 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
             return this.Changed(() => SelectedSearchResult)
                             .Where(r => r is AutoCompleteResultModel);
         }
-        
-		public bool IsSearching
-		{
-			get => _isLoading;
-			set => RaiseAndSetIfChanged(ref _isLoading, value);
-		}
 
-		public virtual string SearchText
-		{
-			get => _searchText;
-			set => RaiseAndSetIfChanged(ref _searchText, value);
-		}
+        public bool IsSearching
+        {
+            get => _isLoading;
+            set => RaiseAndSetIfChanged(ref _isLoading, value);
+        }
 
-		public ObservableCollection<IAutoCompleteResultModel> SearchResults
-		{
-			get => _searchResults;
-			set => RaiseAndSetIfChanged(ref _searchResults, value);
-		}
+        public virtual string SearchText
+        {
+            get => _searchText;
+            set => RaiseAndSetIfChanged(ref _searchText, value);
+        }
 
-		public IAutoCompleteResultModel SelectedSearchResult
-		{
-			get => _selectedSearchResult;
-			set => RaiseAndSetIfChanged(ref _selectedSearchResult, value);
-		}
+        public ObservableCollection<IAutoCompleteResultModel> SearchResults
+        {
+            get => _searchResults;
+            set => RaiseAndSetIfChanged(ref _searchResults, value);
+        }
 
-		public IObservable<Address> SelectedAddress { get; protected set; }
-		
-		[UsedImplicitly]
-		public virtual string PlaceholderText { get; }
-		
-		public virtual ICommand GoBack => new RelayCommand(() => _navigationService.GoBack());
+        public IAutoCompleteResultModel SelectedSearchResult
+        {
+            get => _selectedSearchResult;
+            set => RaiseAndSetIfChanged(ref _selectedSearchResult, value);
+        }
 
-		protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
+        public IObservable<Address> SelectedAddress { get; protected set; }
+
+        public virtual string PlaceholderText => "Search";
+
+        public virtual ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
+
+        protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
     }
 }

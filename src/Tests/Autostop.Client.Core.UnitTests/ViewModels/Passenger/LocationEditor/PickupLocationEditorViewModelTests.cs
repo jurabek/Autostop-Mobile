@@ -69,21 +69,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 			};
 			var navigationServiceMoq = GetMock<INavigationService>();
 
-			var searchHomeViewModel = Mocker.Create<HomeLocationEditorViewModel>();
-			var searchWorkViewModel = Mocker.Create<WorkLocationEditorViewModel>();
-
-			navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<HomeLocationEditorViewModel>>()))
-				.Callback<Action<HomeLocationEditorViewModel>>(model =>
-				{
-					model(searchHomeViewModel);
-				});
-
-			navigationServiceMoq.Setup(x => x.NavigateToSearchView(It.IsAny<Action<WorkLocationEditorViewModel>>()))
-				.Callback<Action<WorkLocationEditorViewModel>>(model =>
-				{
-					model(searchWorkViewModel);
-				});
-
 			// Arrange
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[0]);
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[1]);
