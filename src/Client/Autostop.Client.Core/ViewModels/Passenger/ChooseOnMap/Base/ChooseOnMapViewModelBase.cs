@@ -42,9 +42,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
         [UsedImplicitly]
         public virtual ICommand Done { get; }
 
-	    public IObservable<Location> MyLocationObservable { get; protected set; }
+	    public IObservable<Location> MyLocationChanged { get; protected set; }
 
-	    public IObservable<Location> CameraPositionObservable { get; set; }
+	    public IObservable<Location> CameraPositionChanged { get; set; }
 
 	    public IObservable<bool> CameraStartMoving { get; set; }
 

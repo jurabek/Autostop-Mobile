@@ -35,13 +35,13 @@ namespace Autostop.Client.Core.ViewModels.Passenger
             _locationManager = locationManager;
 
             TripLocationViewModel = tripLocationViewModel;
-            MyLocationObservable = locationManager.LocationChanged;
+            MyLocationChanged = locationManager.LocationChanged;
             
         }
 
-        public IObservable<Location> MyLocationObservable { get; }
+        public IObservable<Location> MyLocationChanged { get; }
 
-        public IObservable<Location> CameraPositionObservable { get; set; }
+        public IObservable<Location> CameraPositionChanged { get; set; }
 
         public IObservable<bool> CameraStartMoving { get; set; }
 
@@ -94,7 +94,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
                         OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
                     }),
 
-                CameraPositionObservable
+                CameraPositionChanged
                     .Subscribe(async location =>
                     {
                         await CameraLocationChanged(location);

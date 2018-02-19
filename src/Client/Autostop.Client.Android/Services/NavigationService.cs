@@ -129,7 +129,7 @@ namespace Autostop.Client.Android.Services
 			var _ = _currentActivity.Activity.FragmentManager.PopBackStackImmediate();
 		}
 
-		public void NavigaeToRoot()
+		public void NavigateToRoot()
 		{
 		}
 

@@ -94,7 +94,7 @@ namespace Autostop.Client.iOS.Services
 			_navigationController.PopViewController(false);
 		}
 
-		public void NavigaeToRoot() => _navigationController.PopToRootViewController(false);
+		public void NavigateToRoot() => _navigationController.PopToRootViewController(false);
 
 		private UIViewController GetViewController<TViewModel>(TViewModel viewModel)
 		{

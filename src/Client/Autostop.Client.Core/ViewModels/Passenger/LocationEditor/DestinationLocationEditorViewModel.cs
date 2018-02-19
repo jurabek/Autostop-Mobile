@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -59,7 +59,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 
 		public override string PlaceholderText => "Set destination location";
 
-	    public override Task Load()
+	    /// <summary>
+	    /// We should call load always when view model appears, because search result should be updated after setting home or work address 
+	    /// </summary>
+	    /// <returns></returns>
+        public override Task Load()
 	    {
 	        SearchResults = GetEmptyAutocompleteResult();
             return base.Load();

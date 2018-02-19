@@ -129,7 +129,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 					e => _mapView.CameraPositionIdle += e,
 					e => _mapView.CameraPositionIdle -= e);
 
-			ViewModel.CameraPositionObservable = cameraPositionIdle
+			ViewModel.CameraPositionChanged = cameraPositionIdle
 				.Select(e => e.EventArgs.Position.Target.ToLocation());
 
 			ViewModel.VisibleRegionChanged = cameraPositionIdle
@@ -145,7 +145,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 			ViewModel.CameraStartMoving
 				.Subscribe(CameraWillMove);
 
-			ViewModel.CameraPositionObservable
+			ViewModel.CameraPositionChanged
 				.Subscribe(CamerPostionIdle);
 		}
 

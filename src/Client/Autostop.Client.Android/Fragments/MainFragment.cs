@@ -124,7 +124,7 @@ namespace Autostop.Client.Android.Fragments
 								e => _googleMap.CameraIdle += e,
 								e => _googleMap.CameraIdle -= e);
 
-			ViewModel.CameraPositionObservable = cameraPositionIdle
+			ViewModel.CameraPositionChanged = cameraPositionIdle
 				.Do(CamerPositionIdle)
 				.Select(_ => _googleMap.CameraPosition.Target)
 				.Select(target => new Location(target.Latitude, target.Longitude));

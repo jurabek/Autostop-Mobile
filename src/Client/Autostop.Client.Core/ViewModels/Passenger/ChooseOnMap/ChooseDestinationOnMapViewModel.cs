@@ -14,7 +14,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 	public class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
 	{
 		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
-		private readonly INavigationService _navigationService;
+	    private readonly ISchedulerProvider _schedulerProvider;
+	    private readonly INavigationService _navigationService;
 		private readonly IGeocodingProvider _geocodingProvider;
 		private Address _currentAddress;
 	    private ICommand _goBack;
@@ -23,17 +24,19 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
         public override IObservable<Address> SelectedAddress => _selectedAddress;
 
 		public ChooseDestinationOnMapViewModel(
+            ISchedulerProvider schedulerProvider,
 			INavigationService navigationService,
 			IGeocodingProvider geocodingProvider)
 		{
-			_navigationService = navigationService;
+		    _schedulerProvider = schedulerProvider;
+		    _navigationService = navigationService;
 			_geocodingProvider = geocodingProvider;
 		}
 
 		public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
 		    {
 			    _selectedAddress.OnNext(_currentAddress);
-			    _navigationService.NavigaeToRoot();
+			    _navigationService.NavigateToRoot();
 		    }));
 
 		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() =>
@@ -47,12 +50,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
                 .Do(_ => IsSearching = true)
                 .Subscribe();
 
-            CameraPositionObservable
+            CameraPositionChanged
+                .ObserveOn(_schedulerProvider.DefaultScheduler)
                 .Do(async location =>
 			    {
 			        var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
 			        SearchText = address.FormattedAddress;
 			        _currentAddress = address;
+
 			        IsSearching = false;
 			    }).Subscribe();
 

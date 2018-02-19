@@ -5,9 +5,9 @@ namespace Autostop.Client.Abstraction.ViewModels
 {
     public interface IMapViewModel
     {
-        IObservable<Location> MyLocationObservable { get; }
+        IObservable<Location> MyLocationChanged { get; }
 
-        IObservable<Location> CameraPositionObservable { get; set; }
+        IObservable<Location> CameraPositionChanged { get; set; }
 
         IObservable<bool> CameraStartMoving { get; set; }
 

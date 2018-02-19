@@ -48,7 +48,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 		        .ConvertTargetToSource(location =>
 		            CameraPosition.FromCamera(location.Latitude, location.Longitude, 16));
 
-		    ViewModel.CameraPositionObservable = Observable
+		    ViewModel.CameraPositionChanged = Observable
 		        .FromEventPattern<EventHandler<GMSCameraEventArgs>, GMSCameraEventArgs>(
 		            e => MapView.CameraPositionIdle += e,
 		            e => MapView.CameraPositionIdle -= e)

@@ -27,7 +27,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
             _navigationService = navigationService;
             _locationManager = locationManager;
             _geocodingProvider = geocodingProvider;
-            MyLocationObservable = locationManager.LocationChanged;
+            MyLocationChanged = locationManager.LocationChanged;
         }
 
         public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
@@ -50,7 +50,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
                 .Do(moving => IsSearching = moving)
                 .Subscribe();
 
-            CameraPositionObservable
+            CameraPositionChanged
                 .Do(async location => await CameraLocationChanged(location))
                 .Subscribe();
         }
