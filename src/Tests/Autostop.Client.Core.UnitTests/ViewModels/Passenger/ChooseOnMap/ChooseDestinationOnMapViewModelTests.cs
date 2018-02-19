@@ -54,5 +54,17 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.ChooseOnMap
             Assert.That(selectedAddress, Is.EqualTo(address));
             GetMock<INavigationService>().Verify(x => x.NavigateToRoot(), Times.Once);
         }
+
+		[Test]
+	    public void GoBack_ShouldNavigateBack_WhenCommandExecutes()
+	    {
+			// Act
+
+			// Arrange
+			ClassUnderTest.GoBack.Execute(null);
+
+			// Assert
+			GetMock<INavigationService>().Verify(x => x.GoBack(), Times.Once);
+	    }
     }
 }

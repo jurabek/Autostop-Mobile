@@ -57,7 +57,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 				.Returns(choseDetinationViewModel);
 
 			// Act
-		    viewModel.Load();
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[0]);
 			Scheduler.Start();
 

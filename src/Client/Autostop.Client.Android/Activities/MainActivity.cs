@@ -153,19 +153,20 @@ namespace Autostop.Client.Android.Activities
 				{
 					if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Plugin.Permissions.Abstractions.Permission.Location))
 					{
-						Log.Debug("", "Need location", "Need that location", "OK");
+						Log.Debug("Permission status", "Need location", "Need that location", "OK");
 					}
 
 					var results = await CrossPermissions.Current.RequestPermissionsAsync(Plugin.Permissions.Abstractions.Permission.Location);
-					//Best practice to always check that the key exists
+
 					if (results.ContainsKey(Plugin.Permissions.Abstractions.Permission.Location))
 						status = results[Plugin.Permissions.Abstractions.Permission.Location];
+
+					Log.Debug("Permission status", status.ToString());
 				}
-				
 			}
 			catch (Exception ex)
 			{
-				throw;
+				System.Diagnostics.Debug.Write(ex);
 			}
 		}
 	}
