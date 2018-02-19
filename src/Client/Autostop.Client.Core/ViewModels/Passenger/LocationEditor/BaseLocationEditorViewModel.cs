@@ -30,11 +30,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			IGeocodingProvider geocodingProvider,
 			INavigationService navigationService)
         {
-	        schedulerProvider.Requires(nameof(schedulerProvider)).IsNotNull();
-            placesProvider.Requires(nameof(placesProvider)).IsNotNull();
-	        geocodingProvider.Requires(nameof(geocodingProvider)).IsNotNull();
-			navigationService.Requires(nameof(navigationService)).IsNotNull();
-
             _navigationService = navigationService;
 
             this.Changed(() => SearchText)

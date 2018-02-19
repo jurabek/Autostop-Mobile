@@ -24,7 +24,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 
-			this.SelectedAutoCompleteResultModelObservable()
+			SelectedAutoCompleteResultModelObservable()
 				.Subscribe(async result =>
 				{
 					var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);

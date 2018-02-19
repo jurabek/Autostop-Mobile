@@ -23,9 +23,6 @@ namespace Autostop.Client.Core.Providers
             ILocationManager locationManager,
             IPlacesService placesService)
         {
-            locationManager.Requires(nameof(locationManager));
-            placesService.Requires(nameof(placesService));
-
             _locationManager = locationManager;
             _placesService = placesService;
         }

@@ -58,7 +58,7 @@ namespace Autostop.Client.Android.Fragments
 			await ViewModel.GetMyLocation();
 		}
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) => 
+		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) =>
 			inflater.Inflate(Resource.Layout.main_fragment, container, false);
 
 		public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -82,7 +82,7 @@ namespace Autostop.Client.Android.Fragments
 
 		public MainViewModel ViewModel { get; set; }
 
-		public void slideUp(View view)
+		private void SlideUp(View view)
 		{
 			view.Visibility = ViewStates.Visible;
 
@@ -97,7 +97,7 @@ namespace Autostop.Client.Android.Fragments
 			view.Parent.RequestLayout();
 		}
 
-		public void slideDown(View view)
+		private void SlideDown(View view)
 		{
 			TranslateAnimation animate = new TranslateAnimation(0, 0, 0, view.Height)
 			{
@@ -114,11 +114,15 @@ namespace Autostop.Client.Android.Fragments
 			_googleMap.UiSettings.CompassEnabled = true;
 			_googleMap.UiSettings.MyLocationButtonEnabled = true;
 			MoveMyLocationButtonIntoBottom();
+			await SetupBindings();
+		}
 
+		private async System.Threading.Tasks.Task SetupBindings()
+		{
 			var cameraPositionIdle = Observable
-				.FromEventPattern<EventHandler, EventArgs>(
-					e => _googleMap.CameraIdle += e,
-					e => _googleMap.CameraIdle -= e);
+							.FromEventPattern<EventHandler, EventArgs>(
+								e => _googleMap.CameraIdle += e,
+								e => _googleMap.CameraIdle -= e);
 
 			ViewModel.CameraPositionObservable = cameraPositionIdle
 				.Do(CamerPositionIdle)
@@ -135,17 +139,6 @@ namespace Autostop.Client.Android.Fragments
 					e => _googleMap.CameraMoveStarted -= e)
 				.Do(CameraStarted)
 				.Select(e => true);
-
-			this.SetBinding(() => ViewModel.TripLocationViewModel.PickupAddress.Loading)
-				.WhenSourceChanges(() =>
-				{
-					_pickupAddressLoading.Visibility =
-						ViewModel.TripLocationViewModel.PickupAddress.Loading ? ViewStates.Visible : ViewStates.Gone;
-				});
-
-			this.SetBinding(
-				() => _pickupAddressEditText.Text,
-				() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay);
 
 			ViewModel.Changed(() => ViewModel.OnlineDrivers)
 				.Where(od => _googleMap != null && od.Any())
@@ -166,27 +159,39 @@ namespace Autostop.Client.Android.Fragments
 					}
 				});
 
-			this.SetBinding(() => ViewModel.TripLocationViewModel.CanRequest)
-				.WhenSourceChanges(() =>
-				{
-					if (ViewModel.TripLocationViewModel.CanRequest)
-					{
-						slideUp(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Gone;
-					}
-					else
-					{
-						slideDown(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Visible;
-					}
-				});
-
-					this.SetBinding(() => ViewModel.CameraTarget, BindingMode.TwoWay)
+			this.SetBinding(() => ViewModel.CameraTarget)
 				.WhenSourceChanges(() =>
 				{
 					var camera = CameraUpdateFactory.NewLatLngZoom(new LatLng(ViewModel.CameraTarget.Latitude, ViewModel.CameraTarget.Longitude), 17);
 					_googleMap?.MoveCamera(camera);
 				});
+
+			this.SetBinding(() => ViewModel.TripLocationViewModel.PickupAddress.Loading)
+				.WhenSourceChanges(() =>
+				{
+					_pickupAddressLoading.Visibility =
+						ViewModel.TripLocationViewModel.PickupAddress.Loading ? ViewStates.Visible : ViewStates.Gone;
+				});
+
+			this.SetBinding(
+				() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress,
+				() => _pickupAddressEditText.Text);
+
+			this.SetBinding(() => ViewModel.TripLocationViewModel.CanRequest)
+				.WhenSourceChanges(() =>
+				{
+					if (ViewModel.TripLocationViewModel.CanRequest)
+					{
+						SlideUp(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Gone;
+					}
+					else
+					{
+						SlideDown(_requestView);
+						_whereToGoButton.Visibility = ViewStates.Visible;
+					}
+				});
+
 
 			await ViewModel.Load();
 		}
@@ -225,7 +230,7 @@ namespace Autostop.Client.Android.Fragments
 		{
 			base.OnResume();
 			_mapView.OnResume();
-			var activity = ((MainActivity)Activity);
+			var activity = (MainActivity)Activity;
 			activity.TitleTextView.Visibility = ViewStates.Visible;
 			activity.SearchView.Visibility = ViewStates.Gone;
 		}
