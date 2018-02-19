@@ -7,10 +7,11 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	public sealed class WorkLocationEditorViewModel : BaseLocationEditorViewModel
+	public class WorkLocationEditorViewModel : BaseLocationEditorViewModel
 	{
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 
@@ -24,8 +25,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		{
 			_autocompleteResultProvider = autocompleteResultProvider;
 
-			SelectedAutoCompleteResultModelObservable()
-				.Subscribe(async result =>
+			SelectedAutoCompleteResultModelObservable				
+                .Subscribe(async result =>
 				{
 					var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
 					settingsProvider.SetWorkAddress(address);

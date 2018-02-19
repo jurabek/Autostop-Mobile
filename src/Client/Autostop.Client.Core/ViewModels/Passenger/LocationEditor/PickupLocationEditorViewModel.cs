@@ -3,12 +3,11 @@ using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
-using JetBrains.Annotations;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	[UsedImplicitly]
-	public sealed class PickupLocationEditorViewModel : BaseLocationEditorViewModel
+	public class PickupLocationEditorViewModel : BaseLocationEditorViewModel
 	{
 		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
 

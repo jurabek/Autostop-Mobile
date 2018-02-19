@@ -6,7 +6,7 @@ namespace Autostop.Client.Abstraction.ViewModels
 {
 	public interface ITripLocationViewModel : IObservableViewModel
 	{
-		event EventHandler<EventArgs> PickupLocationChanged;
+		IObservable<bool> PickupLocationChanged { get; }
 		IAddressModel PickupAddress { get; }
 		IAddressModel DestinationAddress { get; }
 		ICommand NavigateToPickupSearch { get; }

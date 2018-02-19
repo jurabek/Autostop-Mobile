@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger
+namespace Autostop.Client.Core.ViewModels.Passenger.Welcome
 {
     [UsedImplicitly]
     public class PhoneVerificationViewModel : BaseViewModel

@@ -7,9 +7,8 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
-using JetBrains.Annotations;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
+namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
 {
     public abstract class ChooseAddressOnMapViewModelBase : ChooseOnMapViewModelBase
     {
@@ -17,6 +16,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
         private readonly ILocationManager _locationManager;
         private readonly IGeocodingProvider _geocodingProvider;
         private Address _currentAddress;
+        private ICommand _goBack;
+        private ICommand _done;
 
         protected ChooseAddressOnMapViewModelBase(
             INavigationService navigationService,
@@ -29,27 +30,29 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
             MyLocationObservable = locationManager.LocationChanged;
         }
 
-        [UsedImplicitly] private ICommand _done;
-        public override ICommand Done => _done ?? new RelayCommand(
-            () =>
+        public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
+             {
+                 _navigationService.GoBack();
+                 _navigationService.GoBack();
+             }));
+
+        public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() =>
             {
                 _navigationService.GoBack();
-                _navigationService.GoBack();
-            });
-
-        [UsedImplicitly] private ICommand _goBack;
-        public override ICommand GoBack => _goBack ?? new RelayCommand(
-            () => _navigationService.GoBack());
+            }));
 
         public override async Task Load()
         {
             CameraTarget = _locationManager.LastKnownLocation;
             await CameraLocationChanged(_locationManager.LastKnownLocation);
 
-            CameraStartMoving.Do(_ => IsSearching = true)
+            CameraStartMoving
+                .Do(moving => IsSearching = moving)
                 .Subscribe();
 
-            CameraPositionObservable.Subscribe(async location => await CameraLocationChanged(location));
+            CameraPositionObservable
+                .Do(async location => await CameraLocationChanged(location))
+                .Subscribe();
         }
 
         private async Task CameraLocationChanged(Location location)

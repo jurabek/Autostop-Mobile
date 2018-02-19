@@ -1,5 +1,6 @@
 ﻿using Autostop.Client.Abstraction;
 using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger.Welcome;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

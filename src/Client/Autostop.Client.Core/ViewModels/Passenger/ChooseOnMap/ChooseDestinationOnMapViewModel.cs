@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 {
-	public sealed class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
+	public class ChooseDestinationOnMapViewModel : ChooseOnMapViewModelBase
 	{
 		private readonly Subject<Address> _selectedAddress = new Subject<Address>();
 		private readonly INavigationService _navigationService;
 		private readonly IGeocodingProvider _geocodingProvider;
 		private Address _currentAddress;
 	    private ICommand _goBack;
+	    private ICommand _done;
 
         public override IObservable<Address> SelectedAddress => _selectedAddress;
 
@@ -27,27 +30,31 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 			_geocodingProvider = geocodingProvider;
 		}
 
-		private ICommand _done;
 		public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
-			                                 {
-				                                 _selectedAddress.OnNext(_currentAddress);
-				                                 _navigationService.NavigaeToRoot();
-											 }));
+		    {
+			    _selectedAddress.OnNext(_currentAddress);
+			    _navigationService.NavigaeToRoot();
+		    }));
 
-		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
+		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() =>
+		    {
+		        _navigationService.GoBack();
+		    }));
 
 		public override Task Load()
 		{
-			CameraStartMoving.Subscribe(_ => IsSearching = true);
+			CameraStartMoving
+                .Do(_ => IsSearching = true)
+                .Subscribe();
 
-			CameraPositionObservable
-				.Subscribe(async location =>
-				{
-					var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-					SearchText = address.FormattedAddress;
-					_currentAddress = address;
-					IsSearching = false;
-				});
+            CameraPositionObservable
+                .Do(async location =>
+			    {
+			        var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
+			        SearchText = address.FormattedAddress;
+			        _currentAddress = address;
+			        IsSearching = false;
+			    }).Subscribe();
 
 			return base.Load();
 		}

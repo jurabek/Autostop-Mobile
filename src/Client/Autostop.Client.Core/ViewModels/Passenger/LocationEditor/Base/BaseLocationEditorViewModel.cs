@@ -7,12 +7,11 @@ using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Extensions;
-using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.Models;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
 
-namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
+namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base
 {
     public abstract class BaseLocationEditorViewModel : BaseViewModel, IBaseLocationEditorViewModel
     {
@@ -66,17 +65,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                 .Where(r => r.Address != null)
                 .Select(r => r.Address);
 
-            SelectedAddress = SelectedAutoCompleteResultModelObservable()
+            SelectedAddress = SelectedAutoCompleteResultModelObservable                
                 .Select(x => Observable.FromAsync(() => geocodingProvider.ReverseGeocodingFromPlaceId(x.PlaceId)))
                 .Concat()
                 .Merge(selectedEmptyAddress);
         }
 
-        protected IObservable<IAutoCompleteResultModel> SelectedAutoCompleteResultModelObservable()
-        {
-            return this.Changed(() => SelectedSearchResult)
-                            .Where(r => r is AutoCompleteResultModel);
-        }
+        protected IObservable<IAutoCompleteResultModel> SelectedAutoCompleteResultModelObservable => 
+            this.Changed(() => SelectedSearchResult)
+                .Where(r => r is AutoCompleteResultModel);
 
         public bool IsSearching
         {

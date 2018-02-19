@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Managers;
@@ -14,131 +14,131 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
-	public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
-	{
-	    private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
+    public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
+    {
+        private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
         public ITripLocationViewModel TripLocationViewModel { get; }
-		private readonly IGeocodingProvider _geocodingProvider;
-		private readonly ILocationManager _locationManager;
-		private readonly ISchedulerProvider _schedulerProvider;
-		private Location _cameraTarget;
-		private List<IDisposable> _subscribers;
+        private readonly IGeocodingProvider _geocodingProvider;
+        private readonly ILocationManager _locationManager;
+        private readonly ISchedulerProvider _schedulerProvider;
+        private Location _cameraTarget;
+        private List<IDisposable> _subscribers;
 
-		public MainViewModel(
-			ISchedulerProvider schedulerProvider,
-			IGeocodingProvider geocodingProvider,
-			ILocationManager locationManager,
-			ITripLocationViewModel tripLocationViewModel)
-		{
-			_schedulerProvider = schedulerProvider;
-			_geocodingProvider = geocodingProvider;
-			_locationManager = locationManager;
+        public MainViewModel(
+            ISchedulerProvider schedulerProvider,
+            IGeocodingProvider geocodingProvider,
+            ILocationManager locationManager,
+            ITripLocationViewModel tripLocationViewModel)
+        {
+            _schedulerProvider = schedulerProvider;
+            _geocodingProvider = geocodingProvider;
+            _locationManager = locationManager;
 
-			TripLocationViewModel = tripLocationViewModel;
-			MyLocationObservable = locationManager.LocationChanged;
-			TripLocationViewModel.PickupLocationChanged += (sender, args) =>
-				{
-					CameraTarget = TripLocationViewModel.PickupAddress.Location;
-				};
-		}
-		
-		public IObservable<Location> MyLocationObservable { get; }
+            TripLocationViewModel = tripLocationViewModel;
+            MyLocationObservable = locationManager.LocationChanged;
+            
+        }
 
-		public IObservable<Location> CameraPositionObservable { get; set; }
+        public IObservable<Location> MyLocationObservable { get; }
 
-		public IObservable<bool> CameraStartMoving { get; set; }
+        public IObservable<Location> CameraPositionObservable { get; set; }
 
-		public IObservable<VisibleRegion> VisibleRegionChanged { [UsedImplicitly] get; set; }
+        public IObservable<bool> CameraStartMoving { get; set; }
 
-		public Location CameraTarget
-		{
-			get => _cameraTarget;
-			set
-			{
-				_cameraTarget = value;
-				RaisePropertyChanged();
-			}
-		}
+        public IObservable<VisibleRegion> VisibleRegionChanged { [UsedImplicitly] get; set; }
 
-		public ObservableCollection<DriverLocation> OnlineDrivers
-		{
-			get => _onlineDrivers;
-			private set
-			{
-				_onlineDrivers = value;
-				RaisePropertyChanged();
-			}
-		}
+        public Location CameraTarget
+        {
+            get => _cameraTarget;
+            set
+            {
+                _cameraTarget = value;
+                RaisePropertyChanged();
+            }
+        }
 
-	    private ICommand _goToMyLocation;
-		public ICommand GoToMyLocation => _goToMyLocation ?? (_goToMyLocation = new RelayCommand(
-			async () => await GetMyLocation()));
+        public ObservableCollection<DriverLocation> OnlineDrivers
+        {
+            get => _onlineDrivers;
+            private set
+            {
+                _onlineDrivers = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ICommand _goToMyLocation;
+        public ICommand GoToMyLocation => _goToMyLocation ?? (_goToMyLocation = new RelayCommand(
+            async () => await GetMyLocation()));
 
 
-		public override async Task Load()
-		{
-			await base.Load();
+        public override async Task Load()
+        {
+            await base.Load();
 
-			_subscribers = new List<IDisposable>
-			{
-				CameraStartMoving
-					.Subscribe(moving =>
-					{
-						TripLocationViewModel.PickupAddress.FormattedAddress = "Searching...";
-						TripLocationViewModel.PickupAddress.Loading = true;
-					}),
+            _subscribers = new List<IDisposable>
+            {
+                TripLocationViewModel.PickupLocationChanged
+                    .Subscribe(_ => CameraTarget = TripLocationViewModel.PickupAddress.Location),
 
-				VisibleRegionChanged
-					.Subscribe(r =>
-					{
-						OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
-					}),
+                CameraStartMoving
+                    .Subscribe(moving =>
+                    {
+                        TripLocationViewModel.PickupAddress.FormattedAddress = "Searching...";
+                        TripLocationViewModel.PickupAddress.Loading = true;
+                    }),
 
-				CameraPositionObservable
-					.Subscribe(async location =>
-					{
-						await CameraLocationChanged(location);
-					})
-			};
-		}
+                VisibleRegionChanged
+                    .Subscribe(r =>
+                    {
+                        OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
+                    }),
 
-		public async Task GetMyLocation()
-		{
-			var lastLocation = await _locationManager.RequestSingleLocationUpdate();
-			CameraTarget = lastLocation;
-			await CameraLocationChanged(lastLocation);
-		}
+                CameraPositionObservable
+                    .Subscribe(async location =>
+                    {
+                        await CameraLocationChanged(location);
+                    })
+            };
+        }
 
-		private async Task CameraLocationChanged(Location location)
-		{
-			try
-			{
-				var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-				if (address != null)
-				{
-					TripLocationViewModel.PickupAddress.SetAddress(address);
-				}
-				else
-				{
-					TripLocationViewModel.PickupAddress.FormattedAddress = "Not found!";
-				}
-				TripLocationViewModel.PickupAddress.Loading = false;
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-		}
+        public async Task GetMyLocation()
+        {
+            var lastLocation = await _locationManager.RequestSingleLocationUpdate();
+            CameraTarget = lastLocation;
+            await CameraLocationChanged(lastLocation);
+        }
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
+        private async Task CameraLocationChanged(Location location)
+        {
+            try
+            {
+                var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
+                if (address != null)
+                {
+                    TripLocationViewModel.PickupAddress.SetAddress(address);
+                }
+                else
+                {
+                    TripLocationViewModel.PickupAddress.FormattedAddress = "Not found!";
+                }
+                TripLocationViewModel.PickupAddress.Loading = false;
+            }
+            catch (Exception e)
+            {
+               Debug.Write(e);
+            }
+        }
 
-			if (disposing)
-			{
-				_locationManager.StopLocationUpdates();
-				_subscribers.ForEach(d => d.Dispose());
-			}
-		}
-	}
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                _locationManager.StopLocationUpdates();
+                _subscribers.ForEach(d => d.Dispose());
+            }
+        }
+    }
 }

@@ -9,10 +9,11 @@ using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Core.Extensions;
 using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
+using Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
-	public sealed class DestinationLocationEditorViewModel : BaseLocationEditorViewModel
+	public class DestinationLocationEditorViewModel : BaseLocationEditorViewModel
 	{
 		private readonly INavigationService _navigationService;
 		private readonly IChooseOnMapViewModelFactory _chooseOnMapViewModelFactory;
