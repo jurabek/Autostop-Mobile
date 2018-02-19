@@ -17,11 +17,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 {
 	public class MainViewModel : BaseViewModel, IMainViewModel, IMapViewModel
 	{
-		public ITripLocationViewModel TripLocationViewModel { get; }
+	    private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
+        public ITripLocationViewModel TripLocationViewModel { get; }
 		private readonly IGeocodingProvider _geocodingProvider;
 		private readonly ILocationManager _locationManager;
 		private readonly ISchedulerProvider _schedulerProvider;
-		private ObservableCollection<DriverLocation> _onlineDrivers = new ObservableCollection<DriverLocation>();
 		private Location _cameraTarget;
 		private List<IDisposable> _subscribers;
 
@@ -72,8 +72,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			}
 		}
 
-		public ICommand GoToMyLocation => new RelayCommand(
-			async () => await GetMyLocation());
+	    private ICommand _goToMyLocation;
+		public ICommand GoToMyLocation => _goToMyLocation ?? (_goToMyLocation = new RelayCommand(
+			async () => await GetMyLocation()));
 
 
 		public override async Task Load()
