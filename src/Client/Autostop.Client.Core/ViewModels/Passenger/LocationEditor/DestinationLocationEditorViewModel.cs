@@ -58,15 +58,13 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 		}
 
 		public override string PlaceholderText => "Set destination location";
-
-	    /// <summary>
-	    /// We should call load always when view model appears, because search result should be updated after setting home or work address 
-	    /// </summary>
-	    /// <returns></returns>
-        public override Task Load()
-	    {
-	        SearchResults = GetEmptyAutocompleteResult();
-            return base.Load();
-        }
-    }
+		
+		/// <summary>
+		/// We should call load always when view model appears, because search result should be updated after setting home or work address 
+		/// </summary>
+		public void LoadEmptyAutocompleteResult()
+		{
+			SearchResults = GetEmptyAutocompleteResult();
+		}
+	}
 }

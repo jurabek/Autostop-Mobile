@@ -15,11 +15,11 @@ namespace Autostop.Client.Shared.UI.Pages.Pessengers.LocationEditor
 
         public PickupLocationEditorViewModel ViewModel { get; set; }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
             BindingContext = ViewModel;
-            await ViewModel.Load();
+            ViewModel.LoadEmptyAutocompleteResult();
         }
     }
 }
