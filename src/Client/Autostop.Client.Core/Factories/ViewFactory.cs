@@ -3,11 +3,9 @@ using System.Diagnostics;
 using Autostop.Client.Abstraction;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Core.IoC;
-using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.Factories
 {
-    [UsedImplicitly]
     public sealed class ViewFactory : IViewFactory
     {
         public IScreenFor<TViewModel> CreateView<TViewModel>(TViewModel vm)

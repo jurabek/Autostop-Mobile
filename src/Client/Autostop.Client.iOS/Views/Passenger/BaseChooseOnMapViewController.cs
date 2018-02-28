@@ -16,8 +16,8 @@ namespace Autostop.Client.iOS.Views.Passenger
 	public abstract class BaseChooseOnMapViewController<TViewModel> : UIViewController, IScreenFor<TViewModel>
 		where TViewModel : class, ISearchableViewModel, IMapViewModel
     {
-		[UsedImplicitly] protected MapView MapView;
-	    [UsedImplicitly] protected UIButton DoneButton;
+		protected MapView MapView;
+	    protected UIButton DoneButton;
 		[UsedImplicitly] protected UIImageView CenterPinImageView;
 
 		public override void ViewDidLoad()

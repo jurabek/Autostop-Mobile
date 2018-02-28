@@ -31,18 +31,21 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base
             _navigationService = navigationService;
 
             this.Changed(() => SearchText)
+				.Where(text => !string.IsNullOrEmpty(text))
                 .Throttle(TimeSpan.FromMilliseconds(300), schedulerProvider.DefaultScheduler)
                 .ObserveOn(schedulerProvider.SynchronizationContextScheduler)
                 .Subscribe(async searchText =>
                 {
                     IsSearching = true;
-                    SearchResults = string.IsNullOrEmpty(searchText)
-                            ? GetEmptyAutocompleteResult()
-                            : await placesProvider.GetAutoCompleteResponse(searchText);
+                    SearchResults = await placesProvider.GetAutoCompleteResponse(searchText);
                     IsSearching = false;
                 });
 
-            var selectedEmptyAutocompleteResultModelObservable = this.Changed(() => SelectedSearchResult)
+	        this.Changed(() => SearchText)
+		        .Where(string.IsNullOrEmpty)
+		        .Subscribe(_ =>  SearchResults = GetEmptyAutocompleteResult());
+
+			var selectedEmptyAutocompleteResultModelObservable = this.Changed(() => SelectedSearchResult)
                     .Where(result => result is EmptyAutocompleteResultModel)
                     .Cast<EmptyAutocompleteResultModel>();
 
@@ -101,10 +104,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base
 
         public IObservable<Address> SelectedAddress { get; protected set; }
 
-        public virtual string PlaceholderText => "Search";
-
-        public virtual ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
+        public virtual ICommand GoBack => _goBack ?? 
+                                          (_goBack = new RelayCommand(() => _navigationService.GoBack()));
 
         protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
-    }
+
+	    public virtual string PlaceholderText => "Search";
+	}
 }

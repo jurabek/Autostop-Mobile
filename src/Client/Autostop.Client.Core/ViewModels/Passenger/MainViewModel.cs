@@ -126,12 +126,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 				{
 					TripLocationViewModel.PickupAddress.FormattedAddress = "Not found!";
 				}
-
-				TripLocationViewModel.PickupAddress.Loading = false;
 			}
 			catch (Exception e)
 			{
 				Debug.Write(e);
+			}
+			finally
+			{
+				TripLocationViewModel.PickupAddress.Loading = false;
 			}
 		}
 

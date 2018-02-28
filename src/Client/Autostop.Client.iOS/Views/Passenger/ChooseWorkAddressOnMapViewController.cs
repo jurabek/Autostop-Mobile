@@ -7,7 +7,6 @@ using UIKit;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
-    [UsedImplicitly]
     public class ChooseWorkAddressOnMapViewController : BaseChooseOnMapViewController<ChooseWorkAddressOnMapViewModel>
     {
         protected override UIImage GetPinImage() => Icons.DefaultPin;

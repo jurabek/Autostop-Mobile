@@ -7,7 +7,6 @@ using Autostop.Client.Abstraction.Managers;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Core.Models;
-using Conditions;
 using Google.Maps;
 using Google.Maps.Places;
 using Google.Maps.Places.Autocomplete;

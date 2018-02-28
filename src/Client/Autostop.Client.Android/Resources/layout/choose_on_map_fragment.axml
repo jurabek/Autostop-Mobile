@@ -1,7 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-</LinearLayout>
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/choseOnMapFragmentMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="25px"
+        android:minHeight="25px" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <EditText
+            android:id="@+id/selecedAddressText"
+            android:editable="false"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:paddingRight="10dip"
+            android:paddingLeft="22dip"
+            android:gravity="center"
+            android:textSize="14dip"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/pickup_address_all_corners"
+            android:hint="Set pickup location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:visibility="gone"
+            android:padding="10dip"
+            android:id="@+id/selectedAddressLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/selecedAddressText"
+            android:layout_alignBottom="@id/selecedAddressText"
+            android:layout_alignLeft="@id/selecedAddressText" />
+    </RelativeLayout>
+    <Button
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:text="Done"
+        android:id="@+id/doneButton" />
+</RelativeLayout>

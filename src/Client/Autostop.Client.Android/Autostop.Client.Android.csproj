@@ -220,6 +220,7 @@
     <Compile Include="Adapters\MarkerAdapter.cs" />
     <Compile Include="Adapters\PageToFragmentAdapter.cs" />
     <Compile Include="Extensions\LatLngExtensions.cs" />
+    <Compile Include="Fragments\BaseChooseOnMapFragment.cs" />
     <Compile Include="IoC\AndroidLocator.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Providers\KeyboardProvider.cs" />

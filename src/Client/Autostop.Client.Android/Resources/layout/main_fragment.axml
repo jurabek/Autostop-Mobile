@@ -3,179 +3,172 @@
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/mapView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:minWidth="25px"
-      android:minHeight="25px" />
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
-      android:layout_marginLeft="10dp"
-      android:layout_marginRight="10dp">
-    <EditText
-        android:id="@+id/pickupLocationAddressEditText"
-        android:editable="false"
-        android:paddingBottom="10dip"
-        android:paddingTop="10dip"
-        android:paddingRight="10dip"
-        android:paddingLeft="22dip"
-        android:gravity="center"
-        android:textSize="14dip"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:background="@drawable/pickup_address_all_corners"
-        android:hint="Set pickup location"
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <ProgressBar
+        android:layout_height="match_parent"
+        android:minWidth="25px"
+        android:minHeight="25px" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <EditText
+            android:id="@+id/pickupLocationAddressEditText"
+            android:editable="false"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:paddingRight="10dip"
+            android:paddingLeft="22dip"
+            android:gravity="center"
+            android:textSize="14dip"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/pickup_address_all_corners"
+            android:hint="Set pickup location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:visibility="gone"
+            android:padding="10dip"
+            android:id="@+id/pickupAddressLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/pickupLocationAddressEditText"
+            android:layout_alignBottom="@id/pickupLocationAddressEditText"
+            android:layout_alignLeft="@id/pickupLocationAddressEditText" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/centeredMarkerIcon"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="40dp"
+        android:src="@drawable/pin_pickup" />
+    <ImageView
         android:visibility="gone"
-        android:padding="10dip"
-        android:id="@+id/pickupAddressLoading"
-        style="?android:attr/progressBarStyleSmall"
+        android:id="@+id/centeredAnimatableDot"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="55dp"
+        android:src="@drawable/white_dot" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/estimatedTimeTextView"
+        android:maxLines="2"
+        android:gravity="center"
+        android:textSize="8sp"
+        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/pickupLocationAddressEditText"
-        android:layout_alignBottom="@id/pickupLocationAddressEditText"
-        android:layout_alignLeft="@id/pickupLocationAddressEditText" />
-  </RelativeLayout>
-  <ImageView
-      android:id="@+id/centeredMarkerIcon"
-      android:layout_width="50dp"
-      android:layout_height="80dp"
-      android:layout_centerVertical="true"
-      android:layout_centerHorizontal="true"
-      android:paddingBottom="40dp"
-      android:src="@drawable/pin_pickup" />
-  <ImageView
-      android:visibility="gone"
-      android:id="@+id/centeredAnimatableDot"
-      android:layout_width="50dp"
-      android:layout_height="80dp"
-      android:layout_centerVertical="true"
-      android:layout_centerHorizontal="true"
-      android:paddingBottom="55dp"
-      android:src="@drawable/white_dot" />
-  <TextView
-      android:visibility="gone"
-      android:id="@+id/estimatedTimeTextView"
-      android:maxLines="2"
-      android:gravity="center"
-      android:textSize="8sp"
-      android:textColor="@android:color/white"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_centerHorizontal="true"
-      android:paddingBottom="60dp" />
-
-  <RelativeLayout
-      android:visibility="visible"
-      android:id="@+id/requestView"
-      android:layout_width="match_parent"
-      android:layout_height="250dp"
-      android:layout_alignParentBottom="true"
-      android:background="#FFFFFF">
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="60dp" />
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/requestView"
         android:layout_width="match_parent"
-        android:orientation="vertical">
-
-      <LinearLayout
-          android:padding="5dp"
-          android:layout_height="wrap_content"
-          android:layout_width="match_parent"
-          android:orientation="horizontal">
-        <ImageView
-            android:layout_margin="5dp"
-            android:src="@drawable/pin_pickup"
-            android:layout_height="30dp"
-            android:layout_width="30dp" />
-        <TextView
-            android:layout_gravity="center"
-            android:text="Ayni street, Dushanbe Tajikistan"
-            android:id="@+id/selectedPickupLocation"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
-
-      </LinearLayout>
-
-      <RelativeLayout
-          android:padding="5dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF">
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pickup_location_dot"
+                    android:layout_height="15dp"
+                    android:layout_width="15dp" />
+                <TextView
+                    android:padding="10dp"
+                    android:layout_gravity="center"
+                    android:text="Ayni street, Dushanbe Tajikistan"
+                    android:id="@+id/selectedPickupLocation"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D7DADB" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/pickup_destination_dot"
+                        android:layout_height="15dp"
+                        android:layout_width="15dp" />
+                    <TextView
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:text="Unnamed Road, Dushanbe Tajikistan"
+                        android:id="@+id/selectedDestinationLocation"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent" />
+                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="android:Widget.Button.Small"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="+"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/auto_stop_car" />
+                <TextView
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:text="6.5$ - 8$"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+        <Button
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="horizontal">
-          <ImageView
-              android:layout_margin="5dp"
-              android:src="@drawable/pin_destination"
-              android:layout_height="30dp"
-              android:layout_width="30dp" />
-          <TextView
-              android:layout_gravity="center"
-              android:text="Unnamed Road, Dushanbe Tajikistan"
-              android:id="@+id/selectedDestinationLocation"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent" />
-        </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="android:Widget.Button.Small"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:text="+"
-            android:layout_alignParentRight="true" />
-      </RelativeLayout>
-
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="#D7DADB"/>
-
-      <RelativeLayout
-          android:layout_margin="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/auto_stop_car" />
-        <TextView
-            android:textSize="20sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:text="6.5$ - 8$"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-      </RelativeLayout>
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:textColor="#ffffff"
+            android:background="#2C3E50"
+            android:text="Request" />
+    </RelativeLayout>
     <Button
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:textColor="#000000"
         android:layout_alignParentBottom="true"
-        android:textColor="#ffffff"
-        android:background="#2C3E50"
-        android:text="Request" />
-  </RelativeLayout>
-
-  <Button
-      android:visibility="visible"
-      android:textColor="#000000"
-      android:layout_alignParentBottom="true"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="30dp"
-      android:background="@drawable/pickup_location_background"
-      android:layout_height="35dp"
-      android:layout_width="match_parent"
-      android:text="Where to?"
-      android:id="@+id/whereToGoButton" />
-
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/pickup_location_background"
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:text="Where to?"
+        android:id="@+id/whereToGoButton" />
 </RelativeLayout>

@@ -7,7 +7,6 @@ using Autostop.Client.iOS.UI;
 using CoreGraphics;
 using GalaSoft.MvvmLight.Helpers;
 using Google.Maps;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
@@ -20,7 +19,6 @@ using MapView = Autostop.Client.iOS.UI.MapView;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
-	[UsedImplicitly]
 	public sealed class MainViewController : UIViewController, IScreenFor<MainViewModel>
 	{
 		private readonly IVisibleRegionProvider _visibleRegionProvider;

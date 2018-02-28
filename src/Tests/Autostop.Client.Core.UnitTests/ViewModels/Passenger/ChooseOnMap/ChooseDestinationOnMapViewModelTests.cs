@@ -34,10 +34,10 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.ChooseOnMap
         [Test, AutoDomainData]
         public async Task Done_ShouldObserSelectedAddressAndNavigateToRoot_WhenCameraPositionChangedAndHasAddress(Address address, Location location)
         {
-            // Act
-            Address selectedAddress = null;
+			// 
+			var viewModel = ClassUnderTest;
+			Address selectedAddress = null;
             var cameraPositionChanged = new Subject<Location>();
-            var viewModel = ClassUnderTest;
             viewModel.CameraStartMoving = new Subject<bool>();
             viewModel.CameraPositionChanged = cameraPositionChanged;
             viewModel.SelectedAddress.Subscribe(a => selectedAddress = a);

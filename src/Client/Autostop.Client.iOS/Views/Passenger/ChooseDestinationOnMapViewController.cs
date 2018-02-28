@@ -10,7 +10,6 @@ using UIKit;
 
 namespace Autostop.Client.iOS.Views.Passenger
 {
-	[UsedImplicitly]
 	public class ChooseDestinationOnMapViewController : BaseChooseOnMapViewController<ChooseDestinationOnMapViewModel>
 	{
 		public override async void ViewDidLoad()
