@@ -24,7 +24,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
 		    set => RaiseAndSetIfChanged(ref _searchText, value);
 		}
 
-        public Location CameraTarget
+	    public Location CameraTarget
         {
             get => _cameraTarget;
             set

@@ -12,6 +12,7 @@ using Autostop.Client.Android.Providers;
 using Autostop.Client.Android.Services;
 using Autostop.Client.Core.IoC;
 using Autostop.Client.Core.ViewModels.Passenger;
+using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.Shared.UI.IoC;
 using Plugin.CurrentActivity;
 
@@ -28,6 +29,10 @@ namespace Autostop.Client.Android.IoC
 			builder.RegisterInstance(CrossCurrentActivity.Current).As<ICurrentActivity>();			
 
 		    builder.RegisterType<MainFragment>().As<IScreenFor<MainViewModel>>();
+			builder.RegisterType<ChoseDestinationOnMapFragment>().As<IScreenFor<ChooseDestinationOnMapViewModel>>();
+
+			//builder.RegisterType<ChooseHomeAddressOnMapViewController>().As<IScreenFor<ChooseHomeAddressOnMapViewModel>>();
+			//builder.RegisterType<ChooseWorkAddressOnMapViewController>().As<IScreenFor<ChooseWorkAddressOnMapViewModel>>();
 			builder.RegisterType<MarkerAdapter>().As<IMarkerAdapter>();
 			builder.RegisterType<MarkerSizeProvider>().As<IMarkerSizeProvider>();
 			builder.RegisterType<KeyboardProvider>().As<IKeyboardProvider>().SingleInstance();

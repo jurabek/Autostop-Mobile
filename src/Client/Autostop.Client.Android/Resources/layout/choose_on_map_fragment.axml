@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/choseOnMapFragmentMapView"
+        android:id="@+id/chooseOnMapFragmentMapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minWidth="25px"
@@ -41,6 +41,14 @@
             android:layout_alignBottom="@id/selecedAddressText"
             android:layout_alignLeft="@id/selecedAddressText" />
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/chooseOnMapCenteredMarkerIcon"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="40dp"
+        android:src="@drawable/pin_pickup" />
     <Button
         android:visibility="visible"
         android:layout_alignParentBottom="true"
@@ -50,5 +58,5 @@
         android:layout_height="40dp"
         android:layout_width="match_parent"
         android:text="Done"
-        android:id="@+id/doneButton" />
+        android:id="@+id/chooseOnMapDoneButton" />
 </RelativeLayout>

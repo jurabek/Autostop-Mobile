@@ -60,14 +60,14 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Welcome
 
 	    private ICommand _verifyCommand;
         public ICommand VerifyCommand => _verifyCommand ?? (_verifyCommand = new RelayCommand(async () =>
-        {
-	        try
-	        {
-		        var result = await _phoneAuthenticationProvider.VerifyPhoneNumber(SelectedCountry.CountryCode + PhoneNumber);
-	        }
-	        catch (Exception e)
-	        {
-	        }
-        }));
+			{
+				try
+				{
+					var result = await _phoneAuthenticationProvider.VerifyPhoneNumber(SelectedCountry.CountryCode + PhoneNumber);
+				}
+				catch (Exception e)
+				{
+				}
+			}));
 	}
 }

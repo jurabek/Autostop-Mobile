@@ -11,6 +11,6 @@ namespace Autostop.Client.Abstraction.ViewModels
 
         IObservable<bool> CameraStartMoving { get; set; }
 
-        Location CameraTarget { get; set; }
+		Location CameraTarget { get; set; }
     }
 }
