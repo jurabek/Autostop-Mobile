@@ -26,6 +26,9 @@ namespace Autostop.Client.Android.Services
 		private readonly IViewFactory _viewFactory;
 		private IDisposable _searchTextChanged;
 		private IDisposable _searchViewQueryChanged;
+		private MainActivity MainActivity => _currentActivity.Activity as MainActivity;
+
+		private bool HasSearchView => MainActivity.SearchView.Visibility == ViewStates.Visible;
 
 		public NavigationService(
 			ICurrentActivity currentActivity,
@@ -36,6 +39,7 @@ namespace Autostop.Client.Android.Services
 			_viewAdapter = viewAdapter;
 			_viewFactory = viewFactory;
 		}
+
 		public void NavigateTo(Type viewModelType)
 		{
 			var fragment = GetFragment(viewModelType);
@@ -99,11 +103,11 @@ namespace Autostop.Client.Android.Services
 
 		private void ShowSearchView(ISearchableViewModel searchableViewModel)
 		{
-			var mainActivity = (MainActivity)_currentActivity.Activity;
-			mainActivity.TitleTextView.Visibility = ViewStates.Gone;
+			MainActivity.TitleTextView.Visibility = ViewStates.Gone;
 
-			var searchView = mainActivity.SearchView;
+			var searchView = MainActivity.SearchView;
 			searchView.Visibility = ViewStates.Visible;
+
 			searchView.QueryHint = searchableViewModel.PlaceholderText;
 
 			_searchTextChanged = searchableViewModel
@@ -118,8 +122,19 @@ namespace Autostop.Client.Android.Services
 			searchableViewModel.SearchText = string.Empty;
 
 			searchView.RequestFocus();
-			InputMethodManager imm = (InputMethodManager)mainActivity.GetSystemService(Context.InputMethodService);
+			InputMethodManager imm = (InputMethodManager)MainActivity.GetSystemService(Context.InputMethodService);
 			imm.ShowSoftInput(searchView, ShowFlags.Implicit);
+		}
+		
+		private void HideSearchView()
+		{
+			if (!HasSearchView) return;
+
+			var mainActivity = (MainActivity)_currentActivity.Activity;
+			mainActivity.TitleTextView.Visibility = ViewStates.Visible;
+
+			var searchView = mainActivity.SearchView;
+			searchView.Visibility = ViewStates.Gone;
 		}
 
 		public void GoBack()
@@ -157,6 +172,8 @@ namespace Autostop.Client.Android.Services
 		private int ReplaceContent(Fragment fragment, bool root = false)
 		{
 			fragment.Requires(nameof(fragment)).IsNotNull();
+
+			HideSearchView();
 
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
 

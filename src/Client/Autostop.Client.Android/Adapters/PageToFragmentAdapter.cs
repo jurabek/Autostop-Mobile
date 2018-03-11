@@ -17,6 +17,7 @@ namespace Autostop.Client.Android.Adapters
 	    {
 		    _currentActivity = currentActivity;
 	    }
+
         public Fragment GetView<TViewModel>(IScreenFor<TViewModel> view)
         {
             try

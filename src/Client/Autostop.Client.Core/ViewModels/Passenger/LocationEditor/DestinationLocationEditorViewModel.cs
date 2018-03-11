@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -35,7 +35,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				.Where(r => r is SetLocationOnMapResultModel)
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(NavigateToChooseDestinationOnMapViewModel);
-			
 		}
 
 		private void NavigateToChooseDestinationOnMapViewModel(IAutoCompleteResultModel autoCompleteResultModel)
