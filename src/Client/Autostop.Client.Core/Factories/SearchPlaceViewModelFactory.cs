@@ -13,9 +13,9 @@ namespace Autostop.Client.Core.Factories
             return Locator.ResolveNamed<IBaseLocationEditorViewModel>(ViewModelKeys.PickupSearch);
         }
 
-        public IBaseLocationEditorViewModel GetDestinationLocationEditorViewModel(ITripLocationViewModel tripLocationViewModel)
+        public IBaseLocationEditorViewModel GetDestinationLocationEditorViewModel()
         {
-            return Locator.ResolveNamed<IBaseLocationEditorViewModel>(ViewModelKeys.DestinationSearch, new NamedParameter(nameof(tripLocationViewModel), tripLocationViewModel));
+            return Locator.ResolveNamed<IBaseLocationEditorViewModel>(ViewModelKeys.DestinationSearch);
         }
     }
 }

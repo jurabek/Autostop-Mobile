@@ -124,7 +124,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 				}
 				else
 				{
-					TripLocationViewModel.PickupAddress.FormattedAddress = "Not found!";
+					TripLocationViewModel.PickupAddress.FormattedAddress = null;
 				}
 			}
 			catch (Exception e)

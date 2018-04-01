@@ -104,8 +104,8 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor.Base
 
         public IObservable<Address> SelectedAddress { get; protected set; }
 
-        public virtual ICommand GoBack => _goBack ?? 
-                                          (_goBack = new RelayCommand(() => _navigationService.GoBack()));
+        public virtual ICommand GoBack => 
+	        _goBack ?? (_goBack = new RelayCommand(() => _navigationService.GoBack()));
 
         protected abstract ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult();
 

@@ -15,7 +15,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
         private readonly INavigationService _navigationService;
         private readonly ILocationManager _locationManager;
         private readonly IGeocodingProvider _geocodingProvider;
-        private Address _currentAddress;
         private ICommand _goBack;
         private ICommand _done;
 
@@ -61,11 +60,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
             if (address != null)
             {
                 SearchText = address.FormattedAddress;
-                _currentAddress = new Address
-                {
-                    FormattedAddress = address.FormattedAddress,
-                    Location = location
-                };
             }
             IsSearching = false;
         }

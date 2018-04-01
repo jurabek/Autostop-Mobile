@@ -40,7 +40,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.ChooseOnMap
             var cameraPositionChanged = new Subject<Location>();
             viewModel.CameraStartMoving = new Subject<bool>();
             viewModel.CameraPositionChanged = cameraPositionChanged;
-            viewModel.SelectedAddress.Subscribe(a => selectedAddress = a);
             GetMock<IGeocodingProvider>().Setup(x => x.ReverseGeocodingFromLocation(location)).Returns(Task.FromResult(address));
 
             // Arrange
@@ -51,7 +50,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.ChooseOnMap
 
             // Assert
             Assert.That(viewModel.SearchText, Is.EqualTo(address.FormattedAddress));
-            Assert.That(selectedAddress, Is.EqualTo(address));
             GetMock<INavigationService>().Verify(x => x.NavigateToRoot(), Times.Once);
         }
 

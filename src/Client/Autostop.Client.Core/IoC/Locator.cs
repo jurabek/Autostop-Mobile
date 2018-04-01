@@ -4,11 +4,15 @@ using Autofac.Core;
 using Autostop.Client.Abstraction.Facades;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Providers;
+using Autostop.Client.Abstraction.Publishers;
+using Autostop.Client.Abstraction.Subscribers;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Core.Constants;
 using Autostop.Client.Core.Facades;
 using Autostop.Client.Core.Factories;
 using Autostop.Client.Core.Providers;
+using Autostop.Client.Core.Publishers;
+using Autostop.Client.Core.Subscribers;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
@@ -55,6 +59,9 @@ namespace Autostop.Client.Core.IoC
             builder.RegisterType<SearchPlaceViewModelFactory>().As<ISearchPlaceViewModelFactory>();
             builder.RegisterType<ChooseOnMapViewModelFactory>().As<IChooseOnMapViewModelFactory>();
             builder.RegisterType<AutoMapperFacade>().As<IAutoMapperFacade>();
+
+			builder.RegisterType<SelectedDestinationByMapPublisher>().As<ISelectedDestinationByMapPublisher>().SingleInstance();
+	        builder.RegisterType<SelectedDestinationByMapSubscriber>().As<ISelectedDestinationByMapSubscriber>();
 
             ContainerRegistery(builder);
             _container = builder.Build();

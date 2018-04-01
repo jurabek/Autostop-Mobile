@@ -13,6 +13,9 @@ using GalaSoft.MvvmLight.Command;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.Trip
 {
+	/// <summary>
+	/// TODO: we should refactor this class
+	/// </summary>
     public class TripLocationViewModel : BaseViewModel, ITripLocationViewModel
     {
         private readonly Subject<bool> _pickupLocationChanged = new Subject<bool>();
@@ -31,7 +34,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.Trip
             ISearchPlaceViewModelFactory searchPlaceViewModelFactory)
         {
             _pickupLocationEditorViewModel = searchPlaceViewModelFactory.GetPickupLocationEditorViewModel();
-            _destinationLocationEditorViewModel = searchPlaceViewModelFactory.GetDestinationLocationEditorViewModel(this);
+            _destinationLocationEditorViewModel = searchPlaceViewModelFactory.GetDestinationLocationEditorViewModel();
             _navigationService = navigationService;
             
             _pickupLocationEditorViewModel.SelectedAddress
