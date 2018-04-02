@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Gms.Maps;
@@ -21,7 +20,7 @@ using GalaSoft.MvvmLight.Helpers;
 namespace Autostop.Client.Android.Fragments
 {
 	public abstract class BaseChooseOnMapFragment<TViewModel> : Fragment, IScreenFor<TViewModel>, IOnMapReadyCallback
-		where TViewModel : class, ISearchableViewModel, IMapViewModel
+		where TViewModel : class, IMapViewModel, ISearchableViewModel
 	{
 		protected Button DoneButton { get; private set; }
 
@@ -42,9 +41,10 @@ namespace Autostop.Client.Android.Fragments
 			_mapView = view.FindViewById<MapView>(Resource.Id.chooseOnMapFragmentMapView);
 			_addressEditText = view.FindViewById<EditText>(Resource.Id.selecedAddressText);
 			_selectedAddressLoading = view.FindViewById<ProgressBar>(Resource.Id.selectedAddressLoading);
-			DoneButton = view.FindViewById<Button>(Resource.Id.chooseOnMapDoneButton);
 			_centeredMarkerIcon = view.FindViewById<ImageView>(Resource.Id.chooseOnMapCenteredMarkerIcon);
-			
+
+			DoneButton = view.FindViewById<Button>(Resource.Id.chooseOnMapDoneButton);
+
 			_mapView.OnCreate(savedInstanceState);
 			_mapView.OnResume();
 			_mapView.GetMapAsync(this);

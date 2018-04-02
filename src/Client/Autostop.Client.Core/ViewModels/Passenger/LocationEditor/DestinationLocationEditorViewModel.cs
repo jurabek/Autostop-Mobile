@@ -26,7 +26,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 			IGeocodingProvider geocodingProvider,
 			IChooseOnMapViewModelFactory chooseOnMapViewModelFactory,
 			IEmptyAutocompleteResultProvider autocompleteResultProvider,
-			ISelectedDestinationByMapSubscriber destinationByMapSubscriber) 
+			ISelectedDestinationByMapSubscriber destinationByMapSubscriber)
 			: base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
 		{
 			_navigationService = navigationService;
@@ -38,7 +38,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 				.ObserveOn(schedulerProvider.SynchronizationContextScheduler)
 				.Subscribe(NavigateToChooseDestinationOnMapViewModel);
 
-			SelectedAddress = destinationByMapSubscriber.Publisher.Handler;
+			destinationByMapSubscriber.Publisher.Handler.Subscribe(address =>
+			{
+				SelectedAddress = address;
+				navigationService.GoBack();
+			});
 		}
 
 		private void NavigateToChooseDestinationOnMapViewModel(IAutoCompleteResultModel autoCompleteResultModel)

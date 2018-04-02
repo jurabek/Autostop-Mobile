@@ -11,6 +11,6 @@ namespace Autostop.Client.Abstraction.ViewModels
 
 		IAutoCompleteResultModel SelectedSearchResult { get; set; }
 
-		IObservable<Address> SelectedAddress { get; }
+		Address SelectedAddress { get; set; }
 	}
 }

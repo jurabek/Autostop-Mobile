@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
@@ -13,9 +14,12 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 {
     public class HomeLocationEditorViewModel : BaseLocationEditorViewModel
     {
-        private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
+		private readonly INavigationService _navigationService;
+		private readonly IEmptyAutocompleteResultProvider _autocompleteResultProvider;
+		private readonly ISettingsProvider _settingsProvider;
+		private readonly IGeocodingProvider _geocodingProvider;
 
-        public HomeLocationEditorViewModel(
+		public HomeLocationEditorViewModel(
             ISchedulerProvider schedulerProvider,
             INavigationService navigationService,
             IPlacesProvider placesProvider,
@@ -23,14 +27,16 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
             ISettingsProvider settingsProvider,
             IGeocodingProvider geocodingProvider) : base(schedulerProvider, placesProvider, geocodingProvider, navigationService)
         {
-            _autocompleteResultProvider = autocompleteResultProvider;
+			_navigationService = navigationService;
+			_autocompleteResultProvider = autocompleteResultProvider;
+			_settingsProvider = settingsProvider;
+			_geocodingProvider = geocodingProvider;
 
-            SelectedAutoCompleteResultModelObservable                
+			SelectedAutoCompleteResultModelObservable                
                 .Subscribe(async result =>
                 {
                     var address = await geocodingProvider.ReverseGeocodingFromPlaceId(result.PlaceId);
                     settingsProvider.SetHomeAddress(address);
-                    navigationService.GoBack();
                 });
 
             this.Changed(() => SelectedSearchResult)
@@ -40,8 +46,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
                     navigationService.NavigateTo<ChooseHomeAddressOnMapViewModel>();
                 });
         }
-        
-        protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
+
+		protected override async Task SetAutoCompleteResultModel(string placeId)
+		{
+			var address = await _geocodingProvider.ReverseGeocodingFromPlaceId(placeId);
+			_settingsProvider.SetHomeAddress(address);
+			_navigationService.GoBack();
+		}
+
+		protected override ObservableCollection<IAutoCompleteResultModel> GetEmptyAutocompleteResult()
         {
             return new ObservableCollection<IAutoCompleteResultModel>
             {

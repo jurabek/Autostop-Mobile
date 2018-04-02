@@ -16,7 +16,6 @@ using Autostop.Client.Core.Subscribers;
 using Autostop.Client.Core.ViewModels.Passenger;
 using Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap;
 using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
-using Autostop.Client.Core.ViewModels.Passenger.Trip;
 using Autostop.Client.Core.ViewModels.Passenger.Welcome;
 using Google.Maps;
 using Google.Maps.Geocoding;
@@ -33,8 +32,7 @@ namespace Autostop.Client.Core.IoC
         {
             var builder = new ContainerBuilder();
             var googleSigned = new GoogleSigned(GoogleMapsApi.ClientApiKey);
-
-	        builder.RegisterType<TripLocationViewModel>().As<ITripLocationViewModel>();
+			
             builder.RegisterType<MainViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<PickupLocationEditorViewModel>().Named<IBaseLocationEditorViewModel>(ViewModelKeys.PickupSearch);
             builder.RegisterType<DestinationLocationEditorViewModel>().Named<IBaseLocationEditorViewModel>(ViewModelKeys.DestinationSearch);

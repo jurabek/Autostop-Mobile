@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
@@ -33,7 +32,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger.LocationEditor
 	    public override string PlaceholderText => "Set pickup location";
 
 		/// <summary>
-		/// We should call load always when view model appears, because search result should be updated after setting home or work address 
+		/// We should call load always when view appears, because search result should be updated after setting home or work address 
 		/// </summary>
 		public void LoadEmptyAutocompleteResult()
 		{

@@ -76,8 +76,8 @@ namespace Autostop.Client.Android.Fragments
 			_mapView.OnResume();
 			_mapView.GetMapAsync(this);
 
-			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.TripLocationViewModel.NavigateToPickupSearch);
-			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.TripLocationViewModel.NavigateToWhereTo);
+			_pickupAddressEditText.SetCommand(nameof(EditText.Click), ViewModel.NavigateToPickupSearch);
+			_whereToGoButton.SetCommand(nameof(Button.Click), ViewModel.NavigateToWhereTo);
 		}
 
 		public MainViewModel ViewModel { get; set; }
@@ -166,30 +166,30 @@ namespace Autostop.Client.Android.Fragments
 					_googleMap?.MoveCamera(camera);
 				});
 
-			this.SetBinding(() => ViewModel.TripLocationViewModel.PickupAddress.Loading)
+			this.SetBinding(() => ViewModel.PickupLocationEditorViewModel.IsSearching)
 				.WhenSourceChanges(() =>
 				{
 					_pickupAddressLoading.Visibility =
-						ViewModel.TripLocationViewModel.PickupAddress.Loading ? ViewStates.Visible : ViewStates.Gone;
+						ViewModel.PickupLocationEditorViewModel.IsSearching ? ViewStates.Visible : ViewStates.Gone;
 				});
 
 			this.SetBinding(
-				() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress,
+				() => ViewModel.PickupLocationEditorViewModel.SelectedAddress.FormattedAddress,
 				() => _pickupAddressEditText.Text);
 
-			this.SetBinding(() => ViewModel.TripLocationViewModel.CanRequest)
+			this.SetBinding(() => ViewModel.CanRequest)
 				.WhenSourceChanges(() =>
 				{
-					if (ViewModel.TripLocationViewModel.CanRequest)
-					{
-						SlideUp(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Gone;
-					}
-					else
-					{
-						SlideDown(_requestView);
-						_whereToGoButton.Visibility = ViewStates.Visible;
-					}
+					//if (ViewModel.CanRequest)
+					//{
+					//	SlideUp(_requestView);
+					//	_whereToGoButton.Visibility = ViewStates.Gone;
+					//}
+					//else
+					//{
+					//	SlideDown(_requestView);
+					//	_whereToGoButton.Visibility = ViewStates.Visible;
+					//}
 				});
 
 

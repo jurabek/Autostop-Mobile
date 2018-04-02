@@ -30,9 +30,9 @@ namespace Autostop.Client.Android.IoC
 
 		    builder.RegisterType<MainFragment>().As<IScreenFor<MainViewModel>>();
 			builder.RegisterType<ChoseDestinationOnMapFragment>().As<IScreenFor<ChooseDestinationOnMapViewModel>>();
+			builder.RegisterType<ChooseHomeAddressOnMapFragment>().As<IScreenFor<ChooseHomeAddressOnMapViewModel>>();
+			builder.RegisterType<ChooseWorkAddressOnMapFragment>().As<IScreenFor<ChooseWorkAddressOnMapViewModel>>();
 
-			//builder.RegisterType<ChooseHomeAddressOnMapViewController>().As<IScreenFor<ChooseHomeAddressOnMapViewModel>>();
-			//builder.RegisterType<ChooseWorkAddressOnMapViewController>().As<IScreenFor<ChooseWorkAddressOnMapViewModel>>();
 			builder.RegisterType<MarkerAdapter>().As<IMarkerAdapter>();
 			builder.RegisterType<MarkerSizeProvider>().As<IMarkerSizeProvider>();
 			builder.RegisterType<KeyboardProvider>().As<IKeyboardProvider>().SingleInstance();

@@ -9,7 +9,13 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="com.autostop.android.permission.MAPS_RECEIVE" />
 	<permission android:name="com.autostop.android.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
-	<application android:theme="@style/MainTheme" android:allowBackup="true" android:label="@string/app_name" android:icon="@drawable/auto_stop_car">
+	<application 
+	  android:theme="@style/MainTheme" 
+	  android:allowBackup="true" 
+	  android:label="@string/app_name" 
+	  android:icon="@drawable/auto_stop_car"
+	  android:largeHeap="true">
+
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBWGxhPTY_JZq6MdGBHjzLLZshB0UXkdFw" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />

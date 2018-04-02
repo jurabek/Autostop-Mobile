@@ -6,7 +6,7 @@ namespace Autostop.Client.Core.Subscribers
 {
     public class SelectedDestinationByMapSubscriber : ISelectedDestinationByMapSubscriber
 	{
-		public SelectedDestinationByMapSubscriber(IPublisher<Address> publisher)
+		public SelectedDestinationByMapSubscriber(ISelectedDestinationByMapPublisher publisher)
 		{
 			Publisher = publisher;
 		}

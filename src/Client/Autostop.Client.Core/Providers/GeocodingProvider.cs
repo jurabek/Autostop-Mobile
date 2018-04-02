@@ -49,9 +49,17 @@ namespace Autostop.Client.Core.Providers
 
 
 			var request = new GeocodingRequest { Address = new PlaceIdLocation(placeId) };
-			var response = await _geocodingService.GetResponseAsync(request);
+			GeocodeResponse response = null;
+			try
+			{
+				response = await _geocodingService.GetResponseAsync(request);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
 
-			if (response.Status != ServiceResponseStatus.Ok)
+			if (response?.Status != ServiceResponseStatus.Ok)
 				return null;
 
 			var address = response.Results.FirstOrDefault();

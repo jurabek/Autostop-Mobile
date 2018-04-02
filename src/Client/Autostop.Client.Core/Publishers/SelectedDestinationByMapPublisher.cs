@@ -7,7 +7,7 @@ namespace Autostop.Client.Core.Publishers
 {
     public class SelectedDestinationByMapPublisher : ISelectedDestinationByMapPublisher
 	{
-		readonly Subject<Address> _handler = new  Subject<Address>();
+		private readonly Subject<Address> _handler = new  Subject<Address>();
 
 		public IObservable<Address> Handler => _handler;
 

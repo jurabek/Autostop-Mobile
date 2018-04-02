@@ -20,7 +20,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 		private Address _currentAddress;
 	    private ICommand _goBack;
 	    private ICommand _done;
-		
 
 		public ChooseDestinationOnMapViewModel(
             ISchedulerProvider schedulerProvider,
@@ -35,15 +34,15 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap
 		}
 
 		public override ICommand Done => _done ?? (_done = new RelayCommand(() =>
-		    {
-				_destinationByMapPublisher.Publish(_currentAddress);
-			    _navigationService.NavigateToRoot();
-		    }));
+		{
+			_destinationByMapPublisher.Publish(_currentAddress);
+			_navigationService.NavigateToRoot();
+		}));
 
 		public override ICommand GoBack => _goBack ?? (_goBack = new RelayCommand(() =>
-		    {
-		        _navigationService.GoBack();
-		    }));
+		{
+		    _navigationService.GoBack();
+		}));
 
 		public override Task Load()
 		{

@@ -25,6 +25,8 @@ namespace Autostop.Client.Abstraction.Services
 
 		void GoBack();
 
+		void GoBack(int step);
+
 		void NavigateToRoot();
 	}
 }

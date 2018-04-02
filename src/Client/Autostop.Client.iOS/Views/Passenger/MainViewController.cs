@@ -150,7 +150,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 		private void AddCommands()
 		{
 			this.BindCommand(_myLocationButton, ViewModel.GoToMyLocation);
-			this.BindCommand(_whereToGoButton, ViewModel.TripLocationViewModel.NavigateToWhereTo);
+			this.BindCommand(_whereToGoButton, ViewModel.NavigateToWhereTo);
 		}
 
 		private void SetupBindings()
@@ -159,11 +159,11 @@ namespace Autostop.Client.iOS.Views.Passenger
 			{
 				this.SetBinding(
 					() => _pickupAddressTextField.Text,
-					() => ViewModel.TripLocationViewModel.PickupAddress.FormattedAddress, BindingMode.TwoWay),
+					() => ViewModel.PickupLocationEditorViewModel.SelectedAddress.FormattedAddress, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _pickupAddressTextField.Loading,
-					() => ViewModel.TripLocationViewModel.PickupAddress.Loading, BindingMode.TwoWay),
+					() => ViewModel.PickupLocationEditorViewModel.IsSearching, BindingMode.TwoWay),
 
 				this.SetBinding(
 					() => _mapView.OnlineDrivers,
@@ -282,7 +282,7 @@ namespace Autostop.Client.iOS.Views.Passenger
 
 		private bool PickupAddressShouldBeginEditing(UITextField textField)
 		{
-			ViewModel.TripLocationViewModel.NavigateToPickupSearch.Execute(null);
+			ViewModel.NavigateToPickupSearch.Execute(null);
 			return false;
 		}
 

@@ -92,7 +92,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 				homeResultModel,
 				workResultModel
 			};
-			viewModel.SelectedAddress.Subscribe(address => expectedAddress = address);
 
 			// Arrange
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[0]);
@@ -115,7 +114,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 				homeResultModel,
 				workResultModel
 			};
-			viewModel.SelectedAddress.Subscribe(address => expectedAddress = address);
 
 			// Arrange
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = viewModel.SearchResults[1]);
@@ -134,7 +132,6 @@ namespace Autostop.Client.Core.UnitTests.ViewModels.Passenger.LocationEditor
 			viewModel.SearchResults = new ObservableCollection<IAutoCompleteResultModel>(autoCompleteResultModels);
 			var selectedSearchResult = viewModel.SearchResults[0];
 			GetMock<IGeocodingProvider>().Setup(x => x.ReverseGeocodingFromPlaceId(selectedSearchResult.PlaceId)).Returns(Task.FromResult(geocodingAddress));
-			viewModel.SelectedAddress.Subscribe(a => expectedAddress = a);
 
 			// Arrange
 			Scheduler.Schedule(() => viewModel.SelectedSearchResult = selectedSearchResult);

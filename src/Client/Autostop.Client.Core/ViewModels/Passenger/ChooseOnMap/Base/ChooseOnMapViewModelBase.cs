@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
 {
-    public abstract class ChooseOnMapViewModelBase : BaseViewModel, ISearchableViewModel, IMapViewModel
+    public abstract class ChooseOnMapViewModelBase : BaseViewModel, IMapViewModel, ISearchableViewModel
     {
         private bool _isSearching;
         private Location _cameraTarget;
@@ -33,13 +33,11 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
                 RaisePropertyChanged();
             }
         }
+		
+	    public virtual string PlaceholderText => "Search";
+		
+        public virtual ICommand GoBack { get;  }
 
-        public virtual string PlaceholderText => "Search";
-
-        [UsedImplicitly]
-        public virtual ICommand GoBack { get; }
-
-        [UsedImplicitly]
         public virtual ICommand Done { get; }
 
 	    public IObservable<Location> MyLocationChanged { get; protected set; }

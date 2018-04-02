@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using Android.App;
 using Android.Content;
@@ -38,11 +39,16 @@ namespace Autostop.Client.Android.Services
 			_currentActivity = currentActivity;
 			_viewAdapter = viewAdapter;
 			_viewFactory = viewFactory;
+
+			_currentActivity.Activity.FragmentManager.BackStackChanged += (sender, args) =>
+			{
+			};
 		}
 
 		public void NavigateTo(Type viewModelType)
 		{
 			var fragment = GetFragment(viewModelType);
+			HideSearchView();
 			ReplaceContent(fragment);
 		}
 
@@ -50,6 +56,7 @@ namespace Autostop.Client.Android.Services
 		{
 			var fragment = GetFragment(viewModelType);
 			configure(fragment);
+			HideSearchView();
 			ReplaceContent(fragment);
 		}
 
@@ -57,6 +64,7 @@ namespace Autostop.Client.Android.Services
 		{
 			var viewModel = Locator.Resolve<TViewModel>();
 			var fragment = GetFragment(viewModel);
+			HideSearchView();
 			ReplaceContent(fragment);
 		}
 
@@ -64,12 +72,14 @@ namespace Autostop.Client.Android.Services
 		{
 			var viewModel = Locator.Resolve<TViewModel>();
 			var fragment = GetFragment(viewModel);
+			HideSearchView();
 			ReplaceContent(fragment, root);
 		}
 
 		public void NavigateTo<TViewModel>(TViewModel viewModel)
 		{
 			var fragment = GetFragment(viewModel);
+			HideSearchView();
 			ReplaceContent(fragment);
 		}
 
@@ -82,13 +92,18 @@ namespace Autostop.Client.Android.Services
 			var viewModel = Locator.Resolve<TViewModel>();
 			var fragment = GetFragment(viewModel);
 			configure(fragment, viewModel);
+			HideSearchView();
 			ReplaceContent(fragment);
 		}
 
 		public void NavigateToSearchView<TViewModel>(Action<TViewModel> callBack) where TViewModel : ISearchableViewModel
 		{
 			var viewModel = Locator.Resolve<TViewModel>();
-			ShowSearchView(viewModel);
+			if (!(viewModel is IMapViewModel))
+			{
+				ShowSearchView(viewModel);
+			}
+
 			var fragment = GetFragment(viewModel);
 			callBack?.Invoke(viewModel);
 			ReplaceContent(fragment);
@@ -96,7 +111,11 @@ namespace Autostop.Client.Android.Services
 
 		public void NavigateToSearchView<TViewModel>(TViewModel viewModel) where TViewModel : ISearchableViewModel
 		{
-			ShowSearchView(viewModel);
+			if (!(viewModel is IMapViewModel))
+			{
+				ShowSearchView(viewModel);
+			}
+
 			var fragment = GetFragment(viewModel);
 			ReplaceContent(fragment);
 		}
@@ -139,9 +158,18 @@ namespace Autostop.Client.Android.Services
 
 		public void GoBack()
 		{
+			HideSearchView();
 			_searchTextChanged?.Dispose();
 			_searchViewQueryChanged?.Dispose();
 			var _ = _currentActivity.Activity.FragmentManager.PopBackStackImmediate();
+		}
+
+		public void GoBack(int step)
+		{
+			for (int i = 0; i <= step; i++)
+			{
+				GoBack();
+			}
 		}
 
 		public void NavigateToRoot()
@@ -169,18 +197,15 @@ namespace Autostop.Client.Android.Services
 			return fragment;
 		}
 
-		private int ReplaceContent(Fragment fragment, bool root = false)
+		private void ReplaceContent(Fragment fragment, bool root = false)
 		{
 			fragment.Requires(nameof(fragment)).IsNotNull();
-
-			HideSearchView();
-
+			
 			var fragmentManager = _currentActivity.Activity.FragmentManager;
 
 			var transaction = fragmentManager.BeginTransaction();
-			//transaction.SetCustomAnimations(Resource.Animation.enter_from_left, Resource.Animation.exit_to_right);
 
-			return root ? 
+			var result = root ? 
 				transaction
 					.Replace(Resource.Id.container, fragment)
 					.Commit() : 
@@ -188,6 +213,8 @@ namespace Autostop.Client.Android.Services
 					.Replace(Resource.Id.container, fragment)
 					.AddToBackStack(null)
 					.Commit();
+
+			Debug.WriteLine(result);
 		}
 	}
 }

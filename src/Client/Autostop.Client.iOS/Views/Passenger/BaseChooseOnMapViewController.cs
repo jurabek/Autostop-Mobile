@@ -14,7 +14,7 @@ using MapView = Autostop.Client.iOS.UI.MapView;
 namespace Autostop.Client.iOS.Views.Passenger
 {
 	public abstract class BaseChooseOnMapViewController<TViewModel> : UIViewController, IScreenFor<TViewModel>
-		where TViewModel : class, ISearchableViewModel, IMapViewModel
+		where TViewModel : class, IMapViewModel, ISearchableViewModel
     {
 		protected MapView MapView;
 	    protected UIButton DoneButton;
