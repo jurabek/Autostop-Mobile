@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -45,15 +46,21 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
 		public override async Task Load()
 		{
 			CameraTarget = _locationManager.LastKnownLocation;
-			await CameraLocationChanged(_locationManager.LastKnownLocation);
+			await CameraLocationChanged(CameraTarget);
 
-			CameraStartMoving
-				.Do(moving => IsSearching = moving)
-				.Subscribe();
+			CameraStartMoving.Subscribe(_ => IsSearching = true);
 
-			CameraPositionChanged
-				.Do(async location => await CameraLocationChanged(location))
-				.Subscribe();
+			CameraPositionChanged.SelectMany(l => _geocodingProvider.ReverseGeocodingFromLocation(l))
+				.Subscribe(address =>
+				{
+					SearchText = address.FormattedAddress;
+					_currentAddress = address;
+					IsSearching = false;
+				}, ex =>
+				{
+					Debug.Write(ex);
+					IsSearching = false;
+				});
 		}
 
 		private async Task CameraLocationChanged(Location location)
@@ -64,7 +71,6 @@ namespace Autostop.Client.Core.ViewModels.Passenger.ChooseOnMap.Base
 				SearchText = address.FormattedAddress;
 				_currentAddress = address;
 			}
-			IsSearching = false;
 		}
 
 		protected abstract void SetAddress(Address address);

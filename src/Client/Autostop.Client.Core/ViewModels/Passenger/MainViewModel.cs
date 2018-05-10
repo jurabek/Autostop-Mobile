@@ -7,16 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Autostop.Client.Abstraction.Factories;
 using Autostop.Client.Abstraction.Managers;
-using Autostop.Client.Abstraction.Models;
 using Autostop.Client.Abstraction.Providers;
 using Autostop.Client.Abstraction.Services;
 using Autostop.Client.Abstraction.ViewModels;
 using Autostop.Client.Abstraction.ViewModels.Passenger;
-using Autostop.Client.Core.Models;
 using Autostop.Client.Core.ViewModels.Passenger.LocationEditor;
 using Autostop.Common.Shared.Models;
 using GalaSoft.MvvmLight.Command;
-using JetBrains.Annotations;
 
 namespace Autostop.Client.Core.ViewModels.Passenger
 {
@@ -32,6 +29,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		private List<IDisposable> _subscribers;
 		private ICommand _navigateWhereTo;
 		private ICommand _navigatePickupSearch;
+		private ICommand _goToMyLocation;
 		private bool _canRequest;
 
 		public MainViewModel(
@@ -44,7 +42,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			_schedulerProvider = schedulerProvider;
 			_geocodingProvider = geocodingProvider;
 			_locationManager = locationManager;
-			
+
 			MyLocationChanged = locationManager.LocationChanged;
 
 
@@ -54,6 +52,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 		}
 
 		public IBaseLocationEditorViewModel PickupLocationEditorViewModel { get; }
+
 		public IBaseLocationEditorViewModel DestinationLocationEditorViewModel { get; }
 
 		public IObservable<Location> MyLocationChanged { get; }
@@ -62,7 +61,7 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		public IObservable<bool> CameraStartMoving { get; set; }
 
-		public IObservable<VisibleRegion> VisibleRegionChanged { [UsedImplicitly] get; set; }
+		public IObservable<VisibleRegion> VisibleRegionChanged { get; set; }
 
 		public Location CameraTarget
 		{
@@ -84,10 +83,9 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 			}
 		}
 
-		private ICommand _goToMyLocation;
 		public ICommand GoToMyLocation => _goToMyLocation ?? (_goToMyLocation = new RelayCommand(
 			async () => await GetMyLocation()));
-		
+
 		public ICommand NavigateToPickupSearch => _navigatePickupSearch ?? (_navigatePickupSearch = new RelayCommand(() =>
 		{
 			_navigationService.NavigateToSearchView(PickupLocationEditorViewModel as PickupLocationEditorViewModel);
@@ -107,62 +105,43 @@ namespace Autostop.Client.Core.ViewModels.Passenger
 
 		public override async Task Load()
 		{
-			await base.Load();
-
 			_subscribers = new List<IDisposable>
 			{
-				CameraStartMoving
-					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
+				CameraStartMoving.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(moving =>
 					{
 						PickupLocationEditorViewModel.SelectedAddress.FormattedAddress = "Searching...";
 						PickupLocationEditorViewModel.IsSearching = true;
 					}),
 
-				VisibleRegionChanged
+				VisibleRegionChanged.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
 					.Subscribe(r =>
 					{
 						OnlineDrivers = new ObservableCollection<DriverLocation>(MockData.AvailableDrivers);
 					}),
 
-				CameraPositionChanged
+				CameraPositionChanged.SelectMany(l => _geocodingProvider.ReverseGeocodingFromLocation(l))
 					.ObserveOn(_schedulerProvider.SynchronizationContextScheduler)
-					.Subscribe(async location =>
+					.Subscribe(address =>
 					{
-						await CameraLocationChanged(location);
+						PickupLocationEditorViewModel.SelectedAddress = address;
+						PickupLocationEditorViewModel.IsSearching = false;
+					}, ex =>
+					{
+						Debug.Write(ex);
+						PickupLocationEditorViewModel.IsSearching = false;
 					})
 			};
+
+			await base.Load();
 		}
 
 		public async Task GetMyLocation()
 		{
 			var lastLocation = await _locationManager.RequestSingleLocationUpdate();
 			CameraTarget = lastLocation;
-			await CameraLocationChanged(lastLocation);
-		}
-
-		private async Task CameraLocationChanged(Location location)
-		{
-			try
-			{
-				var address = await _geocodingProvider.ReverseGeocodingFromLocation(location);
-				if (address != null)
-				{
-					PickupLocationEditorViewModel.SelectedAddress = address;
-				}
-				else
-				{
-					PickupLocationEditorViewModel.SelectedAddress = null;
-				}
-			}
-			catch (Exception e)
-			{
-				Debug.Write(e);
-			}
-			finally
-			{
-				PickupLocationEditorViewModel.IsSearching = false;
-			}
+			var address = await _geocodingProvider.ReverseGeocodingFromLocation(CameraTarget);
+			PickupLocationEditorViewModel.SelectedAddress = address;
 		}
 
 		protected override void Dispose(bool disposing)
